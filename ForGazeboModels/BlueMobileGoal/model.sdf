@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+    <model name="Blue Mobile Goal">
+      <pose>0 0 0.2  0 0 0</pose>
+      <static>false</static>
+    <inertial>
+      <origin xyz="0 0 ${height1/2}" rpy="0 0 0"/>
+      <mass value="1.68"/>
+	<inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+      <link name="body">
+        <visual name="visual">
+          <geometry>
+            <mesh><uri>file://gazeboSimulation/meshes/BlueMobileGoal.dae</uri></mesh>
+          </geometry>
+        </visual>
+	<collision name = "collision">	
+	<geometry>   	
+<mesh><uri>file://gazeboSimulation/Collisions/MobileGoalCollision.dae</uri></mesh>
+	</geometry>
+       </collision>
+
+      </link>
+    </model>
+</sdf>
