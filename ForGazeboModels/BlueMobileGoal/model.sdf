@@ -2,6 +2,8 @@
 <sdf version="1.5">
     <model name="Blue Mobile Goal">
       <pose>0 0 0.2  0 0 0</pose>
+<maxVel>0.0</maxVel>
+  <minDepth>0.001</minDepth>
       <static>false</static>
     <inertial>
       <origin xyz="0 0 ${height1/2}" rpy="0 0 0"/>
@@ -14,12 +16,12 @@
       <link name="body">
         <visual name="visual">
           <geometry>
-            <mesh><uri>file://gazeboSimulation/meshes/BlueMobileGoal.dae</uri></mesh>
+            <mesh><uri>file://catkin_ws/src/gazebosim/gazeboSimulation/meshes/BlueMobileGoal.dae</uri></mesh>
           </geometry>
         </visual>
 	<collision name = "collision">	
 	<geometry>   	
-<mesh><uri>file://gazeboSimulation/Collisions/MobileGoalCollision.dae</uri></mesh>
+<mesh><uri>file://catkin_ws/src/gazebosim/gazeboSimulation/Collisions/MobileGoalCollision.dae</uri></mesh>
 	</geometry>
        </collision>
 

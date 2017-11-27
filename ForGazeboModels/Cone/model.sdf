@@ -1,24 +1,28 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
     <model name="Vex Cone">
-      <pose>0 0 0.5  0 0 0</pose>
+      <pose>0 0 0.2  0 0 0</pose>
+ <maxVel>0.0</maxVel>
+<minDepth>0.001</minDepth>
+<mu1>0.8</mu1>
       <static>false</static>
       <link name="body">
-	<collision name = "collision">	
+<collision name = "collision">	
 	<geometry> 
 	<pose>0 0 0 0 0 0</pose>	
-	<mesh><uri>file://gazeboSimulation/Collisions/ConeCollision.dae</uri></mesh>
+	<mesh><uri>file://catkin_ws/src/gazebosim/gazeboSimulation/Collisions/ConeCollision.dae</uri></mesh>
 	</geometry>
        </collision>
 
     <inertial>
     <mass value="0.118"/>
+    <pose>0 0 0.04  0 0 0</pose>
     <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
     </inertial>
 
         <visual name="visual">
           <geometry>
-            <mesh><uri>file://gazeboSimulation/meshes/Cone.dae</uri></mesh>
+            <mesh><uri>file://catkin_ws/src/gazebosim/gazeboSimulation/meshes/Cone.dae</uri></mesh>
           </geometry>
         </visual>
  	
