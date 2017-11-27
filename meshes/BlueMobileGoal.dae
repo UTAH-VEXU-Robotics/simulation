@@ -3,10 +3,10 @@
   <asset>
     <contributor>
       <author>Blender User</author>
-      <authoring_tool>Blender 2.79.0 commit date:2017-09-11, commit time:10:43, hash:5bd8ac9</authoring_tool>
+      <authoring_tool>Blender 2.79.0 commit date:2017-09-11, commit time:10:43, hash:5bd8ac9abfa</authoring_tool>
     </contributor>
-    <created>2017-09-17T13:55:15</created>
-    <modified>2017-09-17T13:55:15</modified>
+    <created>2017-11-27T15:16:48</created>
+    <modified>2017-11-27T15:16:48</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -181,7 +181,7 @@
         <instance_light url="#Lamp-light"/>
       </node>
       <node id="mobileGoal" name="mobileGoal" type="NODE">
-        <matrix sid="transform">0.009941398 0 0 0 0 -4.35306e-10 -0.009945454 0 0 0.009958641 -4.3473e-10 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.009977955 0 0 0 0 -4.36907e-10 -0.009982026 0 0 0.009995262 -4.36328e-10 0 0 0 0 1</matrix>
         <instance_geometry url="#mobileGoal-mesh" name="mobileGoal">
           <bind_material>
             <technique_common>
