@@ -1,7 +1,18 @@
 # gazeboSimulation
 All the files and instructions you need to simulate Vex In The Zone field and parts in Gazebo
 
-copy and paste each folder in gazeboSimulation/ForGazeboModels into:
-~/.gazebo/models
+Create ros package named gazebosim and save git repo inside.
 
-Once this is done, launch gazebo and ensure that each model shows up in the list at the left side of the screen. 
+add the following to ~/.bashrc
+
+export GAZEBO_MODEL_PATH=~/catkin_ws/src/gazebosim/gazeboSimulation/models
+export GAZEBO_RESOURCE_PATH=~/catkin_ws/src/gazebosim/gazeboSimulation/worlds
+
+**If you already have a model or resource path specified, separate with colons
+
+If gazebo wont open or wont find the model files:
+source <install path>/gazebo/setup.sh
+
+
+
+
