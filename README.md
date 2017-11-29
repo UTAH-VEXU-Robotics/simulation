@@ -5,14 +5,8 @@ Create ros package named gazebosim and save git repo inside.
 
 add the following to ~/.bashrc
 
+source <install path>/gazebo/setup.sh
 export GAZEBO_MODEL_PATH=~/catkin_ws/src/gazebosim/gazeboSimulation/models
 export GAZEBO_RESOURCE_PATH=~/catkin_ws/src/gazebosim/gazeboSimulation/worlds
 
 **If you already have a model or resource path specified, separate with colons
-
-If gazebo wont open or wont find the model files:
-source <install path>/gazebo/setup.sh
-
-
-
-
