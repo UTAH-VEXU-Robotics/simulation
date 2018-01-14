@@ -6,12 +6,12 @@
       <link name="body">
         <visual name="visual">
           <geometry>
-            <mesh><uri>file://catkin_ws/src/gazebosim/gazeboSimulation/meshes/rebecca_field.dae</uri></mesh>
+            <mesh><uri>file://models/Field/rebecca_field.dae</uri></mesh>
           </geometry>
         </visual>
 	 <collision name = "collision">
          <geometry>
-           <mesh><uri>file://catkin_ws/src/gazebosim/gazeboSimulation/meshes/rebecca_field.dae</uri></mesh>
+           <mesh><uri>file://models/Field/rebecca_field.dae</uri></mesh>
          </geometry>
        </collision>
       </link>

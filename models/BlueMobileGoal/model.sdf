@@ -4,16 +4,16 @@
       <pose>0 0 0.2  0 0 0</pose>
 
       <static>false</static>
-    
+
       <link name="body">
         <visual name="visual">
           <geometry>
-            <mesh><uri>file://catkin_ws/src/gazebosim/gazeboSimulation/meshes/BlueMobileGoal.dae</uri></mesh>
+            <mesh><uri>file://BlueMobileGoal/BlueMobileGoal.dae</uri></mesh>
           </geometry>
         </visual>
-	<collision name = "collision">	
-	<geometry>   	
-<mesh><uri>file://catkin_ws/src/gazebosim/gazeboSimulation/Collisions/MobileGoalCollision.dae</uri></mesh>
+	<collision name = "collision">
+	<geometry>
+<mesh><uri>file://Collisions/MobileGoalCollision.dae</uri></mesh>
 	</geometry>
        </collision>
 
