@@ -83,7 +83,7 @@
     <joint name="joint_to_${prefix}_roller_${suffix}" type="continuous">
         <parent link="wheel_${prefix}"/>
         <child link="${prefix}_roller_${suffix}"/>
-        <origin xyz="${sin(theta)*roller_radius} ${roller_side_length*side} ${cos(theta)*roller_radius}" rpy="0 ${theta} 0"/>
+        <origin xyz="${roller_side_length*side} ${sin(theta)*roller_radius} ${cos(theta)*roller_radius}" rpy="${pi/2} ${theta} ${pi/2}"/>
     </joint>
 </xacro:macro>
 
