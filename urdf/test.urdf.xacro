@@ -73,11 +73,13 @@ above-->
     <joint name="joint_to_right_roller_${prefix}" type="fixed">
         <parent link="base_link"/>
         <child link="right_roller_${prefix}"/>
-        <origin xyz="${cos(theta)*roller_radius} ${roller_side_length} ${cos(theta)*roller_radius}" rpy="0 theta 0"/>
+        <origin xyz="${cos(theta)*roller_radius} ${roller_side_length} ${cos(theta)*roller_radius}" rpy="0 ${theta} 0"/>
     </joint>
 </xacro:macro>
 
 <xacro:right_roller prefix="one" theta="0"/>
+<xacro:right_roller prefix="two" theta="${pi / 4}"/>
+<xacro:right_roller prefix="three" theta="${3*pi / 4}"/>
 
 <!--
 
