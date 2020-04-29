@@ -57,16 +57,14 @@ above-->
             <geometry>
               <cylinder radius="${roller_diameter}" length="${roller_width}"/>
             </geometry>
-            <!--this math may not be correct-->
-            <origin xyz="0 0 0" rpy="0 ${theta + pi/2} 0"/><!---->
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
             <material name="white"/>
         </visual>
         <collision>
             <geometry>
               <cylinder radius="${roller_diameter}" length="${roller_width}"/>
             </geometry>
-            <!--this math may not be correct-->
-            <origin xyz="0 0 0" rpy="0 ${theta + pi/2} 0"/><!---->
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
         </collision>
         <xacro:default_inertial mass="1"/>
     </link>
@@ -74,10 +72,9 @@ above-->
     <joint name="joint_to_right_roller_${prefix}" type="continuous">
         <parent link="base_link"/>
         <child link="roller_${prefix}"/>
-<!--        <origin xyz="${sin(theta)*roller_radius} ${roller_side_length*side} ${cos(theta)*roller_radius}" rpy="0 0 0">
--->        <axis xyz="0 1 0" rpy="0  0" />
-        <limit effort="100" velocity="100"/>
-        <joint_properties damping="0.0" friction="0.0"/>
+        <!--<limit lower="$(-2000 * pi)" upper="$(2000 * pi)" effort="0" velocity="1"/>-->
+        <!--this math may not be correct-->
+        <origin xyz="${sin(theta)*roller_radius} ${roller_side_length*side} ${cos(theta)*roller_radius}" rpy="0 ${theta} 0"/><!---->
     </joint>
 </xacro:macro>
 
