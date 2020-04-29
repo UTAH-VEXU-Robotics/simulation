@@ -51,8 +51,8 @@
 <!--This is for all of the right rollers. I made a way to send theta to 
 calculate the x, y, z, and pitch based off of parameters listed directly 
 above-->
-<xacro:macro name="right_roller" params="prefix theta">
-    <link name="right_roller_${prefix}">
+<xacro:macro name="roller" params="prefix theta side">
+    <link name="roller_${prefix}">
         <visual>
             <geometry>
               <cylinder radius="${roller_diameter}" length="${roller_width}"/>
@@ -71,25 +71,37 @@ above-->
 
     <joint name="joint_to_right_roller_${prefix}" type="continuous">
         <parent link="base_link"/>
-        <child link="right_roller_${prefix}"/>
-        <!--<origin xyz="0 0 0" rpy="0 0 0"/>-->
-        <origin xyz="${sin(theta)*roller_radius} 0 ${cos(theta)*roller_radius}" rpy="0 ${theta + pi/2} 0"/><!---->
+        <child link="roller_${prefix}"/>
+        <!--<limit lower="$(-2000 * pi)" upper="$(2000 * pi)" effort="0" velocity="1"/>-->
+        <!--this math may not be correct-->
+        <origin xyz="${sin(theta)*roller_radius} ${roller_side_length*side} ${cos(theta)*roller_radius}" rpy="0 ${theta + pi/2} 0"/><!---->
     </joint>
 </xacro:macro>
 
-<xacro:right_roller prefix="one" theta="${pi * ( 1/6)}"/>
-<xacro:right_roller prefix="two" theta="${pi * ( 2/6)}"/>
-<xacro:right_roller prefix="thr" theta="${pi * ( 3/6)}"/>
-<xacro:right_roller prefix="for" theta="${pi * ( 4/6)}"/>
-<xacro:right_roller prefix="fve" theta="${pi * ( 5/6)}"/>
-<xacro:right_roller prefix="six" theta="${pi * ( 6/6)}"/>
-<xacro:right_roller prefix="svn" theta="${pi * ( 7/6)}"/>
-<xacro:right_roller prefix="ate" theta="${pi * ( 8/6)}"/>
-<xacro:right_roller prefix="nne" theta="${pi * ( 9/6)}"/>
-<xacro:right_roller prefix="ten" theta="${pi * (10/6)}"/>
-<xacro:right_roller prefix="lvn" theta="${pi * (11/6)}"/>
-<xacro:right_roller prefix="wlv" theta="${pi * (12/6)}"/>
+<xacro:roller prefix="right_one" theta="${pi * ( 1/6)}" side="1"/>
+<xacro:roller prefix="right_two" theta="${pi * ( 2/6)}" side="1"/>
+<xacro:roller prefix="right_thr" theta="${pi * ( 3/6)}" side="1"/>
+<xacro:roller prefix="right_for" theta="${pi * ( 4/6)}" side="1"/>
+<xacro:roller prefix="right_fve" theta="${pi * ( 5/6)}" side="1"/>
+<xacro:roller prefix="right_six" theta="${pi * ( 6/6)}" side="1"/>
+<xacro:roller prefix="right_svn" theta="${pi * ( 7/6)}" side="1"/>
+<xacro:roller prefix="right_ate" theta="${pi * ( 8/6)}" side="1"/>
+<xacro:roller prefix="right_nne" theta="${pi * ( 9/6)}" side="1"/>
+<xacro:roller prefix="right_ten" theta="${pi * (10/6)}" side="1"/>
+<xacro:roller prefix="right_lvn" theta="${pi * (11/6)}" side="1"/>
+<xacro:roller prefix="right_wlv" theta="${pi * (12/6)}" side="1"/>
 
--->
+<xacro:roller prefix="left_one" theta="${pi * ( 1/6) + ( pi / 12 )}" side="-1"/>
+<xacro:roller prefix="left_two" theta="${pi * ( 2/6) + ( pi / 12 )}" side="-1"/>
+<xacro:roller prefix="left_thr" theta="${pi * ( 3/6) + ( pi / 12 )}" side="-1"/>
+<xacro:roller prefix="left_for" theta="${pi * ( 4/6) + ( pi / 12 )}" side="-1"/>
+<xacro:roller prefix="left_fve" theta="${pi * ( 5/6) + ( pi / 12 )}" side="-1"/>
+<xacro:roller prefix="left_six" theta="${pi * ( 6/6) + ( pi / 12 )}" side="-1"/>
+<xacro:roller prefix="left_svn" theta="${pi * ( 7/6) + ( pi / 12 )}" side="-1"/>
+<xacro:roller prefix="left_ate" theta="${pi * ( 8/6) + ( pi / 12 )}" side="-1"/>
+<xacro:roller prefix="left_nne" theta="${pi * ( 9/6) + ( pi / 12 )}" side="-1"/>
+<xacro:roller prefix="left_ten" theta="${pi * (10/6) + ( pi / 12 )}" side="-1"/>
+<xacro:roller prefix="left_lvn" theta="${pi * (11/6) + ( pi / 12 )}" side="-1"/>
+<xacro:roller prefix="left_wlv" theta="${pi * (12/6) + ( pi / 12 )}" side="-1"/>
 
 </robot>
