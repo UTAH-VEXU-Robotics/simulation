@@ -46,14 +46,13 @@
 <!--offset from the center of the wheel for the rollers-->
 <xacro:property name="roller_side_length" value=".0055"/>
 <!--radius where the rollers are placed-->
-<xacro:property name="roller_radius" value=".01"/>
+<xacro:property name="roller_radius" value=".049"/>
 
 <!--This is for all of the right rollers. I made a way to send theta to 
 calculate the x, y, z, and pitch based off of parameters listed directly 
 above-->
 <xacro:macro name="right_roller" params="prefix theta">
     <link name="right_roller_${prefix}">
-
         <visual>
             <geometry>
               <cylinder radius="${roller_diameter}" length="${roller_width}"/>
@@ -70,21 +69,27 @@ above-->
         <xacro:default_inertial mass="1"/>
     </link>
 
-    <joint name="joint_to_right_roller_${prefix}" type="fixed">
+    <joint name="joint_to_right_roller_${prefix}" type="continuous">
         <parent link="base_link"/>
         <child link="right_roller_${prefix}"/>
-        <origin xyz="${cos(theta)*roller_radius} ${roller_side_length} ${cos(theta)*roller_radius}" rpy="0 ${theta} 0"/>
+        <!--<origin xyz="0 0 0" rpy="0 0 0"/>-->
+        <origin xyz="${sin(theta)*roller_radius} 0 ${cos(theta)*roller_radius}" rpy="0 ${theta + pi/2} 0"/><!---->
     </joint>
 </xacro:macro>
 
-<xacro:right_roller prefix="one" theta="0"/>
-<xacro:right_roller prefix="two" theta="${pi / 4}"/>
-<xacro:right_roller prefix="three" theta="${3*pi / 4}"/>
-
-<!--
+<xacro:right_roller prefix="one" theta="${pi * ( 1/6)}"/>
+<xacro:right_roller prefix="two" theta="${pi * ( 2/6)}"/>
+<xacro:right_roller prefix="thr" theta="${pi * ( 3/6)}"/>
+<xacro:right_roller prefix="for" theta="${pi * ( 4/6)}"/>
+<xacro:right_roller prefix="fve" theta="${pi * ( 5/6)}"/>
+<xacro:right_roller prefix="six" theta="${pi * ( 6/6)}"/>
+<xacro:right_roller prefix="svn" theta="${pi * ( 7/6)}"/>
+<xacro:right_roller prefix="ate" theta="${pi * ( 8/6)}"/>
+<xacro:right_roller prefix="nne" theta="${pi * ( 9/6)}"/>
+<xacro:right_roller prefix="ten" theta="${pi * (10/6)}"/>
+<xacro:right_roller prefix="lvn" theta="${pi * (11/6)}"/>
+<xacro:right_roller prefix="wlv" theta="${pi * (12/6)}"/>
 
 -->
 
 </robot>
-
-
