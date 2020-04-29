@@ -255,6 +255,5 @@
       <covariance_yaw>0.0001</covariance_yaw>
     </plugin>
 
-
   </model>
 </sdf>

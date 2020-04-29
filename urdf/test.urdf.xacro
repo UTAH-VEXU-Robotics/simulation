@@ -4,7 +4,9 @@
 <xacro:property name="wheel_radius" value="0.04" />
 <xacro:property name="wheel_width" value="0.025" />
 <xacro:property name="xyz" value="0 0 0"/>
-<xacro:property name="rpy" value="1.5708 0 0"/>
+<xacro:property name="rpy" value="0 0 0"/>
+<xacro:property name="roller_xyz" value="0 .008 -.0465"/>
+<xacro:property name="roller_rpy" value="0 ${-pi/12} 0"/>
 
 <xacro:property name="roller_diameter" value="0.0055" />
 <xacro:property name="roller_width" value="0.015" />
@@ -29,14 +31,14 @@
 <link name="base_link">
     <visual>
         <geometry>
-            <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            <mesh filename="package://gazebosim/gazeboSimulation/models/VexRobot/OmniWheelNoRollers.stl"/>
         </geometry>
         <origin xyz="${xyz}" rpy="${rpy}"/>
         <material name="blue"/>
     </visual>
     <collision>
         <geometry>
-            <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            <mesh filename="package://gazebosim/gazeboSimulation/models/VexRobot/OmniWheelNoRollers.stl"/>
         </geometry>
         <origin xyz="${xyz}" rpy="${rpy}"/>
     </collision>
@@ -46,7 +48,7 @@
 <!--offset from the center of the wheel for the rollers-->
 <xacro:property name="roller_side_length" value=".0055"/>
 <!--radius where the rollers are placed-->
-<xacro:property name="roller_radius" value=".049"/>
+<xacro:property name="roller_radius" value=".0465"/>
 
 <!--This is for all of the right rollers. I made a way to send theta to 
 calculate the x, y, z, and pitch based off of parameters listed directly 
@@ -55,16 +57,16 @@ above-->
     <link name="roller_${prefix}">
         <visual>
             <geometry>
-              <cylinder radius="${roller_diameter}" length="${roller_width}"/>
+                <mesh filename="package://gazebosim/gazeboSimulation/models/VexRobot/Roller.stl"/>
             </geometry>
-            <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
+            <origin xyz="${roller_xyz}" rpy="${roller_rpy}"/>
             <material name="white"/>
         </visual>
         <collision>
             <geometry>
-              <cylinder radius="${roller_diameter}" length="${roller_width}"/>
+                <mesh filename="package://gazebosim/gazeboSimulation/models/VexRobot/Roller.stl"/>
             </geometry>
-            <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
+            <origin xyz="${roller_xyz}" rpy="${roller_rpy}"/>
         </collision>
         <xacro:default_inertial mass="1"/>
     </link>
@@ -72,7 +74,6 @@ above-->
     <joint name="joint_to_right_roller_${prefix}" type="continuous">
         <parent link="base_link"/>
         <child link="roller_${prefix}"/>
-        <!--<limit lower="$(-2000 * pi)" upper="$(2000 * pi)" effort="0" velocity="1"/>-->
         <!--this math may not be correct-->
         <origin xyz="${sin(theta)*roller_radius} ${roller_side_length*side} ${cos(theta)*roller_radius}" rpy="0 ${theta} 0"/><!---->
     </joint>
@@ -103,5 +104,9 @@ above-->
 <xacro:roller prefix="left_ten" theta="${pi * (10/6) + ( pi / 12 )}" side="-1"/>
 <xacro:roller prefix="left_lvn" theta="${pi * (11/6) + ( pi / 12 )}" side="-1"/>
 <xacro:roller prefix="left_wlv" theta="${pi * (12/6) + ( pi / 12 )}" side="-1"/>
+
+<!--
+
+-->
 
 </robot>
