@@ -111,6 +111,17 @@
         <origin xyz="${-changeInY} ${changeInX} 0" rpy="0 0 ${-pi/2}"/>
     </joint>
 
+    <transmission name="transmission_to_wheel_${prefix}">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="joint_to_wheel_${prefix}">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="motor_wheel_${prefix}">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
     <xacro:roller prefix="${prefix}" suffix="right_one" theta="${pi * ( 1/6)}" side="-1"/>
     <xacro:roller prefix="${prefix}" suffix="right_two" theta="${pi * ( 2/6)}" side="-1"/>
     <xacro:roller prefix="${prefix}" suffix="right_thr" theta="${pi * ( 3/6)}" side="-1"/>
@@ -143,10 +154,10 @@
 <xacro:wheel prefix="back_right " changeInX=" .17145" changeInY="-.10145"/>
 <xacro:wheel prefix="back_left  " changeInX="-.17145" changeInY="-.10145"/>
 
-
-<!--
-
-
--->
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <robotNamespace>/</robotNamespace>
+  </plugin>
+</gazebo>
 
 </robot>
