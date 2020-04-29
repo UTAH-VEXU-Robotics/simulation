@@ -17,6 +17,15 @@
   <color rgba="1 1 1 1"/>
 </material>
 
+<xacro:macro name="default_inertial" params="mass">
+	<inertial>
+     		<mass value="${mass}" />
+	        <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+            		           iyy="1.0" iyz="0.0" 
+                                         izz="1.0" />
+	</inertial>
+</xacro:macro>
+
 <link name="base_link">
     <visual>
         <geometry>
@@ -31,6 +40,7 @@
         </geometry>
         <origin xyz="${xyz}" rpy="${rpy}"/>
     </collision>
+    <xacro:default_inertial mass="1"/>
 </link>
 
 <!--offset from the center of the wheel for the rollers-->
@@ -43,6 +53,7 @@ calculate the x, y, z, and pitch based off of parameters listed directly
 above-->
 <xacro:macro name="right_roller" params="prefix theta">
     <link name="right_roller_${prefix}">
+
         <visual>
             <geometry>
               <cylinder radius="${roller_diameter}" length="${roller_width}"/>
@@ -56,6 +67,7 @@ above-->
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </collision>
+        <xacro:default_inertial mass="1"/>
     </link>
 
     <joint name="joint_to_right_roller_${prefix}" type="fixed">
