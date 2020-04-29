@@ -111,31 +111,31 @@
         <origin xyz="${-changeInY} ${changeInX} 0" rpy="0 0 ${-pi/2}"/>
     </joint>
 
-    <xacro:roller prefix="${prefix}" suffix="right_one" theta="${pi * ( 1/6)}" side="1"/>
-    <xacro:roller prefix="${prefix}" suffix="right_two" theta="${pi * ( 2/6)}" side="1"/>
-    <xacro:roller prefix="${prefix}" suffix="right_thr" theta="${pi * ( 3/6)}" side="1"/>
-    <xacro:roller prefix="${prefix}" suffix="right_for" theta="${pi * ( 4/6)}" side="1"/>
-    <xacro:roller prefix="${prefix}" suffix="right_fve" theta="${pi * ( 5/6)}" side="1"/>
-    <xacro:roller prefix="${prefix}" suffix="right_six" theta="${pi * ( 6/6)}" side="1"/>
-    <xacro:roller prefix="${prefix}" suffix="right_svn" theta="${pi * ( 7/6)}" side="1"/>
-    <xacro:roller prefix="${prefix}" suffix="right_ate" theta="${pi * ( 8/6)}" side="1"/>
-    <xacro:roller prefix="${prefix}" suffix="right_nne" theta="${pi * ( 9/6)}" side="1"/>
-    <xacro:roller prefix="${prefix}" suffix="right_ten" theta="${pi * (10/6)}" side="1"/>
-    <xacro:roller prefix="${prefix}" suffix="right_lvn" theta="${pi * (11/6)}" side="1"/>
-    <xacro:roller prefix="${prefix}" suffix="right_wlv" theta="${pi * (12/6)}" side="1"/>
+    <xacro:roller prefix="${prefix}" suffix="right_one" theta="${pi * ( 1/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}" suffix="right_two" theta="${pi * ( 2/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}" suffix="right_thr" theta="${pi * ( 3/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}" suffix="right_for" theta="${pi * ( 4/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}" suffix="right_fve" theta="${pi * ( 5/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}" suffix="right_six" theta="${pi * ( 6/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}" suffix="right_svn" theta="${pi * ( 7/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}" suffix="right_ate" theta="${pi * ( 8/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}" suffix="right_nne" theta="${pi * ( 9/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}" suffix="right_ten" theta="${pi * (10/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}" suffix="right_lvn" theta="${pi * (11/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}" suffix="right_wlv" theta="${pi * (12/6)}" side="-1"/>
 
-    <xacro:roller prefix="${prefix}" suffix="left_one" theta="${pi * ( 1/6) + ( pi / 12 )}" side="-1"/>
-    <xacro:roller prefix="${prefix}" suffix="left_two" theta="${pi * ( 2/6) + ( pi / 12 )}" side="-1"/>
-    <xacro:roller prefix="${prefix}" suffix="left_thr" theta="${pi * ( 3/6) + ( pi / 12 )}" side="-1"/>
-    <xacro:roller prefix="${prefix}" suffix="left_for" theta="${pi * ( 4/6) + ( pi / 12 )}" side="-1"/>
-    <xacro:roller prefix="${prefix}" suffix="left_fve" theta="${pi * ( 5/6) + ( pi / 12 )}" side="-1"/>
-    <xacro:roller prefix="${prefix}" suffix="left_six" theta="${pi * ( 6/6) + ( pi / 12 )}" side="-1"/>
-    <xacro:roller prefix="${prefix}" suffix="left_svn" theta="${pi * ( 7/6) + ( pi / 12 )}" side="-1"/>
-    <xacro:roller prefix="${prefix}" suffix="left_ate" theta="${pi * ( 8/6) + ( pi / 12 )}" side="-1"/>
-    <xacro:roller prefix="${prefix}" suffix="left_nne" theta="${pi * ( 9/6) + ( pi / 12 )}" side="-1"/>
-    <xacro:roller prefix="${prefix}" suffix="left_ten" theta="${pi * (10/6) + ( pi / 12 )}" side="-1"/>
-    <xacro:roller prefix="${prefix}" suffix="left_lvn" theta="${pi * (11/6) + ( pi / 12 )}" side="-1"/>
-    <xacro:roller prefix="${prefix}" suffix="left_wlv" theta="${pi * (12/6) + ( pi / 12 )}" side="-1"/>
+    <xacro:roller prefix="${prefix}" suffix="left_one" theta="${pi * ( 1/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}" suffix="left_two" theta="${pi * ( 2/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}" suffix="left_thr" theta="${pi * ( 3/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}" suffix="left_for" theta="${pi * ( 4/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}" suffix="left_fve" theta="${pi * ( 5/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}" suffix="left_six" theta="${pi * ( 6/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}" suffix="left_svn" theta="${pi * ( 7/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}" suffix="left_ate" theta="${pi * ( 8/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}" suffix="left_nne" theta="${pi * ( 9/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}" suffix="left_ten" theta="${pi * (10/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}" suffix="left_lvn" theta="${pi * (11/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}" suffix="left_wlv" theta="${pi * (12/6) + ( pi / 12 )}" side="1"/>
 </xacro:macro>
 
 <xacro:wheel prefix="front_right" changeInX=" .17145" changeInY=" .10145"/>
