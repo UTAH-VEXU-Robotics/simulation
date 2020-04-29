@@ -15,6 +15,5 @@
     <include>
       <uri>model://Field</uri>
     </include>
-
   </world>
 </sdf>
