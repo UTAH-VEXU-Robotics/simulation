@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<robot name="macroed" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:property name="wheel_radius" value="0.04" />
+<xacro:property name="wheel_width" value="0.025" />
+<xacro:property name="xyz" value="0 0 0"/>
+<xacro:property name="rpy" value="1.5708 0 0"/>
+
+<xacro:property name="roller_diameter" value="0.0055" />
+<xacro:property name="roller_width" value="0.015" />
+
+<material name="blue">
+  <color rgba="0 0 0.8 1"/>
+</material>
+
+<material name="white">
+  <color rgba="1 1 1 1"/>
+</material>
+
+<link name="base_link">
+    <visual>
+        <geometry>
+            <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <origin xyz="${xyz}" rpy="${rpy}"/>
+        <material name="blue"/>
+    </visual>
+    <collision>
+        <geometry>
+            <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <origin xyz="${xyz}" rpy="${rpy}"/>
+    </collision>
+</link>
+
+<!--offset from the center of the wheel for the rollers-->
+<xacro:property name="roller_side_length" value=".0055"/>
+<!--radius where the rollers are placed-->
+<xacro:property name="roller_radius" value=".01"/>
+
+<!--This is for all of the right rollers. I made a way to send theta to 
+calculate the x, y, z, and pitch based off of parameters listed directly 
+above-->
+<xacro:macro name="right_roller" params="prefix theta">
+    <link name="right_roller_${prefix}">
+        <visual>
+            <geometry>
+              <cylinder radius="${roller_diameter}" length="${roller_width}"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="white"/>
+        </visual>
+        <collision>
+            <geometry>
+              <cylinder radius="${roller_diameter}" length="${roller_width}"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+    </link>
+
+    <joint name="joint_to_right_roller_${prefix}" type="fixed">
+        <parent link="base_link"/>
+        <child link="right_roller_${prefix}"/>
+        <origin xyz="$(cos(radius))*$(roller_radius) $(roller_side_length) $(cos(radius))*$(roller_radius*)" rpy="0 theta 0"/>
+    </joint>
+</xacro:macro>
+
+<xacro:right_roller prefix="one" theta="0"/>
+
+<!--
+
+-->
+
+</robot>
+
+
