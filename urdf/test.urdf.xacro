@@ -93,14 +93,14 @@
             <geometry>
                 <mesh filename="package://gazebosim/gazeboSimulation/models/VexRobot/OmniWheelNoRollers.stl"/>
             </geometry>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 ${pi/2}"/>
             <material name="blue"/>
         </visual>
         <collision>
             <geometry>
                 <mesh filename="package://gazebosim/gazeboSimulation/models/VexRobot/OmniWheelNoRollers.stl"/>
             </geometry>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 ${pi/2}"/>
         </collision>
         <xacro:default_inertial mass="1"/>
     </link>
@@ -108,7 +108,7 @@
     <joint name="joint_to_wheel_${prefix}" type="continuous">
         <parent link="base_link"/>
         <child link="wheel_${prefix}"/>
-        <origin xyz="${-changeInY} ${changeInX} 0" rpy="0 ${pi/2} 0"/>
+        <origin xyz="${-changeInY} ${changeInX} 0" rpy="0 0 ${-pi/2}"/>
     </joint>
 
     <xacro:roller prefix="${prefix}" suffix="right_one" theta="${pi * ( 1/6)}" side="1"/>
