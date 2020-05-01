@@ -1,6 +1,6 @@
 # gazeboSimulation
 
-File paths look for repo (gazeboSimulation) stored in a ros package named gazebosim.
+File paths look for repo (gazeboSimulation) it should be cloned in catkin_ws/src/
 
 add the following to ~/.bashrc
 

@@ -1,8 +1,8 @@
 <launch>
-  <arg name="model" default="$(find gazebosim)/gazeboSimulation/urdf/robot.urdf.xacro"/>
-  <arg name="rvizconfig" default="$(find gazebosim)/gazeboSimulation/rviz/urdf.rviz" />
+  <arg name="model" default="$(find gazeboSimulation)/urdf/robot.urdf.xacro"/>
+  <arg name="rvizconfig" default="$(find gazeboSimulation)/rviz/urdf.rviz" />
 
-  <include file="$(find gazebosim)/gazeboSimulation/launch/gazebo.launch">
+  <include file="$(find gazeboSimulation)/launch/gazebo.launch">
     <arg name="model" value="$(arg model)" />
     <arg name="world_name" default="worlds/emptyField/empty_field.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
   </include>
@@ -10,10 +10,10 @@
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
 
   <rosparam command="load"
-            file="$(find gazebosim)/gazeboSimulation/config/joints.yaml"
+            file="$(find gazeboSimulation)/config/joints.yaml"
             ns="r2d2_joint_state_controller" />
   <rosparam command="load"
-            file="$(find gazebosim)/gazeboSimulation/config/diffdrive.yaml"
+            file="$(find gazeboSimulation)/config/diffdrive.yaml"
             ns="r2d2_diff_drive_controller" />
 
   <node name="r2d2_controller_spawner" pkg="controller_manager" type="spawner"
