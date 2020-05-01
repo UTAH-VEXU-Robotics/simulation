@@ -1,20 +1,27 @@
 <launch>
-  <arg name="model" default="$(find gazebosim)/gazeboSimulation/urdf/test.urdf.xacro"/>
-  <arg name="rvizconfig" default="$(find gazebosim)/gazeboSimulation/rviz/chassis.rviz" />
+  <arg name="model" default="$(find gazebosim)/urdf/robot.urdf.xacro"/>
+  <arg name="rvizconfig" default="$(find gazebosim)/rviz/urdf.rviz" />
 
-  <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
-
-  <include file="$(find gazebosim)/gazeboSimulation/launch/gazebo.launch">
+  <include file="$(find gazebosim)/launch/gazebo.launch">
     <arg name="model" value="$(arg model)" />
   </include>
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
 
   <rosparam command="load"
-            file="$(find gazebosim)/gazeboSimulation/config/diffdrive.yaml"
-            ns="robot_diff_drive_controller" />
+            file="$(find gazebosim)/config/joints.yaml"
+            ns="r2d2_joint_state_controller" />
+  <rosparam command="load"
+            file="$(find gazebosim)/config/diffdrive.yaml"
+            ns="r2d2_diff_drive_controller" />
 
-  <node name="robot_controller_spawner" pkg="controller_manager" type="spawner"
-    args="robot_diff_drive_controller
+  <node name="r2d2_controller_spawner" pkg="controller_manager" type="spawner"
+    args="r2d2_joint_state_controller
+          r2d2_diff_drive_controller
           --shutdown-timeout 3"/>
+
+  <node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">
+    <param name="default_topic" value="/r2d2_diff_drive_controller/cmd_vel"/>
+  </node>
+
 </launch>
