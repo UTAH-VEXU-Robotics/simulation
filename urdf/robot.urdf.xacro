@@ -37,10 +37,18 @@
     <color rgba="1 1 1 1"/>
   </material>
 
+  <xacro:macro name="chassis_inertial" params="mass">
+    <inertial>
+      <mass value="${mass}" />
+      <inertia ixx="0.5" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="0.3" />
+    </inertial>
+  </xacro:macro>
+
+
   <xacro:macro name="default_inertial" params="mass">
     <inertial>
       <mass value="${mass}" />
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
     </inertial>
   </xacro:macro>
 
@@ -56,7 +64,7 @@
         <cylinder radius="${width}" length="${bodylen}"/>
       </geometry>
     </collision>
-    <xacro:default_inertial mass="10"/>
+    <xacro:chassis_inertial mass="10"/>
   </link>
 
   <xacro:macro name="roller" params="prefix suffix theta side">
@@ -74,7 +82,7 @@
           <cylinder radius="${roller_diameter}" length="${roller_width}"/>
         </geometry>
       </collision>
-      <xacro:default_inertial mass="1"/>
+      <xacro:default_inertial mass="0.001"/>
     </link>
     <joint name="${prefix}_${suffix}_roller_joint" type="continuous">
       <axis xyz="0 1 0" rpy="0 0 0" />
@@ -120,7 +128,7 @@
           <cylinder radius="${wheeldiam/2}" length="${wheel_width}"/>
         </geometry>
       </collision>
-      <xacro:default_inertial mass="1"/>
+      <xacro:default_inertial mass="0.001"/>
     </link>
 
     <joint name="${prefix}_${suffix}_wheel_joint" type="continuous">
