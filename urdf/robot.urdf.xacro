@@ -40,7 +40,7 @@
   <xacro:macro name="chassis_inertial" params="mass">
     <inertial>
       <mass value="${mass}" />
-      <inertia ixx="0.5" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="0.3" />
+      <inertia ixx="0.5" ixy="0.0" ixz="0.0" iyy="0.3" iyz="0.0" izz="0.5" />
     </inertial>
   </xacro:macro>
 
@@ -85,20 +85,13 @@
       <xacro:default_inertial mass="0.001"/>
     </link>
     <joint name="${prefix}_${suffix}_roller_joint" type="continuous">
-      <axis xyz="0 1 0" rpy="0 0 0" />
+      <axis xyz="1 0 0" />
       <parent link="${prefix}_wheel"/>
       <child link="${prefix}_${suffix}_roller"/>
       <origin xyz="${sin(theta)*roller_radius} ${roller_side_length*side} ${cos(theta)*roller_radius}" rpy="0 ${theta} 0"/>
     </joint>
     <!-- This block provides the simulator (Gazebo) with information on a few additional
     physical properties. See http://gazebosim.org/tutorials/?tut=ros_urdf for more-->
-    <gazebo reference="${prefix}_${suffix}_roller">
-      <mu1 value="200.0"/>
-      <mu2 value="100.0"/>
-      <kp value="10000000.0" />
-      <kd value="1.0" />
-      <material>Gazebo/Grey</material>
-    </gazebo>  
 
     <!-- This block connects the wheel joint to an actuator (motor), which informs both
     simulation and visualization of the robot -->
@@ -132,7 +125,7 @@
     </link>
 
     <joint name="${prefix}_${suffix}_wheel_joint" type="continuous">
-      <axis xyz="0 1 0" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
       <parent link="base_link"/>
       <child link="${prefix}_${suffix}_wheel"/>
       <origin xyz="${baselen*reflect/3} ${.1*reflectX} -.05" rpy="0 0 0"/>

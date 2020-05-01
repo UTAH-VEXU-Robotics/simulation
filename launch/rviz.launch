@@ -1,5 +1,5 @@
 <launch>
-  <arg name="model" default="$(find gazeboSimulation)/urdf/test.urdf.xacro"/>
+  <arg name="model" default="$(find gazeboSimulation)/urdf/robot.urdf.xacro"/>
   <arg name="gui" default="true" />
   <arg name="rvizconfig" default="$(find gazeboSimulation)/rviz/chassis.rviz" />
 
