@@ -100,15 +100,6 @@
 
         <!-- This block connects the wheel joint to an actuator (motor), which informs both
         simulation and visualization of the robot -->
-        <transmission name="${prefix}_${suffix}_roller_trans">
-            <type>transmission_interface/SimpleTransmission</type>
-            <actuator name="${prefix}_${suffix}_roller_motor">
-                <mechanicalReduction>1</mechanicalReduction>
-            </actuator>
-            <joint name="${prefix}_${suffix}_roller_joint">
-                <hardwareInterface>VelocityJointInterface</hardwareInterface>
-            </joint>
-        </transmission>
     </xacro:macro>
 
     <xacro:macro name="wheel" params="prefix suffix reflect reflectX">
