@@ -87,6 +87,7 @@
             <parent link="${prefix}_wheel"/>
             <child link="${prefix}_${suffix}_roller"/>
             <origin xyz="${sin(theta)*roller_radius} ${roller_side_length*side} ${cos(theta)*roller_radius}" rpy="0 ${theta} 0"/>
+            <dynamics damping="0.00001" />
         </joint>
         <!-- This block provides the simulator (Gazebo) with information on a few additional
         physical properties. See http://gazebosim.org/tutorials/?tut=ros_urdf for more-->
