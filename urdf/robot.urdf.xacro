@@ -182,11 +182,26 @@
     <xacro:wheel prefix="left" suffix="back"   reflect="-1" reflectX="-1"/>
     <xacro:wheel prefix="right" suffix="front" reflect= "1" reflectX= "1"/>
     <xacro:wheel prefix="right" suffix="back"  reflect="-1" reflectX= "1"/>
-
+    <link name="dummy">
+   </link>
+     <joint name="dummy_joint" type="fixed">
+     <parent link="dummy"/>
+     <child link="base_link"/>
+   </joint>
     <!-- Gazebo plugin for ROS Control -->
     <gazebo>
         <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
             <robotNamespace>/</robotNamespace>
+        </plugin>
+        <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>50.0</updateRate>
+          <bodyName>base_link</bodyName>
+          <topicName>ground_truth/state</topicName>
+          <gaussianNoise>0.01</gaussianNoise>
+          <frameName>world</frameName>
+          <xyzOffsets>0 0 0</xyzOffsets>
+          <rpyOffsets>0 0 0</rpyOffsets>
         </plugin>
     </gazebo>
 

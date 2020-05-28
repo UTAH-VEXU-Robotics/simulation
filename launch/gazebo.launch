@@ -23,10 +23,32 @@
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
-        args="-z 0.5 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" />
+        args="-z 0.2 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" />
 
   <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
     <param name="publish_frequency" type="double" value="30.0" />
   </node>
+  
+  <node name="ground_truth_to_tf" pkg="message_to_tf" type="message_to_tf" output="screen">
+      <param name="~odometry_topic" value="ground_truth/state" />
+      <param name="~frame_id" value="world" />
+      <param name="~child_frame_id" value="GT/base_link" />
+    </node>
+ 
+
+  <node pkg="topic_tools" type="relay"  name="relay"
+    args="joint_states joint_states_copy">
+  </node>
+ <rosparam param="source_list">["joint_states_copy"]</rosparam>
+ <node pkg="joint_state_publisher" type="joint_state_publisher"  name="joint_state_publisher">
+    <remap from="/joint_states" to="/default/joint_states"/>
+  </node>
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher2">
+    <param name="publish_frequency" type="double" value="30.0" />
+    <remap from="/joint_states" to="/default/joint_states"/>
+    <param name="tf_prefix" type="string" value="GT" />
+  </node>
+  <node pkg="tf" type="static_transform_publisher" name="omni3_broadcaster" args="-0.0 -0.0 -0.0 0 -0.0 0 odom world 10" />
 
 </launch>
