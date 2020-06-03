@@ -4,7 +4,7 @@
 
   <include file="$(find gazeboSimulation)/launch/gazebo.launch">
     <arg name="model" value="$(arg model)" />
-    <arg name="world_name" default="worlds/emptyField/empty_field.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
+    <arg name="world_name" default="worlds/empty.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
   </include>
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
