@@ -1,0 +1,3 @@
+[submodule "models/change_up_cad"]
+	path = models/change_up_cad
+	url = https://github.com/UTAH-VEXU-Robotics/change_up_cad
