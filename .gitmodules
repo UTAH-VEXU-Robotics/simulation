@@ -1,6 +1,6 @@
-[submodule "models/itz_cad"]
-	path = models/itz_cad
-	url = https://github.com/UTAH-VEXU-Robotics/itz_cad
+[submodule "models/--force"]
+	path = models/--force
+	url = https://github.com/UTAH-VEXU-Robotics/change_up_cad
 [submodule "models/change_up_cad"]
 	path = models/change_up_cad
 	url = https://github.com/UTAH-VEXU-Robotics/change_up_cad

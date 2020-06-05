@@ -9,5 +9,163 @@
         <include>
             <uri>model://ground_plane</uri>
         </include>
+        <include>
+            <static>1</static>
+            <uri>model://ChangeUpField</uri>
+            <pose> 0 0 0 0 0 0 </pose>
+        </include>
+
+        <!-- Center Tower Balls -->
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> 0 .2487 .08001 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> .2487 0 .08001 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> 0 -.2487 .08001 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> -.2487 0 .08001 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> 0 .81375 .08001 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> 0 -.81375 .08001 0 0 0 </pose>
+        </include>
+
+        <!-- Middle Towers -->
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> 0 1.6275 .40005 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> 0 1.6275 .24003 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> 0 1.6275 .08001 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> 0 -1.6275 .40005 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> 0 -1.6275 .24003 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> 0 -1.6275 .08001 0 0 0 </pose>
+        </include>
+
+        <!-- Left Towers -->
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> -1.6275 -1.6275 .24003 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> -1.6275 -1.6275 .08001 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> -1.6275 0 .24003 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> -1.6275 0 .08001 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> -1.6275 1.6275 .24003 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> -1.6275 1.6275 .08001 0 0 0 </pose>
+        </include>
+
+        <!-- Around Left Towers -->
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> -1.4393 -1.4393 .08001 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> -1.4393 1.4393 .08001 0 0 0 </pose>
+        </include>
+
+        <!-- Right Towers -->
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> 1.6275 -1.6275 .24003 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> 1.6275 -1.6275 .08001 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> 1.6275 0 .24003 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> 1.6275 0 .08001 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> 1.6275 1.6275 .24003 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallBlue</uri>
+            <pose> 1.6275 1.6275 .08001 0 0 0 </pose>
+        </include>
+
+        <!-- Around Right Towers -->
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> 1.4393 -1.4393 .08001 0 0 0 </pose>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://ChangeUpBallRed</uri>
+            <pose> 1.4393 1.4393 .08001 0 0 0 </pose>
+        </include>
+
     </world>
 </sdf>
