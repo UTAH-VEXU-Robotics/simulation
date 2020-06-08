@@ -52,12 +52,14 @@
 
     <link name="base_link">
         <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
                 <cylinder radius="${width}" length="${bodylen}"/>
             </geometry>
             <material name="blue"/>
         </visual>
         <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
                 <cylinder radius="${width}" length="${bodylen}"/>
             </geometry>

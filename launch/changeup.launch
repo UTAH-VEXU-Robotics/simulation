@@ -1,5 +1,4 @@
 <launch>
-<<<<<<< HEAD
     <arg name="model" default="$(find gazeboSimulation)/urdf/robot.urdf.xacro"/>
     <arg name="rvizconfig" default="$(find gazeboSimulation)/rviz/chassis.rviz" />
 
@@ -36,12 +35,4 @@
         <remap from="/cmd_vel" to="/r2d2_diff_drive_controller/cmd_vel"/>
     </node>
 
-=======
-  <arg name="model" default="$(find gazeboSimulation)/urdf/robot.urdf.xacro"/>
-
-  <include file="$(find gazeboSimulation)/launch/gazebo.launch">
-    <arg name="model" value="$(arg model)" />
-    <arg name="world_name" default="worlds/emptyField/change_up_field.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
-  </include>
->>>>>>> master
 </launch>
