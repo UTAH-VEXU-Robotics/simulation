@@ -7,7 +7,7 @@
         <arg name="world_name" default="worlds/games/change_up.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
     </include>
 
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
+    <!--node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" /-->
 
     <rosparam command="load"
               file="$(find gazeboSimulation)/config/joints.yaml"
