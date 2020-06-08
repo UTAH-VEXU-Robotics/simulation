@@ -52,12 +52,14 @@
 
     <link name="base_link">
         <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
                 <cylinder radius="${width}" length="${bodylen}"/>
             </geometry>
             <material name="blue"/>
         </visual>
         <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
                 <cylinder radius="${width}" length="${bodylen}"/>
             </geometry>
@@ -200,7 +202,7 @@
           <topicName>ground_truth/state</topicName>
           <gaussianNoise>0.01</gaussianNoise>
           <frameName>world</frameName>
-          <xyzOffsets>.2487 -.2487 0</xyzOffsets>
+          <xyzOffsets>0 0 0</xyzOffsets>
           <rpyOffsets>0 0 0</rpyOffsets>
         </plugin>
     </gazebo>

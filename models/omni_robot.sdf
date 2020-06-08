@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+    <model name="OmniRobot">
+        <pose>0 0 0  0 0 0</pose>
+        <static>false</static>
+        <include>
+            <uri>file://urdf/robot.urdf.xacro</uri>
+        </include>
+    </model>
+</sdf>

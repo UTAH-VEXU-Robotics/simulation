@@ -167,5 +167,11 @@
             <pose> 1.4393 1.4393 .08001 0 0 0 </pose>
         </include>
 
+        <!-- Omni Robot -->
+        <include>
+            <static>0</static>
+            <uri>model://OmniRobot</uri>
+            <pose> .2487 -.2487 0 0 0 0 </pose>
+        </include>
     </world>
 </sdf>
