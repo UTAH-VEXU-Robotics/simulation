@@ -24,6 +24,8 @@
     <xacro:property name="roller_side_length" value="0.0088"/>
     <xacro:property name="roller_radius" value=".0475"/>
 
+    <xacro:property name="default_start" value="0 0 0"/>
+
     <material name="blue">
         <color rgba="0 0 0.8 1"/>
     </material>
@@ -52,14 +54,14 @@
 
     <link name="base_link">
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0" />
+            <origin xyz="${default_start}" rpy="0 0 0" />
             <geometry>
                 <cylinder radius="${width}" length="${bodylen}"/>
             </geometry>
             <material name="blue"/>
         </visual>
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0" />
+            <origin xyz="${default_start}" rpy="0 0 0" />
             <geometry>
                 <cylinder radius="${width}" length="${bodylen}"/>
             </geometry>
@@ -70,14 +72,14 @@
     <xacro:macro name="roller" params="prefix suffix theta side">
         <link name="${prefix}_${suffix}_roller">
             <visual>
-                <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+                <origin xyz="${default_start}" rpy="0 ${pi/2} 0" />
                 <geometry>
                     <cylinder radius="${roller_diameter}" length="${roller_width}"/>
                 </geometry>
                 <material name="black"/>
             </visual>
             <collision>
-                <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+                <origin xyz="${default_start}" rpy="0 ${pi/2} 0" />
                 <geometry>
                     <cylinder radius="${roller_diameter}" length="${roller_width}"/>
                 </geometry>
@@ -108,14 +110,14 @@
     <xacro:macro name="wheel" params="prefix suffix reflect reflectX">
         <link name="${prefix}_${suffix}_wheel">
             <visual>
-                <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+                <origin xyz="${default_start}" rpy="${pi/2} 0 0" />
                 <geometry>
                     <cylinder radius="${wheeldiam/2}" length="${wheel_width}"/>
                 </geometry>
                 <material name="black"/>
             </visual>
             <collision>
-                <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+                <origin xyz="${default_start}" rpy="${pi/2} 0 0" />
                 <geometry>
                     <cylinder radius="${wheeldiam/2}" length="${wheel_width}"/>
                 </geometry>
@@ -176,20 +178,19 @@
         <xacro:roller prefix="${prefix}_${suffix}" suffix="left_ten" theta="${pi * (10/6) + ( pi / 12 )}" side="1"/>
         <xacro:roller prefix="${prefix}_${suffix}" suffix="left_lvn" theta="${pi * (11/6) + ( pi / 12 )}" side="1"/>
         <xacro:roller prefix="${prefix}_${suffix}" suffix="left_wlv" theta="${pi * (12/6) + ( pi / 12 )}" side="1"/>
-
-
     </xacro:macro>
 
     <xacro:wheel prefix="left" suffix="front"  reflect= "1" reflectX="-1"/>
     <xacro:wheel prefix="left" suffix="back"   reflect="-1" reflectX="-1"/>
     <xacro:wheel prefix="right" suffix="front" reflect= "1" reflectX= "1"/>
     <xacro:wheel prefix="right" suffix="back"  reflect="-1" reflectX= "1"/>
-    <link name="dummy">
-   </link>
-     <joint name="dummy_joint" type="fixed">
-     <parent link="dummy"/>
-     <child link="base_link"/>
-   </joint>
+
+    <link name="dummy"/>
+    <joint name="dummy_joint" type="fixed">
+        <parent link="dummy"/>
+        <child link="base_link"/>
+    </joint>
+
     <!-- Gazebo plugin for ROS Control -->
     <gazebo>
         <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
