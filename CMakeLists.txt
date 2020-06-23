@@ -7,7 +7,16 @@ project(gazeboSimulation)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg gazebo_msgs message_generation geometry_msgs)
+find_package(catkin REQUIRED COMPONENTS 
+  roscpp 
+  rospy 
+  std_msgs 
+  genmsg 
+  gazebo_msgs 
+  message_generation 
+  geometry_msgs
+  sensor_msgs
+)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -100,8 +109,8 @@ find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs genmsg gazebo_msgs
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES gazeboSimulation
-#  CATKIN_DEPENDS other_catkin_pkg
+#  LIBRARIES
+  CATKIN_DEPENDS sensor_msg #add more msgs here
 #  DEPENDS system_lib
 )
 
