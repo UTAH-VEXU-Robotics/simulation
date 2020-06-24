@@ -63,4 +63,6 @@
         <remap from="/cmd_vel" to="/r2d2_diff_drive_controller/cmd_vel"/>
     </node>
 
+    <node pkg="gazeboSimulation" name="simulation_republisher" type="republisher.py" output="screen"/>
+
 </launch>

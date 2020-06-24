@@ -1,0 +1,23 @@
+<launch>
+
+
+
+    <arg name="world_name" default="$(find gazeboSimulation)/worlds/depth_camera_test.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
+    <arg name="model" default="$(find gazeboSimulation)/urdf/depth_camera_test.urdf"/>
+    <arg name="gui" default="true" />
+    <arg name="rvizconfig" default="$(find gazeboSimulation)/rviz/depth_camera_test.rviz" />
+
+    <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
+
+    <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+    <include file="$(find gazeboSimulation)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world_name)" />
+    </include>
+
+
+    <node if="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+    <node unless="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
+</launch>
