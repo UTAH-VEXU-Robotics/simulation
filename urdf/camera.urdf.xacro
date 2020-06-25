@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<robot name="chassis" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:property name="M_PI" value="3.1415926535897931" />
+
+    <link name="camera_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 1.5708 1.5708"/>
+        <geometry>
+          <box size="0.5 0.1 0.03"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 1.5708 1.5708"/>
+        <geometry>
+          <box size="0.5 0.1 0.03"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.300" />
+        <inertia
+          ixx="0.001" ixy="0" ixz="0"
+          iyy="0.001" iyz="0"
+          izz="0.01" />
+      </inertial>
+    </link>
+
+        <!-- camera -->
+    <gazebo reference="camera_link">
+      <sensor type="depth" name="camera_link_sensor">
+        <!-- offset between camera_link and camera_depth_optical_link -->
+        <!-- additional mm offsets added through inspection -->
+        <pose>-0.001 -0.045 0.001 -0.000 0 0</pose>
+        <always_on>true</always_on>
+        <update_rate>15.0</update_rate>
+        <camera>
+          <horizontal_fov>${57.0*M_PI/180.0}</horizontal_fov>
+          <image>
+            <format>R8G8B8</format>
+            <width>640</width>
+            <height>480</height>
+          </image>
+          <clip>
+            <near>0.01</near>
+            <far>5</far>
+          </clip>
+        </camera>
+        <plugin name="kinect_camera" filename="libgazebo_ros_openni_kinect.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>15.0</updateRate>
+          <cameraName>camera</cameraName>
+          <frameName>camera_link</frameName>
+
+          <imageTopicName>/camera/rgb/image_rect_color</imageTopicName>
+          <cameraInfoTopicName>/camera/rgb/camera_info</cameraInfoTopicName>
+
+          <depthImageTopicName>/camera/depth_registered/image_raw</depthImageTopicName>
+          <depthImageCameraInfoTopicName>/camera/depth_registered/camera_info</depthImageCameraInfoTopicName>
+
+          <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
+          <pointCloudCutoff>0.5</pointCloudCutoff>
+          <distortionK1>0.00000001</distortionK1>
+          <distortionK2>0.00000001</distortionK2>
+          <distortionK3>0.00000001</distortionK3>
+          <distortionT1>0.00000001</distortionT1>
+          <distortionT2>0.00000001</distortionT2>
+        </plugin>
+      </sensor>
+    </gazebo>
+</robot>
