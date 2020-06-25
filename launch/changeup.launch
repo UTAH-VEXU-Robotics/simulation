@@ -2,6 +2,7 @@
 
     <arg name="world_name" default="$(find gazeboSimulation)/worlds/games/change_up.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
     <arg name="model" default="$(find gazeboSimulation)/urdf/robot.urdf.xacro"/>
+    <arg name="rvizconfig" default="$(find gazeboSimulation)/rviz/chassis.rviz" />
 
     <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
     <include file="$(find gazeboSimulation)/launch/empty_world.launch">
@@ -40,7 +41,7 @@
         <param name="tf_prefix" type="string" value="GT" />
     </node>
 
-    <node pkg="tf" type="static_transform_publisher" name="odom_world_broadcaster" args="-0.0 -0.0 -0.0 0 -0.0 0 odom world 10" />
+    <node pkg="tf" type="static_transform_publisher" name="odom_world_broadcaster" args="-0.0 -0.0 -0.0 0 -0.0 0 world odom 10" />
 
     <rosparam command="load"
               file="$(find gazeboSimulation)/config/joints.yaml"
@@ -62,6 +63,7 @@
         <param name="scale_angular" value="-3.0" />
         <remap from="/cmd_vel" to="/r2d2_diff_drive_controller/cmd_vel"/>
     </node>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
 
     <node pkg="gazeboSimulation" name="simulation_republisher" type="republisher.py" output="screen"/>
 
