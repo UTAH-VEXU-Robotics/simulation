@@ -7,33 +7,21 @@ from tf.msg import tfMessage
 from geometry_msgs.msg import Twist
 
 iodom  = Odometry()
-itwist = Twist()
 
 def callback(msg):
     #print(msg.pose.pose)
     iodom = msg
-
-def callback3(msg):
-    #print(msg.?)
-    itwist = msg
 
 def main():
     rospy.init_node('OdometryNode', anonymous=True)
     pub = rospy.Publisher('/simulation_robot/Odometry', Odometry, queue_size=10)
     rospy.Subscriber('/r2d2_diff_drive_controller/odom', Odometry, callback)
 
-    pub3 = rospy.Publisher('/simulation_robot/Twist', Twist, queue_size=10)
-    rospy.Subscriber('/r2d2_diff_drive_controller/cmd_vel', Twist, callback3)
-
     rate = rospy.Rate(10)  # 10hz
     while not rospy.is_shutdown():
         #odom
         #rospy.loginfo(iodom)
         pub.publish(iodom)
-
-        #twist
-        #rospy.loginfo(itwist)
-        pub3.publish(itwist)
 
         #sleep
         rate.sleep()

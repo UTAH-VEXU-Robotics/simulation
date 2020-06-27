@@ -5,15 +5,15 @@
 
     <link name="camera_link">
       <visual>
-        <origin xyz="0 0 0" rpy="0 1.5708 1.5708"/>
+        <origin xyz="0 0 0" rpy="1.5707635 0 0"/>
         <geometry>
-          <box size="0.5 0.1 0.03"/>
+          <box size="0.05 0.1 0.03"/>
         </geometry>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 1.5708 1.5708"/>
+        <origin xyz="0 0 0" rpy="1.5707635 0 0"/>
         <geometry>
-          <box size="0.5 0.1 0.03"/>
+          <box size="0.05 0.1 0.03"/>
         </geometry>
       </collision>
       <inertial>
@@ -25,7 +25,7 @@
       </inertial>
     </link>
 
-        <!-- camera -->
+    <!-- camera -->
     <gazebo reference="camera_link">
       <sensor type="depth" name="camera_link_sensor">
         <!-- offset between camera_link and camera_depth_optical_link -->
