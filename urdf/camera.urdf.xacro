@@ -6,17 +6,6 @@
 
     <link name="${prefix}_camera_link">
       <visual>
-<<<<<<< HEAD
-        <origin xyz="0 0 0" rpy="1.5707635 0 0"/>
-        <geometry>
-          <box size="0.05 0.1 0.03"/>
-        </geometry>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="1.5707635 0 0"/>
-        <geometry>
-          <box size="0.05 0.1 0.03"/>
-=======
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="0.01 0.05 0.03"/>
@@ -26,7 +15,6 @@
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="0.01 0.05 0.03"/>
->>>>>>> master
         </geometry>
       </collision>
       <inertial>
@@ -38,10 +26,7 @@
       </inertial>
     </link>
 
-<<<<<<< HEAD
-    <!-- camera -->
-    <gazebo reference="camera_link">
-=======
+
     <joint name="${prefix}_camera_joint" type="fixed">
         <parent link="${origin_link}"/>
         <child link="${prefix}_camera_link"/>
@@ -58,7 +43,6 @@
 
         <!-- camera -->
     <gazebo reference="${prefix}_camera_link">
->>>>>>> master
       <sensor type="depth" name="camera_link_sensor">
         <!-- offset between camera_link and camera_depth_optical_link -->
         <!-- additional mm offsets added through inspection -->
