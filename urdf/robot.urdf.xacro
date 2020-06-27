@@ -3,18 +3,16 @@
 
     <link name="base_link"></link>
 
-    <xacro:include filename="chassis.urdf.xacro" ns="chassis"/>
+    <xacro:include filename="chassis.urdf.xacro"/>
     <joint name="chassis_joint" type="fixed">
         <parent link="base_link"/>
         <child link="chassis_link"/>
     </joint>
 
-    <xacro:include filename="camera.urdf.xacro" ns="camera"/>
-    <joint name="camera_joint" type="fixed">
-        <parent link="base_link"/>
-        <child link="camera_link"/>
-        <origin rpy="0 0 0" xyz="0 0 .1"/>
-    </joint><!---->
+    <xacro:include filename="camera.urdf.xacro"/>
+
+    <xacro:kinect prefix="front" origin_link="base_link" xyz="0.1 0 0.1" rpy="0 0 0"/>
+    <xacro:kinect prefix="back" origin_link="base_link" xyz="-0.1 0 0.1" rpy="0 0 3.14"/>
 
 
 </robot>
