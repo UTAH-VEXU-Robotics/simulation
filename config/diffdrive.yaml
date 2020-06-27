@@ -4,7 +4,7 @@ publish_rate: 50
 left_wheel: ['left_front_wheel_joint', 'left_back_wheel_joint']
 right_wheel: ['right_front_wheel_joint', 'right_back_wheel_joint']
 
-wheel_separation: 0.44
+wheel_separation: 0.2
 
 # Odometry covariances for the encoder output of the robot. These values should
 # be tuned to your robot's sample odometry data, but these values are a good place
