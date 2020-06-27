@@ -194,6 +194,7 @@
             <pose> 1.4393 1.4393 .08001 0 0 0 </pose>
             <name>blue13</name>
         </include>
+    <plugin filename="libcollision_map_creator.so" name="collision_map_creator"/>
 
     </world>
 </sdf>

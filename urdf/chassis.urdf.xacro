@@ -179,10 +179,10 @@
 
     </xacro:macro>
 
-    <xacro:wheel prefix="left" suffix="front"  reflect= "1" reflectX="-1"/>
-    <xacro:wheel prefix="left" suffix="back"   reflect="-1" reflectX="-1"/>
-    <xacro:wheel prefix="right" suffix="front" reflect= "1" reflectX= "1"/>
-    <xacro:wheel prefix="right" suffix="back"  reflect="-1" reflectX= "1"/>
+    <xacro:wheel prefix="left" suffix="front"  reflect= "1" reflectX="1"/>
+    <xacro:wheel prefix="left" suffix="back"   reflect="-1" reflectX="1"/>
+    <xacro:wheel prefix="right" suffix="front" reflect= "1" reflectX= "-1"/>
+    <xacro:wheel prefix="right" suffix="back"  reflect="-1" reflectX= "-1"/>
 
     <!-- Gazebo plugin for ROS Control -->
     <gazebo>
