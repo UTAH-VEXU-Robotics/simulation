@@ -49,14 +49,14 @@
 
     <rosparam command="load"
               file="$(find gazeboSimulation)/config/joints.yaml"
-              ns="r2d2_joint_state_controller" />
+              ns="robot_joint_state_controller" />
     <rosparam command="load"
               file="$(find gazeboSimulation)/config/diffdrive.yaml"
-              ns="r2d2_diff_drive_controller" />
+              ns="robot_diff_drive_controller" />
 
-    <node name="r2d2_controller_spawner" pkg="controller_manager" type="spawner"
-          args="r2d2_joint_state_controller
-              r2d2_diff_drive_controller"/>
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" args="robot_joint_state_controller robot_diff_drive_controller">
+        <remap from="/robot_diff_drive_controller/cmd_vel" to="/cmd_vel"/>
+    </node>
 
     <node pkg="joy" type="joy_node" name="joy_node">
         <param name="deadzone" value="0.1" />
@@ -65,7 +65,7 @@
     <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
         <param name="scale_linear" value="1.5" />
         <param name="scale_angular" value="3.0" />
-        <remap from="/cmd_vel" to="/r2d2_diff_drive_controller/cmd_vel"/>
+        <remap from="/cmd_vel" to="/robot_diff_drive_controller/cmd_vel"/>
     </node>
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
 
