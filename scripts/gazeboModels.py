@@ -11,11 +11,6 @@ class Block:
         self._relative_entity_name = relative_entity_name
 
 class Tutorial:
-    def __init__(self):
-        rospy.init_node('simulation_world_node', anonymous=True)
-        self.pub0 = rospy.Publisher('/field/state', ChangeUp, queue_size=3)
-        self.pub1 = rospy.Publisher('/field/goals', ChangeUpGoals, queue_size=3)
-
     _red_balls = {
         'red_ball01': Block('red1',     'body' ),
         'red_ball02': Block('red2',     'body' ),
@@ -65,31 +60,26 @@ class Tutorial:
         print("TODO: Sort balls to each goal")
 
     def publish_gazebos(self):
+        rospy.init_node('simulation_world_node', anonymous=True)
         rate = rospy.Rate(1)  # 1hz
+        self.pub0 = rospy.Publisher('/field/state', ChangeUp, queue_size=3)
+        self.pub1 = rospy.Publisher('/field/goals', ChangeUpGoals, queue_size=3)
 
-        while True:
-            try:
-                model_coordinates = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-                state = ChangeUp()
-                goals = ChangeUpGoals()
+#        rospy.wait_for_service('/gazebo/get_model_state')
 
-                for block in self._robot.itervalues():
-                    state.robot = self.getPose(model_coordinates(str(block._name), block._relative_entity_name))
-                for block in self._red_balls.itervalues():
-                    state.red_balls.poses.append(self.getPose(model_coordinates(str(block._name), block._relative_entity_name)))
-                for block in self._blue_balls.itervalues():
-                    state.blue_balls.poses.append(self.getPose(model_coordinates(str(block._name), block._relative_entity_name)))
-
-                self.pub0.publish(state)
-
-
-
-                self.pub1.publish(goals)
-
-                rate.sleep()
-
-            except rospy.ServiceException as e:
-                rospy.loginfo("Get Model State service call failed:  {0}".format(e))
+        while not rospy.is_shutdown():
+            model_coordinates = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
+            state = ChangeUp()
+            goals = ChangeUpGoals()
+            for block in self._robot.itervalues():
+                state.robot = self.getPose(model_coordinates(str(block._name), block._relative_entity_name))
+            for block in self._red_balls.itervalues():
+                state.red_balls.poses.append(self.getPose(model_coordinates(str(block._name), block._relative_entity_name)))
+            for block in self._blue_balls.itervalues():
+                state.blue_balls.poses.append(self.getPose(model_coordinates(str(block._name), block._relative_entity_name)))
+            self.pub0.publish(state)
+            self.pub1.publish(goals)
+            rate.sleep()
 
 #    def show_gazebos(self):
 #        try:
