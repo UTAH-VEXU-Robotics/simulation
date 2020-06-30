@@ -39,7 +39,7 @@
         <child link="${prefix}_lens_link"/>
         <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
     </joint>
-<gazebo reference="${prefix}_link">
+<gazebo reference="${prefix}_camera_link">
         <sensor name="${prefix}_camera" type="wideanglecamera">
             <camera>
                 <horizontal_fov>6.283</horizontal_fov>
@@ -82,7 +82,7 @@
                 <cameraName>${prefix}_camera</cameraName>
                 <imageTopicName>image_raw</imageTopicName>
                 <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-                <frameName>chassis_link</frameName>
+                <frameName>${prefix}_lens_link</frameName>
                 <hackBaseline>0.07</hackBaseline>
             </plugin>
         </sensor>
