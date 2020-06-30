@@ -12,7 +12,7 @@
 
     <xacro:include filename="camera.urdf.xacro"/>
 
-    <gazebo reference="wide_camera_link">
+    <gazebo reference="chassis_link">
         <sensor name="wide" type="wideanglecamera">
             <camera>
                 <horizontal_fov>6.283</horizontal_fov>
