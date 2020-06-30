@@ -79,27 +79,7 @@ class Tutorial:
                 state.blue_balls.poses.append(self.getPose(model_coordinates(str(block._name), block._relative_entity_name)))
             self.pub0.publish(state)
             self.pub1.publish(goals)
-            rate.sleep()
-
-#    def show_gazebos(self):
-#        try:
-#            model_coordinates = rospy.ServiceProxy('/gazebo/get_state', GetModelState)
-#            for block in self._blockListDict.itervalues():
-#                blockName = str(block._name)
-#                resp_coordinates = model_coordinates(blockName, block._relative_entity_name)
-#                print('\n')
-#                print("Status.success = ", resp_coordinates.success)
-#                print(blockName)
-#                print("Model " + str(block._name))
-#                print("Valeur de X : " + str(resp_coordinates.pose.position.x))
-#                print("Valeur de Y : " + str(resp_coordinates.pose.position.y))
-#                print("Valeur de Z : " + str(resp_coordinates.pose.position.z))
-#                print("Quaternion X : " + str(resp_coordinates.pose.orientation.x))
-#                print("Quaternion Y : " + str(resp_coordinates.pose.orientation.y))
-#                print("Quaternion Z : " + str(resp_coordinates.pose.orientation.z))
-#        except rospy.ServiceException as e:
-#            rospy.loginfo("Get Model State service call failed:  {0}".format(e))
-
+            #rate.sleep()
 
 if __name__ == '__main__':
     print("gazeboModels")
