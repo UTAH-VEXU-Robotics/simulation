@@ -57,6 +57,8 @@
   <build_depend>move_base</build_depend>
   <build_depend>nav_msgs</build_depend>
   <build_depend>sensor_msg</build_depend>
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
   <exec_depend>sensor_msg</exec_depend>
 
   <!-- The export tag contains other, unspecified, tags -->

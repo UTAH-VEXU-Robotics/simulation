@@ -7,5 +7,6 @@
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
 
     <include file="$(find utah_navigation)/launch/nav.launch"></include>
+<!--    -->
 
 </launch>

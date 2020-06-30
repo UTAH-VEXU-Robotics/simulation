@@ -1,0 +1,9 @@
+std_msgs/Int8[] north_west_goal
+std_msgs/Int8[] north_goal
+std_msgs/Int8[] north_east_goal
+std_msgs/Int8[] east_goal
+std_msgs/Int8[] west_goal
+std_msgs/Int8[] south_west_goal
+std_msgs/Int8[] south_goal
+std_msgs/Int8[] south_east_goal
+std_msgs/Int8[] middle_goal

@@ -2,47 +2,52 @@
 
 from gazebo_msgs.srv import GetModelState
 from geometry_msgs.msg import Pose
+from gazeboSimulation.msg import ChangeUp, ChangeUpGoals
 import rospy
 
 class Block:
-    def __init__(self, name, relative_entity_name, pub):
+    def __init__(self, name, relative_entity_name):
         self._name = name
         self._relative_entity_name = relative_entity_name
-        self._pub = pub
 
 class Tutorial:
-
     def __init__(self):
         rospy.init_node('simulation_world_node', anonymous=True)
+        self.pub0 = rospy.Publisher('/field/state', ChangeUp, queue_size=3)
+        self.pub1 = rospy.Publisher('/field/goals', ChangeUpGoals, queue_size=3)
 
-    _models = {
-        'robot01': Block(   'robot','base_link',rospy.Publisher('/gazebo/model/robot/01',     Pose, queue_size=1)),
-        'red_ball01': Block('red1',     'body', rospy.Publisher('/gazebo/model/red_ball/01',  Pose, queue_size=1) ),
-        'red_ball02': Block('red2',     'body', rospy.Publisher('/gazebo/model/red_ball/02',  Pose, queue_size=1) ),
-        'red_ball03': Block('red3',     'body', rospy.Publisher('/gazebo/model/red_ball/03',  Pose, queue_size=1) ),
-        'red_ball04': Block('red4',     'body', rospy.Publisher('/gazebo/model/red_ball/04',  Pose, queue_size=1) ),
-        'red_ball05': Block('red5',     'body', rospy.Publisher('/gazebo/model/red_ball/05',  Pose, queue_size=1) ),
-        'red_ball06': Block('red6',     'body', rospy.Publisher('/gazebo/model/red_ball/06',  Pose, queue_size=1) ),
-        'red_ball07': Block('red7',     'body', rospy.Publisher('/gazebo/model/red_ball/07',  Pose, queue_size=1) ),
-        'red_ball08': Block('red8',     'body', rospy.Publisher('/gazebo/model/red_ball/08',  Pose, queue_size=1) ),
-        'red_ball09': Block('red9',     'body', rospy.Publisher('/gazebo/model/red_ball/09',  Pose, queue_size=1) ),
-        'red_ball10': Block('red10',    'body', rospy.Publisher('/gazebo/model/red_ball/10',  Pose, queue_size=1) ),
-        'red_ball11': Block('red11',    'body', rospy.Publisher('/gazebo/model/red_ball/11',  Pose, queue_size=1) ),
-        'red_ball12': Block('red12',    'body', rospy.Publisher('/gazebo/model/red_ball/12',  Pose, queue_size=1) ),
-        'red_ball13': Block('red13',    'body', rospy.Publisher('/gazebo/model/red_ball/13',  Pose, queue_size=1) ),
-        'blue_ball01': Block('blue1',   'body', rospy.Publisher('/gazebo/model/blue_ball/01', Pose, queue_size=1) ),
-        'blue_ball02': Block('blue2',   'body', rospy.Publisher('/gazebo/model/blue_ball/02', Pose, queue_size=1) ),
-        'blue_ball03': Block('blue3',   'body', rospy.Publisher('/gazebo/model/blue_ball/03', Pose, queue_size=1) ),
-        'blue_ball04': Block('blue4',   'body', rospy.Publisher('/gazebo/model/blue_ball/04', Pose, queue_size=1) ),
-        'blue_ball05': Block('blue5',   'body', rospy.Publisher('/gazebo/model/blue_ball/05', Pose, queue_size=1) ),
-        'blue_ball06': Block('blue6',   'body', rospy.Publisher('/gazebo/model/blue_ball/06', Pose, queue_size=1) ),
-        'blue_ball07': Block('blue7',   'body', rospy.Publisher('/gazebo/model/blue_ball/07', Pose, queue_size=1) ),
-        'blue_ball08': Block('blue8',   'body', rospy.Publisher('/gazebo/model/blue_ball/08', Pose, queue_size=1) ),
-        'blue_ball09': Block('blue9',   'body', rospy.Publisher('/gazebo/model/blue_ball/09', Pose, queue_size=1) ),
-        'blue_ball10': Block('blue10',  'body', rospy.Publisher('/gazebo/model/blue_ball/10', Pose, queue_size=1) ),
-        'blue_ball11': Block('blue11',  'body', rospy.Publisher('/gazebo/model/blue_ball/11', Pose, queue_size=1) ),
-        'blue_ball12': Block('blue12',  'body', rospy.Publisher('/gazebo/model/blue_ball/12', Pose, queue_size=1) ),
-        'blue_ball13': Block('blue13',  'body', rospy.Publisher('/gazebo/model/blue_ball/13', Pose, queue_size=1) ),
+    _red_balls = {
+        'red_ball01': Block('red1',     'body' ),
+        'red_ball02': Block('red2',     'body' ),
+        'red_ball03': Block('red3',     'body' ),
+        'red_ball04': Block('red4',     'body' ),
+        'red_ball05': Block('red5',     'body' ),
+        'red_ball06': Block('red6',     'body' ),
+        'red_ball07': Block('red7',     'body' ),
+        'red_ball08': Block('red8',     'body' ),
+        'red_ball09': Block('red9',     'body' ),
+        'red_ball10': Block('red10',    'body' ),
+        'red_ball11': Block('red11',    'body' ),
+        'red_ball12': Block('red12',    'body' ),
+        'red_ball13': Block('red13',    'body' ),
+    }
+    _blue_balls = {
+        'blue_ball01': Block('blue1',  'body'),
+        'blue_ball02': Block('blue2',  'body'),
+        'blue_ball03': Block('blue3',  'body'),
+        'blue_ball04': Block('blue4',  'body'),
+        'blue_ball05': Block('blue5',  'body'),
+        'blue_ball06': Block('blue6',  'body'),
+        'blue_ball07': Block('blue7',  'body'),
+        'blue_ball08': Block('blue8',  'body'),
+        'blue_ball09': Block('blue9',  'body'),
+        'blue_ball10': Block('blue10', 'body'),
+        'blue_ball11': Block('blue11', 'body'),
+        'blue_ball12': Block('blue12', 'body'),
+        'blue_ball13': Block('blue13', 'body'),
+    }
+    _robot = {
+        'robot': Block('robot', 'base_link', ),
     }
 
     def getPose(self, _resp_coordinates):
@@ -56,13 +61,32 @@ class Tutorial:
         ik_pose.orientation.w = _resp_coordinates.pose.orientation.w
         return ik_pose
 
+    def sortBalls(self):
+        print("TODO: Sort balls to each goal")
+
     def publish_gazebos(self):
-        while not rospy.is_shutdown():
+        rate = rospy.Rate(1)  # 1hz
+
+        while True:
             try:
                 model_coordinates = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-                for block in self._models.itervalues():
-                    pose = self.getPose(model_coordinates(str(block._name), block._relative_entity_name))
-                    block._pub.publish(pose)
+                state = ChangeUp()
+                goals = ChangeUpGoals()
+
+                for block in self._robot.itervalues():
+                    state.robot = self.getPose(model_coordinates(str(block._name), block._relative_entity_name))
+                for block in self._red_balls.itervalues():
+                    state.red_balls.poses.append(self.getPose(model_coordinates(str(block._name), block._relative_entity_name)))
+                for block in self._blue_balls.itervalues():
+                    state.blue_balls.poses.append(self.getPose(model_coordinates(str(block._name), block._relative_entity_name)))
+
+                self.pub0.publish(state)
+
+
+
+                self.pub1.publish(goals)
+
+                rate.sleep()
 
             except rospy.ServiceException as e:
                 rospy.loginfo("Get Model State service call failed:  {0}".format(e))
