@@ -1,0 +1,22 @@
+<launch>
+
+
+
+  <node name="image_view" pkg="image_view" type="image_view" respawn="false" >
+    <remap from="image" to="/left_camera/image_raw"/>
+    <param name="autosize" value="true" />
+  </node>
+
+  <node name="warper" pkg="warper" type="warper" respawn="true" output="screen">
+    <remap from="/usb_cam/image_raw" to="/left_camera/image_raw"/>
+    <param name="center_X" value="960" />
+    <param name="center_Y" value="540" />
+  </node>
+
+
+  <node name="image_view2" pkg="image_view" type="image_view" respawn="true"  >
+    <remap from="image" to="/warper/de_warped_image"/>
+    <param name="autosize" value="false" />
+  </node>
+
+</launch>

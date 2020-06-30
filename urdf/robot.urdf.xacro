@@ -16,7 +16,7 @@
     <xacro:kinect prefix="back" origin_link="base_link" xyz="-0.1 0 0.1" rpy="0 0 3.14"/>
 
     <xacro:include filename="wide_camera.urdf.xacro"/>
-    <xacro:wide prefix="left" origin_link="base_link" xyz="0 -0.1 0.1" rpy="0 0 1.57079632679"/>
-    <xacro:wide prefix="right" origin_link="base_link" xyz="0 0.1 0.1" rpy="0 0 -1.57079632679"/>
+    <xacro:wide prefix="left" origin_link="base_link" xyz="0 -0.1 0.5" rpy="0 1.57 1.57"/>
+    <xacro:wide prefix="right" origin_link="base_link" xyz="0 0.1 0.5" rpy="1.57 1.57 0"/>
 
 </robot>
