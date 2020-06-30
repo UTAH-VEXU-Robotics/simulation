@@ -65,6 +65,6 @@
         <param name="scale_angular" value="3.0" />
         <remap from="/cmd_vel" to="/robot_diff_drive_controller/cmd_vel"/>
     </node>
-    <node pkg="gazeboSimulation" name="gazebo_models" type="gazeboModels.py" output="screen"/>
+    
     
 </launch>
