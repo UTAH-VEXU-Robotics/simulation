@@ -27,7 +27,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -762,6 +762,14 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: false
+    - Alpha: 1
+      Class: rviz/Polygon
+      Color: 25; 255; 0
+      Enabled: true
+      Name: Polygon
+      Topic: /move_base/local_costmap/footprint
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -790,7 +798,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.925654411315918
+      Distance: 3.2364625930786133
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -805,10 +813,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.48020243644714355
+      Pitch: 0.9347970485687256
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.15999354422092438
+      Yaw: 3.4899885654449463
     Saved:
       - Class: rviz/Orbit
         Distance: 0.9657304286956787
@@ -846,5 +854,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 2308
-  X: 892
-  Y: 64
+  X: 904
+  Y: 129

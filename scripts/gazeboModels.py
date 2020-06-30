@@ -16,7 +16,7 @@ class Tutorial:
         rospy.init_node('simulation_world_node', anonymous=True)
 
     _models = {
-        'robot': Block(     'robot','base_link',rospy.Publisher('/gazebo/model/robot/01',     Pose, queue_size=1)),
+        'robot01': Block(   'robot','base_link',rospy.Publisher('/gazebo/model/robot/01',     Pose, queue_size=1)),
         'red_ball01': Block('red1',     'body', rospy.Publisher('/gazebo/model/red_ball/01',  Pose, queue_size=1) ),
         'red_ball02': Block('red2',     'body', rospy.Publisher('/gazebo/model/red_ball/02',  Pose, queue_size=1) ),
         'red_ball03': Block('red3',     'body', rospy.Publisher('/gazebo/model/red_ball/03',  Pose, queue_size=1) ),
