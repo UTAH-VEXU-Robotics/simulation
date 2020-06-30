@@ -10,15 +10,15 @@
         <child link="chassis_link"/>
     </joint>
 
-    <xacro:include filename="camera.urdf.xacro"/>
+    <xacro:include filename="depth_camera.urdf.xacro"/>
 
     <gazebo reference="chassis_link">
         <sensor name="wide" type="wideanglecamera">
             <camera>
                 <horizontal_fov>6.283</horizontal_fov>
                 <image>
-                    <width>320</width>
-                    <height>240</height>
+                    <width>1920</width>
+                    <height>1080</height>
                 </image>
                 <clip>
                     <near>0.1</near>
