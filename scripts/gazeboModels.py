@@ -56,30 +56,48 @@ class Tutorial:
         ik_pose.orientation.w = _resp_coordinates.pose.orientation.w
         return ik_pose
 
-    def sortBalls(self):
+    def sortBalls(self, ball, name, identity):
         print("TODO: Sort balls to each goal")
+#        if( ball.state.x**2 + ball.state.y**2 < .16**2 ):
+
+
 
     def publish_gazebos(self):
         rospy.init_node('simulation_world_node', anonymous=True)
-        rate = rospy.Rate(1)  # 1hz
+        rate = rospy.Rate(1)
         self.pub0 = rospy.Publisher('/field/state', ChangeUp, queue_size=3)
         self.pub1 = rospy.Publisher('/field/goals', ChangeUpGoals, queue_size=3)
 
-#        rospy.wait_for_service('/gazebo/get_model_state')
+        rospy.wait_for_service('/gazebo/get_model_state')
 
         while not rospy.is_shutdown():
-            model_coordinates = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-            state = ChangeUp()
-            goals = ChangeUpGoals()
-            for block in self._robot.itervalues():
-                state.robot = self.getPose(model_coordinates(str(block._name), block._relative_entity_name))
-            for block in self._red_balls.itervalues():
-                state.red_balls.poses.append(self.getPose(model_coordinates(str(block._name), block._relative_entity_name)))
-            for block in self._blue_balls.itervalues():
-                state.blue_balls.poses.append(self.getPose(model_coordinates(str(block._name), block._relative_entity_name)))
-            self.pub0.publish(state)
-            self.pub1.publish(goals)
-            #rate.sleep()
+            try:
+                rate.sleep()
+                rospy.wait_for_service('/gazebo/get_model_state')
+                self.model_coordinates = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
+                state = ChangeUp()
+                goals = ChangeUpGoals()
+
+                for block in self._robot.itervalues():
+                    state.robot = self.getPose(self.model_coordinates(str(block._name), block._relative_entity_name))
+                for block in self._red_balls.itervalues():
+                    model = self.getPose(self.model_coordinates(str(block._name), block._relative_entity_name))
+                    self.sortBalls(model,str(block._name),block._relative_entity_name)
+                    state.red_balls.poses.append(model)
+                for block in self._blue_balls.itervalues():
+                    state.blue_balls.poses.append(self.getPose(self.model_coordinates(str(block._name), block._relative_entity_name)))
+                self.pub0.publish(state)
+
+
+#                for ball in state.red_balls.itervalues():
+#                    self.sortBalls(ball)
+
+
+                self.pub1.publish(goals)
+
+
+            except rospy.ROSInterruptException:
+                print("failed gazebo models")
 
 if __name__ == '__main__':
     print("gazeboModels")

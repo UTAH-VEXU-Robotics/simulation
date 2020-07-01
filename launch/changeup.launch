@@ -55,13 +55,12 @@
 
     <node name="controller_spawner" pkg="controller_manager" type="spawner" args="robot_joint_state_controller robot_diff_drive_controller"></node>
 
-    <node pkg="joy" type="joy_node" name="joy_node">
-        <param name="deadzone" value="0.1" />
-    </node>
-
     <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
         <param name="scale_linear" value="1.5" />
         <param name="scale_angular" value="3.0" />
         <remap from="/cmd_vel" to="/robot_diff_drive_controller/cmd_vel"/>
     </node>
+
+    <node pkg="gazeboSimulation" name="gazeboModels" type="getModels.py" output="screen"/>
+
 </launch>

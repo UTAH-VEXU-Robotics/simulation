@@ -16,7 +16,6 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation 
   geometry_msgs
   sensor_msgs
-
 )
 
 ## System dependencies are found with CMake's conventions
@@ -58,6 +57,7 @@ find_package(catkin REQUIRED COMPONENTS
 #   Robots.msg
    ChangeUp.msg
    ChangeUpGoals.msg
+   GazeboModel.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -169,6 +169,7 @@ include_directories(
 catkin_install_python(PROGRAMS
   scripts/republisher.py
   scripts/gazeboModels.py
+  scripts/getModels.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
