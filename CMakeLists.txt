@@ -172,6 +172,7 @@ catkin_install_python(PROGRAMS
   scripts/republisher.py
   scripts/gazeboModels.py
   scripts/getModels.py
+  scripts/setModels.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

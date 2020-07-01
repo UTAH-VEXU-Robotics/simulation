@@ -168,8 +168,8 @@ def main():
                 imodel.name = model.name
                 imodel.link = model.link
                 imodel.pose = getPose(updated_models(str(imodel.name), str(imodel.link)))
-#                print(imodel.name)
                 updateModelState(imodel)
+                model = imodel
 
             out = GazeboModels
             out.models = models
