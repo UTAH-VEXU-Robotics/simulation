@@ -58,6 +58,8 @@ find_package(catkin REQUIRED COMPONENTS
    ChangeUp.msg
    ChangeUpGoals.msg
    GazeboModel.msg
+   GazeboModels.msg
+
  )
 
 ## Generate services in the 'srv' folder

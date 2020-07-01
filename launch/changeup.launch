@@ -61,6 +61,6 @@
         <remap from="/cmd_vel" to="/robot_diff_drive_controller/cmd_vel"/>
     </node>
 
-    <node pkg="gazeboSimulation" name="gazeboModels" type="getModels.py" output="screen"/>
+<!--    <node pkg="gazeboSimulation" name="gazeboModels" type="getModels.py" output="screen"/>-->
 
 </launch>

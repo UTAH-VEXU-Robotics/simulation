@@ -2,29 +2,38 @@
 
 from gazebo_msgs.srv import GetModelState
 from geometry_msgs.msg import Pose
-from gazeboSimulation.msg import GazeboModel
+from std_msgs.msg import String
+from gazeboSimulation.msg import GazeboModel, GazeboModels
 import rospy
 
 class Zone:
-    def __init__(self,state):
-        self.name = state[0]
-        self.types = state[1]
-        self.x1 = state[2]
-        self.y1 = state[3]
-        self.x2 = state[4]
-        self.y2 = state[5]
-        self.radius = state[6]
-        print(state)
-    @staticmethod
-    def inZone(self,model):
-        if (self.types == 'rect'):
-            return (self.x1 < model.pose.position.x < self.x2) & (self.y1 < model.pose.position.y < self.y2)
-        elif (self.types == 'circle'):
-            return (model.pose.position.x - self.x1) ** 2 + (model.pose.position.y - self.y1) ** 2 < self.radius ** 2
-        else:
-            print("isModelInCircle error")
-            return False
+    def __init__(self):
+        self.name   = [] #n
+        self.types  = [] #t
+        self.x1     = [] #x1
+        self.y1     = [] #y1
+        self.x2     = [] #x2
+        self.y2     = [] #y2
+        self.radius = [] #r
 
+    def define(self,n,t,x1,y1,x2,y2,r):
+        self.name   = n
+        self.types  = t
+        self.x1     = x1
+        self.y1     = y1
+        self.x2     = x2
+        self.y2     = y2
+        self.radius = r
+
+    def inZone(self,model):
+        if(model.state != self.name):
+            if (self.types == 'rect'):
+                return (self.x1 < model.pose.position.x < self.x2) & (self.y1 < model.pose.position.y < self.y2)
+            elif (self.types == 'circle'):
+    #            print(model.pose.position.x - self.x1) ** 2 + (model.pose.position.y - self.y1) ** 2 < self.radius ** 2
+                return (model.pose.position.x - self.x1) ** 2 + (model.pose.position.y - self.y1) ** 2 < self.radius ** 2
+        else:
+            return False
 
 def getPose(ipose):
     pose = Pose()
@@ -44,7 +53,7 @@ def findInArray(list, elem):
 def updateModelState(model):
     states = [
          #name           #types     #x1      #y1      #x2   #y2    #radius
-        ['not_in_field', 'circle', 0      , 0     ,  0   , 0    , 100],
+#        ['not_in_field', 'circle', 0      , 0     ,  0   , 0    , 100],
         ['field'       , 'rect'  , -1.82  , 1.82  ,  1.82, -1.82, 0  ],
         ['lft_top_goal', 'circle', -1.6335, 1.6335 , 0   , 0    , .05],
         ['mid_top_goal', 'circle', 0      , 1.6335 , 0   , 0    , .05],
@@ -59,18 +68,16 @@ def updateModelState(model):
         ['rgt_dwn_goal', 'circle', 1.6335 , -1.6335, 0   , 0    , .05],
     ]
 
-    zones = [Zone]
-    for state in states:
-        zone = Zone(state)
-        print(zone)
-        zones.append(zone)
-
     if(model.type == 'robot'): pass
     elif(model.type == 'ball'):
-        for zone in zones:
-            print(zone)
-            if(zone.inZone(zone,model)):
+        for s in states:
+            zone = Zone()
+            zone.define(s[0],s[1],s[2],s[3],s[4],s[5],s[6])
+            if(zone.inZone(model)):
                 model.state = zone.name
+#                print("model name: " + model.name)
+#                print("model state: " + model.state)
+#                print("zone name: " + zone.name)
 
 def main():
     # models is an array of GazeboModels
@@ -140,7 +147,7 @@ def main():
     rate = rospy.Rate(10)
 
     # init publisher
-    pub = rospy.Publisher('/gazebo/get_field', GazeboModel, queue_size=5)
+    pub = rospy.Publisher('/gazebo/get_field', GazeboModels, queue_size=5)
 
     while not rospy.is_shutdown():
         try:
@@ -152,11 +159,21 @@ def main():
 
             # get updated models
             updated_models = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-            print(updated_models)
 
             for model in models:
-#                model.pose = getPose(updated_models(model.name, model.link))
-                updateModelState(model)
+                imodel = GazeboModel()
+                imodel.type = model.type
+                imodel.spec = model.spec
+                imodel.state = model.state
+                imodel.name = model.name
+                imodel.link = model.link
+                imodel.pose = getPose(updated_models(str(imodel.name), str(imodel.link)))
+#                print(imodel.name)
+                updateModelState(imodel)
+
+            out = GazeboModels
+            out.models = models
+            pub.publish(out)
 
         except rospy.ROSInterruptException:
             print("failed get gazebo models")
