@@ -81,7 +81,7 @@ def updateModelState(model):
 
 def main():
     # models is an array of GazeboModels
-    models = [GazeboModel]
+    models = GazeboModels()
 
     # the initial pose is just a default pose that will change later
     initialPose = Pose()
@@ -101,31 +101,33 @@ def main():
         ['ball','red','field','red1', 'body',initialPose],
         ['ball','red','field','red2', 'body',initialPose],
         ['ball','red','field','red3', 'body',initialPose],
-        ['ball','red','field','red4', 'body',initialPose],
-        ['ball','red','field','red5', 'body',initialPose],
-        ['ball','red','field','red6', 'body',initialPose],
-        ['ball','red','field','red7', 'body',initialPose],
-        ['ball','red','field','red8', 'body',initialPose],
+        ['ball','red','mid_top_goal','red4', 'body',initialPose],
+        ['ball','red','mid_top_goal','red5', 'body',initialPose],
+        ['ball','red','mid_dwn_goal','red6', 'body',initialPose],
+        ['ball','red','lft_mid_goal','red7', 'body',initialPose],
+        ['ball','red','lft_top_goal','red8', 'body',initialPose],
         ['ball','red','field','red9', 'body',initialPose],
         ['ball','red','field','red10','body',initialPose],
-        ['ball','red','field','red11','body',initialPose],
-        ['ball','red','field','red12','body',initialPose],
-        ['ball','red','field','red13','body',initialPose],
+        ['ball','red','rgt_dwn_goal','red11','body',initialPose],
+        ['ball','red','rgt_mid_goal','red12','body',initialPose],
+        ['ball','red','rgt_top_goal','red13','body',initialPose],
+        ['ball', 'red', 'lft_dwn_goal', 'red14', 'body', initialPose],
 
         #### blue
         ['ball', 'blue', 'field', 'blue1',  'body', initialPose],
         ['ball', 'blue', 'field', 'blue2',  'body', initialPose],
         ['ball', 'blue', 'field', 'blue3',  'body', initialPose],
-        ['ball', 'blue', 'field', 'blue4',  'body', initialPose],
-        ['ball', 'blue', 'field', 'blue5',  'body', initialPose],
-        ['ball', 'blue', 'field', 'blue6',  'body', initialPose],
-        ['ball', 'blue', 'field', 'blue7',  'body', initialPose],
-        ['ball', 'blue', 'field', 'blue8',  'body', initialPose],
-        ['ball', 'blue', 'field', 'blue9',  'body', initialPose],
-        ['ball', 'blue', 'field', 'blue10', 'body', initialPose],
-        ['ball', 'blue', 'field', 'blue11', 'body', initialPose],
+        ['ball', 'blue', 'mid_top_goal', 'blue4',  'body', initialPose],
+        ['ball', 'blue', 'mid_dwn_goal', 'blue5',  'body', initialPose],
+        ['ball', 'blue', 'mid_dwn_goal', 'blue6',  'body', initialPose],
+        ['ball', 'blue', 'lft_dwn_goal', 'blue7',  'body', initialPose],
+        ['ball', 'blue', 'lft_top_goal', 'blue8',  'body', initialPose],
+        ['ball', 'blue', 'rgt_dwn_goal', 'blue9',  'body', initialPose],
+        ['ball', 'blue', 'rgt_mid_goal', 'blue10', 'body', initialPose],
+        ['ball', 'blue', 'rgt_top_goal', 'blue11', 'body', initialPose],
         ['ball', 'blue', 'field', 'blue12', 'body', initialPose],
         ['ball', 'blue', 'field', 'blue13', 'body', initialPose],
+        ['ball', 'blue', 'lft_mid_goal', 'blue14', 'body', initialPose],
     ]
 
     # pass objects to models
@@ -138,7 +140,7 @@ def main():
         model.name =  str(object[3])
         model.link =  str(object[4])
         model.pose =  object[5]
-        models.append(model)
+        models.models.append(model)
 
     # init ros / gazebo
     rospy.init_node('get_models_node', anonymous=True)
@@ -160,7 +162,8 @@ def main():
             # get updated models
             updated_models = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
 
-            for model in models:
+            out = GazeboModels()
+            for model in models.models:
                 imodel = GazeboModel()
                 imodel.type = model.type
                 imodel.spec = model.spec
@@ -169,10 +172,8 @@ def main():
                 imodel.link = model.link
                 imodel.pose = getPose(updated_models(str(imodel.name), str(imodel.link)))
                 updateModelState(imodel)
-                model = imodel
+                out.models.append(imodel)
 
-            out = GazeboModels
-            out.models = models
             pub.publish(out)
 
         except rospy.ROSInterruptException:

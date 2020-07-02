@@ -87,7 +87,7 @@
         <include>
             <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallBlue</uri>
-            <pose> 0 -1.6275 .08001 0 0 0 </pose>\
+            <pose> 0 -1.6275 .08001 0 0 0 </pose>
             <name>blue6</name>
         </include>
 
@@ -102,13 +102,13 @@
             <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallRed</uri>
             <pose> -1.6275 -1.6275 .08001 0 0 0 </pose>
-            <name>red6</name>
+            <name>red14</name>
         </include>
         <include>
             <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallBlue</uri>
             <pose> -1.6275 0 .24003 0 0 0 </pose>
-            <name>blue7</name>
+            <name>blue14</name>
         </include>
         <include>
             <static>0</static>

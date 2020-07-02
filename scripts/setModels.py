@@ -9,7 +9,7 @@ from gazeboSimulation.msg import GazeboModel, GazeboModels
 import rospy
 
 def callback(model):
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
+#    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
 
     state_msg = ModelState()
     state_msg.model_name = model.name

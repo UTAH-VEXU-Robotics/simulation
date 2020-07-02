@@ -55,8 +55,8 @@ find_package(catkin REQUIRED COMPONENTS
  add_message_files(
    FILES
 #   Robots.msg
-   ChangeUp.msg
-   ChangeUpGoals.msg
+#   ChangeUp.msg
+#   ChangeUpGoals.msg
    GazeboModel.msg
    GazeboModels.msg
  )
@@ -172,6 +172,7 @@ catkin_install_python(PROGRAMS
 #  scripts/gazeboModels.py
   scripts/getModels.py
   scripts/setModels.py
+  scripts/displayModels.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
