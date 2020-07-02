@@ -34,7 +34,7 @@ def meterToPixels(meter):
 def xyToOriginPoint(x,y):
     ix=x+fieldPixels/2
     iy=-y+fieldPixels/2
-    return (ix,iy)
+    return (int(ix),int(iy))
 
 def text(text, point,size=20):
     font = pygame.font.Font(pygame.font.get_default_font(),size)
@@ -43,6 +43,15 @@ def text(text, point,size=20):
     TextRect.center = point
     screen.blit(TextSurf, TextRect)
     pygame.display.update()
+
+def drawModel(model,point):
+    if (model.type == 'ball'):
+        radius = meterToPixels(0.08001)
+        if (model.spec == 'red'):
+            pygame.draw.circle(screen, red, point, radius, 0)
+        elif (model.spec == 'blue'):
+            pygame.draw.circle(screen, blue, point, radius, 0)
+
 
 class Zone:
     def __init__(self):
@@ -79,11 +88,7 @@ class Zone:
 #                    print("is: model z: " + str(model.pose.position.z) + " > modelToDraw z: " + str(modelToDraw.pose.position.z))
                     if(model.pose.position.z>modelToDraw.pose.position.z):
                         modelToDraw = model
-                if(modelToDraw.type == 'ball'):
-                    if (modelToDraw.spec == 'red'):
-                        pygame.draw.circle(screen, red, point, meterToPixels(0.08001), 0)
-                    elif (modelToDraw.spec == 'blue'):
-                        pygame.draw.circle(screen, blue, point, meterToPixels(0.08001), 0)
+                drawModel(modelToDraw,point)
 #            else:
 #                print("zone " + self.name + " has no models")
         elif(self.types == 'rect'):
@@ -124,6 +129,9 @@ class Field:
                     if(model.state == zone.name):
 #                        print("adding model: " + model.name + " to zone: " + zone.name)
                         zone.addModel(model)
+                    elif(model.state == 'field'):
+                        point = xyToOriginPoint(meterToPixels(model.pose.position.x),meterToPixels(model.pose.position.y))
+                        drawModel(model,point)
 
             zone.draw(self.screen, meterToPixels(0.054229))
 
