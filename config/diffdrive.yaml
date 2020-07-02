@@ -25,6 +25,6 @@ linear:
 angular:
   z:
     has_velocity_limits    : true
-    max_velocity           : 3.0   # rad/s
+    max_velocity           : 6.28   # rad/s
     has_acceleration_limits: true
-    max_acceleration       : 6.0   # rad/s^2
+    max_acceleration       : 12.56   # rad/s^2
