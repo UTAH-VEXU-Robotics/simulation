@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /Path2
       Splitter Ratio: 0.5
     Tree Height: 744
   - Class: rviz/Selection
@@ -813,10 +814,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6047967076301575
+      Pitch: 0.7997968792915344
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.436819463968277
+      Yaw: 3.103635787963867
     Saved:
       - Class: rviz/Orbit
         Distance: 0.9657304286956787
