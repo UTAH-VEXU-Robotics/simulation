@@ -4,11 +4,13 @@ import rospy
 import pygame, sys
 import numpy
 import time
+import math
 from geometry_msgs.msg import Twist
 from gazebo_msgs.msg import ModelState
 from geometry_msgs.msg import Pose
 from std_msgs.msg import String
 from gazeboSimulation.msg import GazeboModel, GazeboModels
+from tf.transformations import euler_from_quaternion, quaternion_from_euler
 
 fieldPixels = 1000
 fieldConvIn = fieldPixels/140.5
@@ -44,6 +46,23 @@ def text(text, point,size=20):
     screen.blit(TextSurf, TextRect)
     pygame.display.update()
 
+def rotate_point(cx,cy,angle,p):
+  s = math.sin(angle);
+  c = math.cos(angle);
+
+  px = p[0]
+  py = p[1]
+
+  px -= cx;
+  py -= cy;
+
+  xnew = px * c - py * s;
+  ynew = px * s + py * c;
+
+  px = xnew + cx
+  py = ynew + cy
+  return (px,py)
+
 def drawModel(model,point):
     if (model.type == 'ball'):
         radius = meterToPixels(0.08001)
@@ -51,7 +70,10 @@ def drawModel(model,point):
             pygame.draw.circle(screen, red, point, radius, 0)
         elif (model.spec == 'blue'):
             pygame.draw.circle(screen, blue, point, radius, 0)
-
+    if(model.type == 'robot'):
+        radius = meterToPixels(0.13)
+        if(model.spec == 'us'):
+            pygame.draw.circle(screen, white, point, radius, 1)
 
 class Zone:
     def __init__(self):
@@ -131,15 +153,20 @@ class Field:
                         zone.addModel(model)
                     elif(model.state == 'field'):
                         point = xyToOriginPoint(meterToPixels(model.pose.position.x),meterToPixels(model.pose.position.y))
+#                        if(model.type == 'robot'):
+#                            print("robot")
+#                            print(point)
                         drawModel(model,point)
 
             zone.draw(self.screen, meterToPixels(0.054229))
 
-
 def callback(imodels):
     models = imodels
 #    for model in imodels.models:
-#        print(model.pose.position)
+#        point = xyToOriginPoint(meterToPixels(model.pose.position.x), meterToPixels(model.pose.position.y))
+#        if (model.type == 'robot'):
+#            print("robot")
+#            print(point)
     field.redraw(models)
 
 pygame.init()
@@ -152,6 +179,8 @@ def main():
     rospy.init_node('display_models')
 
     rospy.Subscriber("/gazebo/get_field", GazeboModels, callback)
+    # init publisher
+    pub = rospy.Publisher('/gazebo/set_field', GazeboModel, queue_size=10)
 
     while not rospy.is_shutdown():
         try:

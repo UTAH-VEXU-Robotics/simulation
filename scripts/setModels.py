@@ -27,9 +27,7 @@ def callback(model):
 def main():
     print("set gazebo models")
     rospy.init_node('set_pose')
-
     rospy.Subscriber("/gazebo/set_field", GazeboModel, callback)
-
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 

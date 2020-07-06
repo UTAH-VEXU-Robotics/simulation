@@ -68,16 +68,18 @@ def updateModelState(model):
         ['rgt_dwn_goal', 'circle', 1.6335 , -1.6335, 0   , 0    , .05],
     ]
 
-    if(model.type == 'robot'): pass
-    elif(model.type == 'ball'):
-        for s in states:
-            zone = Zone()
-            zone.define(s[0],s[1],s[2],s[3],s[4],s[5],s[6])
-            if(zone.inZone(model)):
-                model.state = zone.name
-#                print("model name: " + model.name)
-#                print("model state: " + model.state)
-#                print("zone name: " + zone.name)
+    for s in states:
+        zone = Zone()
+        zone.define(s[0],s[1],s[2],s[3],s[4],s[5],s[6])
+        if(zone.inZone(model)):
+
+            if(model.name == 'robot'):
+                print("robot")
+                print(model.pose.position)
+            model.state = zone.name
+#            print("model name: " + model.name)
+#            print("model state: " + model.state)
+#            print("zone name: " + zone.name)
 
 def main():
     # models is an array of GazeboModels
@@ -90,11 +92,11 @@ def main():
     objects=[
         ## four robots
         #### us
-        ['robot', 'us', 'field', 'robot', 'base_link', initialPose],
-        #['robot', 'us', 'field', 'robot2', 'base_link', initialPose],
+        ['robot', 'us', 'field', 'robot', '', initialPose],
+        #['robot', 'us', 'field', 'robot2', '', initialPose],
         #### them
-        #['robot', 'them', 'field', 'robot3', 'base_link', initialPose],
-        #['robot', 'them', 'field', 'robot4', 'base_link', initialPose],
+        #['robot', 'them', 'field', 'robot3', '', initialPose],
+        #['robot', 'them', 'field', 'robot4', '', initialPose],
 
         ## balls
         #### red
