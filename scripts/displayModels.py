@@ -22,6 +22,7 @@ white = (255, 255, 255)
 red = (255,0,0)
 blue = (0,0,255)
 models = GazeboModels()
+pub = rospy.Publisher('/gazebo/set_field', GazeboModel, queue_size=10)
 
 def inchesToPixels(inches):
     out = inches * fieldConvIn
@@ -32,6 +33,12 @@ def meterToPixels(meter):
     out = meter * 39.3701 * fieldConvIn
 ##    print("meter to pixels: "+ str(meter) + ", " + str(out))
     return int(out)
+
+def pixelsToMeter(pixels):
+    out = pixels / (39.3701 * fieldConvIn)
+    print("pixels to meter: "+ str(pixels) + ", " + str(out))
+    return float(out)
+
 
 def xyToOriginPoint(x,y):
     ix=x+fieldPixels/2
@@ -46,22 +53,12 @@ def text(text, point,size=20):
     screen.blit(TextSurf, TextRect)
     pygame.display.update()
 
-def rotate_point(cx,cy,angle,p):
-  s = math.sin(angle);
-  c = math.cos(angle);
+robotRadius = meterToPixels(.3)
 
-  px = p[0]
-  py = p[1]
-
-  px -= cx;
-  py -= cy;
-
-  xnew = px * c - py * s;
-  ynew = px * s + py * c;
-
-  px = xnew + cx
-  py = ynew + cy
-  return (px,py)
+def inCircle(x,y,center_x, center_y):
+    pygame.draw.circle(screen, white, (x,y), 5, 0)
+    pygame.draw.circle(screen, black, (center_x,center_y), robotRadius, 1)
+    return (x - center_x)**2 + (y - center_y)**2 < robotRadius**2
 
 def drawModel(model,point):
     if (model.type == 'ball'):
@@ -71,9 +68,10 @@ def drawModel(model,point):
         elif (model.spec == 'blue'):
             pygame.draw.circle(screen, blue, point, radius, 0)
     if(model.type == 'robot'):
-        radius = meterToPixels(0.13)
+        radius = robotRadius
+        robotPoint = point
         if(model.spec == 'us'):
-            pygame.draw.circle(screen, white, point, radius, 1)
+            pygame.draw.circle(screen, white, robotPoint, radius, 1)
 
 class Zone:
     def __init__(self):
@@ -98,21 +96,15 @@ class Zone:
         self.models.models.append(model)
 
     def draw(self,screen,width=1):
-#        print("drawing")
         if (self.types == 'circle'):
             point = xyToOriginPoint(self.x1, self.y1)
             pygame.draw.circle(screen, black, point, self.radius,width)
-            # text(zone.name, point)
             if(len(self.models.models)!=0):
                 modelToDraw = self.models.models[0]
-#                print("zone: " + self.name + "'s length is: " + str(len(self.models.models)) + " name is: " + modelToDraw.name)
                 for model in self.models.models:
-#                    print("is: model z: " + str(model.pose.position.z) + " > modelToDraw z: " + str(modelToDraw.pose.position.z))
                     if(model.pose.position.z>modelToDraw.pose.position.z):
                         modelToDraw = model
                 drawModel(modelToDraw,point)
-#            else:
-#                print("zone " + self.name + " has no models")
         elif(self.types == 'rect'):
             size = (self.x2-self.x1,self.y2-self.y1)
             rect = pygame.Rect(xyToOriginPoint(self.x1,-self.y1),size)
@@ -137,36 +129,45 @@ class Field:
 
     def redraw(self,imodels):
         self.screen.fill(white)
-#        print("redraw")
         for s in self.states:
             zone = Zone()
             zone.define(s[0], s[1], meterToPixels(s[2]), meterToPixels(s[3]), meterToPixels(s[4]), meterToPixels(s[5]), meterToPixels(s[6]))
-#            print(zone.name)
 
             if imodels.models:
                 for model in imodels.models:
-#                    print("model")
-#                    print(model.name)
-#                    print(model.pose.position)
+                    if(model.name == 'robot'):
+                        robotPoint = xyToOriginPoint(meterToPixels(model.pose.position.x),
+                                                meterToPixels(model.pose.position.y))
+                        gazeboRobotPoint = (model.pose.position.x,model.pose.position.y,model.pose.position.z)
+                        zonePoint = gazeboRobotPoint
+#                        print(zone.x1,zone.y1)
+#                        print( (zone.x1 - robotPoint[0])**2 + (zone.y1 -robotPoint[1])**2, '<', robotRadius**2)
+                        if( inCircle( zone.x1,zone.y1,robotPoint[0],robotPoint[1] ) ):
+                            print("zone in robot radius")
+                            zonePoint = (s[2],s[3],1)
+                        continue
+
+                for model in imodels.models:
+                    point = xyToOriginPoint(meterToPixels(model.pose.position.x), meterToPixels(model.pose.position.y))
                     if(model.state == zone.name):
-#                        print("adding model: " + model.name + " to zone: " + zone.name)
                         zone.addModel(model)
-                    elif(model.state == 'field'):
-                        point = xyToOriginPoint(meterToPixels(model.pose.position.x),meterToPixels(model.pose.position.y))
-#                        if(model.type == 'robot'):
-#                            print("robot")
-#                            print(point)
+                    if(model.state == 'field'):
                         drawModel(model,point)
+                    if( inCircle( point[0],point[1],robotPoint[0],robotPoint[1] )):
+                        if( model.name == 'robot' ): continue
+                        imodel = mode
+                        imodel.pose.position.x = gazeboRobotPoint[0]
+                        imodel.pose.position.y = gazeboRobotPoint[1]
+                        imodel.pose.position.z = gazeboRobotPoint[2] + .1
+
+                        # if gazeboRobotPoint != zonePoint then set the model to zonePoint
+
+                        pub.publish(imodel)
 
             zone.draw(self.screen, meterToPixels(0.054229))
 
 def callback(imodels):
     models = imodels
-#    for model in imodels.models:
-#        point = xyToOriginPoint(meterToPixels(model.pose.position.x), meterToPixels(model.pose.position.y))
-#        if (model.type == 'robot'):
-#            print("robot")
-#            print(point)
     field.redraw(models)
 
 pygame.init()
@@ -180,7 +181,7 @@ def main():
 
     rospy.Subscriber("/gazebo/get_field", GazeboModels, callback)
     # init publisher
-    pub = rospy.Publisher('/gazebo/set_field', GazeboModel, queue_size=10)
+
 
     while not rospy.is_shutdown():
         try:

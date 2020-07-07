@@ -21,6 +21,8 @@ def callback(model):
         set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
         resp = set_state( state_msg )
 
+        print("Set state")
+
     except rospy.ServiceException, e:
         print "Service call failed: %s" % e
 
