@@ -93,17 +93,15 @@ def main():
                      meterToPixels(float(zoneType.radius.data)),
                      meterToPixels(float(zoneType.width.data)))
 
-                zone.models.models = sorted(zone.models.models, key=lambda model: model.pose.position.z)
-
                 for model in zone.models.models:
                     modelType = GazeboType()
                     for type in main.types.types:
                         if (type.name == model.type):
                             modelType = type
                     if(model.zone == zone.name):
-                        print(model.name + ": in: " + zone.name)
-                        print(xToOriginPoint(meterToPixels(float(model.pose.position.x))),
-                             yToOriginPoint(meterToPixels(float(model.pose.position.y))))
+#                        print(model.name + ": in: " + zone.name)
+#                        print(xToOriginPoint(meterToPixels(float(model.pose.position.x))),
+#                             yToOriginPoint(meterToPixels(float(model.pose.position.y))))
                         # WARNING: ONLY CIRCLES WORK FOR THIS AT THE MOMENT
                         draw(screen,
                              modelType.shape,
