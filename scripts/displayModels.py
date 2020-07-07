@@ -12,67 +12,6 @@ from std_msgs.msg import String
 from gazeboSimulation.msg import GazeboModel, GazeboModels, GazeboType, GazeboTypes, GazeboZone, GazeboZones
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 
-def drawModel(model,point):
-    if (model.type == 'ball'):
-        radius = meterToPixels(0.08001)
-        if (model.spec == 'red'):
-            pygame.draw.circle(screen, red, point, radius, 0)
-        elif (model.spec == 'blue'):
-            pygame.draw.circle(screen, blue, point, radius, 0)
-    if(model.type == 'robot'):
-        radius = robotRadius
-        robotPoint = point
-        if(model.spec == 'us'):
-            pygame.draw.circle(screen, white, robotPoint, radius, 1)
-
-
-def draw(self,screen,width=1):
-    if (self.types == 'circle'):
-        point = xyToOriginPoint(self.x1, self.y1)
-        pygame.draw.circle(screen, black, point, self.radius,width)
-        if(len(self.models.models)!=0):
-            modelToDraw = self.models.models[0]
-            for model in self.models.models:
-                if(model.pose.position.z>modelToDraw.pose.position.z):
-                    modelToDraw = model
-            drawModel(modelToDraw,point)
-    elif(self.types == 'rect'):
-        size = (self.x2-self.x1,self.y2-self.y1)
-        rect = pygame.Rect(xyToOriginPoint(self.x1,-self.y1),size)
-        pygame.draw.rect(screen,grey,rect)
-
-def redraw(self,imodels):
-    self.screen.fill(white)
-    for s in self.states:
-        zone = Zone()
-        zone.define(s[0], s[1], meterToPixels(s[2]), meterToPixels(s[3]), meterToPixels(s[4]), meterToPixels(s[5]), meterToPixels(s[6]))
-        if imodels.models:
-            for model in imodels.models:
-                if(model.name == 'robot'):
-                    robotPoint = xyToOriginPoint(meterToPixels(model.pose.position.x),
-                                            meterToPixels(model.pose.position.y))
-                    gazeboRobotPoint = (model.pose.position.x,model.pose.position.y,model.pose.position.z)
-                    zonePoint = gazeboRobotPoint
-                    if( inCircle( zone.x1,zone.y1,robotPoint[0],robotPoint[1] ) ):
-                        print("zone in robot radius")
-                        zonePoint = (s[2],s[3],1)
-                    continue
-            for model in imodels.models:
-                point = xyToOriginPoint(meterToPixels(model.pose.position.x), meterToPixels(model.pose.position.y))
-                if(model.state == zone.name):
-                    zone.addModel(model)
-                if(model.state == 'field'):
-                    drawModel(model,point)
-                if( inCircle( point[0],point[1],robotPoint[0],robotPoint[1] )):
-                    if( model.name == 'robot' ): continue
-                    imodel = model
-                    imodel.pose.position.x = gazeboRobotPoint[0]
-                    imodel.pose.position.y = gazeboRobotPoint[1]
-                    imodel.pose.position.z = gazeboRobotPoint[2] + .1
-                    # if gazeboRobotPoint != zonePoint then set the model to zonePoint
-                    pub.publish(imodel)
-        zone.draw(self.screen, meterToPixels(0.054229))
-
 fieldPixels = 1000
 fieldConvM = (fieldPixels / 140.5) * 39.3701
 size = width, height = fieldPixels, fieldPixels
