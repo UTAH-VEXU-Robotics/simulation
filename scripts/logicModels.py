@@ -197,6 +197,9 @@ def main():
     def callback(imodels):
 #        print("callback")
         main.models = imodels
+#        for model in main.models.models:
+#            if(model.name=='robot'):
+#                print(model.pose.position)
 
     rospy.Subscriber('/gazebo/get_field', GazeboModels, callback)#(types, zones, models, typesPub, zonesPub, modelPub))
 
@@ -209,21 +212,19 @@ def main():
             typesPub.publish(main.types)
 
             for model in main.models.models:
-                for i in range(0, len(main.zones.zones)):
-                    itype = GazeboType()
-                    for type in main.types.types:
-                        if(type.name == main.zones.zones[i].type):
-                            itype = type
-                    if( inCircle(model.pose.position.x,model.pose.position.y,main.zones.zones[i].x1.data,main.zones.zones[i].y1.data,itype.radius.data) ):
-                        print(len(main.zones.zones[i].models.models))
-                        addModel = True
-                        for imodel in main.zones.zones[i].models.models:
-                            if(imodel.name == model.name):
-                                addModel = False
-                        if(addModel):
-                            print(model.name + ": in: " + zone.name)
-                            print( model.pose.position.x, model.pose.position.y)
-                            main.zones.zones[i].models.models.append(model)
+                for zone in main.zones.zones:
+                    print(model.zone == zone.name)
+                    if(model.zone == zone.name):
+#                        print(zone.name)
+                        index = -1
+                        for i in range(0,len(zone.models.models)):
+                            if(zone.models.models[i].name == model.name):
+                                index = i
+                        if(index==-1):
+                            zone.models.models.append(model)
+                        else:
+                            zone.models.models[index] = model
+                        continue
 
             zonesPub.publish(main.zones)
             modelPub.publish(main.models)

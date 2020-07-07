@@ -77,6 +77,7 @@ def main():
     while not rospy.is_shutdown():
         try:
             time.sleep(.25)
+
             for zone in main.zones.zones:
                 zoneType = GazeboType()
                 for type in main.types.types:
@@ -91,6 +92,9 @@ def main():
                      yToOriginPoint(meterToPixels(float(zone.y2.data))),
                      meterToPixels(float(zoneType.radius.data)),
                      meterToPixels(float(zoneType.width.data)))
+
+                zone.models.models = sorted(zone.models.models, key=lambda model: model.pose.position.z)
+
                 for model in zone.models.models:
                     modelType = GazeboType()
                     for type in main.types.types:
@@ -110,7 +114,6 @@ def main():
                              float(0),
                              meterToPixels(float(modelType.radius.data)),
                              int(modelType.width.data))
-
 
             pygame.display.flip()
 
