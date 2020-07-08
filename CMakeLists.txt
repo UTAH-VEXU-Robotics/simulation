@@ -63,6 +63,9 @@ find_package(catkin REQUIRED COMPONENTS
    GazeboModels.msg
    GazeboZone.msg
    GazeboZones.msg
+   ChangeUpGoal.msg
+   ChangeUpGoals.msg
+   ChangeUpField.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -178,6 +181,8 @@ catkin_install_python(PROGRAMS
   scripts/setModels.py
   scripts/displayModels.py
   scripts/logicModels.py
+  scripts/fakeGazebo.py
+  scripts/costModels.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

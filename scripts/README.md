@@ -29,8 +29,6 @@ Files:
         - /field/types
     - pub to:
         - /gazebo/set_field
-    - purpose:
-        - 
  
 - displayModels.py
     - sub to:

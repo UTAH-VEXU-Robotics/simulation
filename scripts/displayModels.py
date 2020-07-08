@@ -93,13 +93,17 @@ def main():
                      meterToPixels(float(zoneType.radius.data)),
                      meterToPixels(float(zoneType.width.data)))
 
+#                print(zone.models.models)
+
                 for model in zone.models.models:
+
                     modelType = GazeboType()
                     for type in main.types.types:
                         if (type.name == model.type):
                             modelType = type
                     if(model.zone == zone.name):
 #                        print(model.name + ": in: " + zone.name)
+#                        print(model.pose.position.z)
 #                        print(xToOriginPoint(meterToPixels(float(model.pose.position.x))),
 #                             yToOriginPoint(meterToPixels(float(model.pose.position.y))))
                         # WARNING: ONLY CIRCLES WORK FOR THIS AT THE MOMENT

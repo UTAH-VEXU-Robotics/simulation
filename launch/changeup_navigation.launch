@@ -6,10 +6,6 @@
 
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
 
-    <node pkg="joy" type="joy_node" name="joy_node">
-        <param name="deadzone" value="0.1" />
-    </node>
-
     <include file="$(find utah_navigation)/launch/nav.launch"></include>
 
 </launch>
