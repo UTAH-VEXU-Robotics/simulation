@@ -39,7 +39,7 @@ def main():
     rospy.Subscriber('/gazebo/fake', Bool, callback)
 
     # init publisher
-    pub = rospy.Publisher('/gazebo/get_field', GazeboModels, queue_size=5)
+    pub = rospy.Publisher('/gazebo/get_field', GazeboModels, queue_size=3)
 
     while not rospy.is_shutdown():
         try:

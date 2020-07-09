@@ -4,6 +4,7 @@ Files:
     - sub to:
         - gazebo service
         - /field/models
+        - /gazebo/fake
     - pub to:
         - /gazebo/get_field
     - purpose:

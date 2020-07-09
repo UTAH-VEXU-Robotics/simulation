@@ -277,26 +277,30 @@ def main():
         print("model is not in zone!")
 
     changeUpGoals = [
-        [0, 0, 'lft_top_goal', [], 0 ],
-        [0, 0, 'mid_top_goal', [], 0 ],
-        [0, 0, 'rgt_top_goal', [], 0 ],
-        [0, 0, 'lft_mid_goal', [], 0 ],
-        [0, 0, 'mid_mid_goal', [], 0 ],
-        [0, 0, 'rgt_mid_goal', [], 0 ],
-        [0, 0, 'lft_dwn_goal', [], 0 ],
-        [0, 0, 'mid_dwn_goal', [], 0 ],
-        [0, 0, 'rgt_dwn_goal', [], 0 ],
+        ['lft_top_goal', [], 0 ],
+        ['mid_top_goal', [], 0 ],
+        ['rgt_top_goal', [], 0 ],
+        ['lft_mid_goal', [], 0 ],
+        ['mid_mid_goal', [], 0 ],
+        ['rgt_mid_goal', [], 0 ],
+        ['lft_dwn_goal', [], 0 ],
+        ['mid_dwn_goal', [], 0 ],
+        ['rgt_dwn_goal', [], 0 ],
     ]
 
-    main.field.redPoints.data  = 0
-    main.field.bluePoints.data = 0
+    redPoints = Int16()
+    redPoints.data = 0
+    bluePoints = Int16()
+    bluePoints.data = 0
+
+    main.field.redPoints  = redPoints
+    main.field.bluePoints = bluePoints
+    main.field.goalsColor = []
 
     for changeUpGoal in changeUpGoals:
         goal = ChangeUpGoal()
-        goal.redPoints.data = changeUpGoal[0]
-        goal.bluePoints.data = changeUpGoal[1]
-        goal.zoneName = changeUpGoal[2]
-        goal.modelNames = changeUpGoal[3]
+        goal.zoneName = changeUpGoal[0]
+        goal.modelNames = changeUpGoal[1]
         main.field.goals.goals.append(goal)
 
     def findGoalInField(name):
@@ -342,6 +346,13 @@ def main():
 #        print((x - center_x) ** 2 + (y - center_y) ** 2 < radius ** 2)
         return (float(x) - float(center_x)) ** 2 + (float(y) - float(center_y)) ** 2 < float(radius) ** 2
 
+    redInt = Int8()
+    redInt.data = 1
+    blueInt = Int8()
+    blueInt.data = -1
+    noneInt = Int8()
+    noneInt.data = 0
+
     while not rospy.is_shutdown():
         try:
 
@@ -355,8 +366,8 @@ def main():
                 goal.modelNames = []
 
             # reset field points
-            main.field.redPoints.data = 0
-            main.field.bluePoints.data = 0
+            redPoints.data = 0
+            bluePoints.data = 0
             main.field.goalsColor = []
 
             # recalculate the zone and goal in models
@@ -386,14 +397,13 @@ def main():
                     goal = findGoalInField(zone.name)
                     for model in zone.models.models:
                         if(model.zone == zone.name):
-                            goal.modelNames.append(model.name)
+                            if(len(goal.modelNames)>0):
+                                goal.modelNames.append(model.name)
 
                             if(model.color == red):
-                                main.field.redPoints.data += 1
+                                redPoints.data += 1
                             elif(model.color == blue):
-                                main.field.bluePoints.data += 1
-
-
+                                bluePoints.data += 1
 
             fieldColors = [
                 [-1,-1,1],
@@ -441,24 +451,25 @@ def main():
                       fieldColors[goal_rows[i][1][0]][goal_rows[i][1][1]] + \
                       fieldColors[goal_rows[i][2][0]][goal_rows[i][2][1]]
                 if(sum == 3):
-                    main.field.redPoints.data += 6
-                    main.field.goalsColor.append(1)
+                    redPoints.data += 6
+                    main.field.goalsColor.append(redInt)
                 elif(sum == -3):
-                    main.field.bluePoints.data += 6
-                    main.field.goalsColor.append(-1)
+                    bluePoints.data += 6
+                    main.field.goalsColor.append(blueInt)
                 else:
-                    main.field.goalsColor.append(0)
+                    main.field.goalsColor.append(noneInt)
 
-#            print("fieldColors:")
-#            print(fieldColors)
-#            print("goalsColor")
-#            print(main.field.goalsColor)
+
 #            print(main.field)
+
+            main.field.redPoints = redPoints
+            main.field.bluePoints = bluePoints
 
             fieldPub.publish(main.field)
             typesPub.publish(main.types)
             zonesPub.publish(main.zones)
             modelPub.publish(main.models)
+
             time.sleep(.25)
 
 
