@@ -66,6 +66,10 @@ find_package(catkin REQUIRED COMPONENTS
    ChangeUpGoal.msg
    ChangeUpGoals.msg
    ChangeUpField.msg
+   Action.msg
+   Actions.msg
+   Task.msg
+   Tasks.msg
  )
 
 ## Generate services in the 'srv' folder

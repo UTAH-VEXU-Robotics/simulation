@@ -1,5 +1,5 @@
-# scripts
-Files:
+# gazeboSimulation/scripts
+## Files:
 - getModels.py
     - sub to:
         - gazebo service
@@ -23,14 +23,14 @@ Files:
         - assign models to zones
         - sort zones to display correctly
         - acts as the config file
- 
+
 - costModels.py
     - sub to:
         - /field/zones
         - /field/types
     - pub to:
         - /gazebo/set_field
- 
+
 - displayModels.py
     - sub to:
         - /field/zones

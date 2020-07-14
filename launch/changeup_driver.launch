@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find gazeboSimulation)/launch/changeup.launch"></include>
+
+    <include file="$(find gazeboSimulation)/launch/driver.launch"></include>
+</launch>

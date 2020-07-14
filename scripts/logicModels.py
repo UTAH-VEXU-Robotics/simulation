@@ -133,6 +133,7 @@ def main():
 
     izones = [
         # name           #types     #x1      #y1      #x2   #y2    #radius
+        # the first zone is a field
         ['field', 'field', grey, fieldX1, fieldY1, fieldX2, fieldY2, initialModels],
         ['lft_top_goal', 'goal', black, lft, top, zip, zip, initialModels],
         ['mid_top_goal', 'goal', black, mid, top, zip, zip, initialModels],
@@ -164,6 +165,7 @@ def main():
         print("zone not found!")
 
     imodels=[
+        # the fist model is the robot
         ['robot', white, 'field', 'robot', '', initialPose],
         ['ball',red,'field','red1', 'body',initialPose],
         ['ball',red,'field','red2', 'body',initialPose],
@@ -195,6 +197,7 @@ def main():
         ['ball', blue, 'lft_mid_goal', 'blue14', 'body', initialPose],
     ]
     modelPoses=[
+        # the fist model is the robot
         ['robot', 0.633686721058, -1.39194882216, 0.0997087770738],
         ['red1', 0.0, 0.2487, 0.0800099999967],
         ['red2', 0.2487, 0.0, 0.0800099999967],
@@ -226,6 +229,7 @@ def main():
         ['blue14', -1.64152449588, -0.00590554941898, 0.236747871432],
     ]
     zoneModels=[
+        # the first zone is a field
         ['field',        ['robot','red1','red2','red3','red9','red10','blue1','blue2','blue3','blue12','blue13']],
         ['lft_top_goal', ['red8','blue8']],
         ['mid_top_goal', ['red4','red5','blue4']],
@@ -277,15 +281,15 @@ def main():
         print("model is not in zone!")
 
     changeUpGoals = [
-        ['lft_top_goal', [], 0 ],
-        ['mid_top_goal', [], 0 ],
-        ['rgt_top_goal', [], 0 ],
-        ['lft_mid_goal', [], 0 ],
-        ['mid_mid_goal', [], 0 ],
-        ['rgt_mid_goal', [], 0 ],
-        ['lft_dwn_goal', [], 0 ],
-        ['mid_dwn_goal', [], 0 ],
-        ['rgt_dwn_goal', [], 0 ],
+        ['lft_top_goal', [], [] ],
+        ['mid_top_goal', [], [] ],
+        ['rgt_top_goal', [], [] ],
+        ['lft_mid_goal', [], [] ],
+        ['mid_mid_goal', [], [] ],
+        ['rgt_mid_goal', [], [] ],
+        ['lft_dwn_goal', [], [] ],
+        ['mid_dwn_goal', [], [] ],
+        ['rgt_dwn_goal', [], [] ],
     ]
 
     redPoints = Int16()
@@ -293,15 +297,25 @@ def main():
     bluePoints = Int16()
     bluePoints.data = 0
 
+    distanceFromRobot = Float32()
+    distanceFromRobot.data = 0.0
+
     main.field.redPoints  = redPoints
     main.field.bluePoints = bluePoints
-    main.field.goalsColor = []
 
     for changeUpGoal in changeUpGoals:
         goal = ChangeUpGoal()
         goal.zoneName = changeUpGoal[0]
         goal.modelNames = changeUpGoal[1]
+        goal.modelColors = changeUpGoal[2]
+        goal.distanceFromRobot = distanceFromRobot
         main.field.goals.goals.append(goal)
+
+    main.field.goalsColor = []
+    main.field.fieldName = izones[0][0]
+    main.field.modelNames = []
+    main.field.modelColors = []
+    main.field.distanceFromRobot = []
 
     def findGoalInField(name):
         for obj in main.field.goals.goals:
@@ -330,8 +344,8 @@ def main():
     fieldPub = rospy.Publisher('/field/field', ChangeUpField, queue_size=3)
 
     def callback(imodels):
-        print("callback")
-#        main.models = imodels
+#        print("callback")
+        main.models = imodels
 #        for model in main.models.models:
 #            if(model.name=='robot'):
 #                print(model.pose.position)
@@ -339,12 +353,16 @@ def main():
     rospy.Subscriber('/gazebo/get_field', GazeboModels, callback)#(types, zones, models, typesPub, zonesPub, modelPub))
 
     def inCircle(x, y, center_x, center_y, radius):
-#        print(x,y)
-#        print(center_x, center_y)
-#        print(radius)
-#        print( (x - center_x)**2 + (y-center_y)**2, radius**2)
-#        print((x - center_x) ** 2 + (y - center_y) ** 2 < radius ** 2)
         return (float(x) - float(center_x)) ** 2 + (float(y) - float(center_y)) ** 2 < float(radius) ** 2
+
+    def nonZeroFloat(ia):
+        a = ia
+        if(a == 0):
+            a = .000001
+        return float(a)
+
+    def distBetweenPoints(ia,ib):
+        return math.sqrt((nonZeroFloat(ib[0]) - nonZeroFloat(ia[0]))**2 + (nonZeroFloat(ib[1]) - nonZeroFloat(ia[1])) ** 2)
 
     redInt = Int8()
     redInt.data = 1
@@ -361,14 +379,19 @@ def main():
                 for model in zone.models.models:
                     zone.models.models.pop()
 
-            # reset goal modelNames
+            # reset goal modelNames and modelColors
             for goal in main.field.goals.goals:
                 goal.modelNames = []
+                goal.modelColors = []
+                goal.distanceFromRobot = distanceFromRobot
 
             # reset field points
             redPoints.data = 0
             bluePoints.data = 0
             main.field.goalsColor = []
+            main.field.modelNames = []
+            main.field.modelColors = []
+            main.field.distanceFromRobot = []
 
             # recalculate the zone and goal in models
             for model in main.models.models:
@@ -392,23 +415,56 @@ def main():
             for zone in main.zones.zones:
                 zone.models.models = sorted(zone.models.models, key=lambda model: model.pose.position.z)
                 if(zone.name != 'field'):
-
                     # add models to goal (if the zone is not a field)
                     goal = findGoalInField(zone.name)
+
+                    actualDistanceFromRobot = Float32()
+                    actualDistanceFromRobot.data = distBetweenPoints(
+                        (findZone(goal.zoneName).x1.data, findZone(goal.zoneName).y1.data),
+                        (findModel(imodels[0][3]).pose.position.x, findModel(imodels[0][3]).pose.position.y)
+                    )
+
+#                    print(findModel(imodels[0][3]).pose)
+#                    print(goal.zoneName,(findZone(goal.zoneName).x1.data, findZone(goal.zoneName).y1.data),
+#                        (findModel(imodels[0][3]).pose.position.x, findModel(imodels[0][3]).pose.position.y))
+#                    print(zone.name,actualDistanceFromRobot)
+
+                    goal.distanceFromRobot = actualDistanceFromRobot
+
                     for model in zone.models.models:
                         if(model.zone == zone.name):
-                            if(len(goal.modelNames)>0):
-                                goal.modelNames.append(model.name)
+                            #if(len(goal.modelNames)>0):
+                            goal.modelNames.append(model.name)
 
                             if(model.color == red):
                                 redPoints.data += 1
+                                goal.modelColors.append(redInt)
                             elif(model.color == blue):
                                 bluePoints.data += 1
+                                goal.modelColors.append(blueInt)
+                elif(zone.name == 'field'):
+                    for model in zone.models.models:
+                        if (model.zone == zone.name):
+                            # if(len(goal.modelNames)>0):
+                            main.field.modelNames.append(model.name)
+
+                            if (model.color == red):
+                                main.field.modelColors.append(redInt)
+                            elif (model.color == blue):
+                                main.field.modelColors.append(blueInt)
+
+                            actualDistanceFromRobot = Float32()
+                            actualDistanceFromRobot.data = distBetweenPoints(
+                                (model.pose.position.x, model.pose.position.y),
+                                (findModel(imodels[0][3]).pose.position.x, findModel(imodels[0][3]).pose.position.y)
+                            )
+
+                            main.field.distanceFromRobot.append(actualDistanceFromRobot)
 
             fieldColors = [
-                [-1,-1,1],
-                [-1,0,1],
-                [-1,1,1],
+                [blueInt,blueInt,redInt],
+                [blueInt,noneInt,redInt],
+                [blueInt, redInt,redInt],
             ]
 
             fieldGoals = [
@@ -420,14 +476,16 @@ def main():
             for x in range(len(fieldColors)):
                 for y in range(len(fieldColors[0])):
                     goal = fieldGoals[x][y]
-                    num = 0
-#                    print(len(goal.modelNames))
-                    if(len(goal.modelNames)>0):
-                        color = findModelInZone(goal.modelNames[-1],goal.zoneName).color
-                        if(color == red):
-                            num = 1
-                        elif(color == blue):
-                            num = -1
+                    num = noneInt
+#                    print(fieldGoals)
+#                    print(len(goal.modelColors))
+                    if(len(goal.modelColors)>0):
+                        color = findGoalInField(goal.zoneName).modelColors[-1]
+                        if(color == redInt):
+                            num = redInt
+                        elif(color == blueInt):
+                            num = blueInt
+#                        print(x,y,color)
                     fieldColors[x][y] = num
 
             goal_rows = [
@@ -446,10 +504,14 @@ def main():
                 [[2,0], [1,1], [0,2]],
             ]
 
+#            print(fieldColors)
+#            print(goal_rows)
+
             for i in range(0,len(goal_rows)):
-                sum = fieldColors[goal_rows[i][0][0]][goal_rows[i][0][1]] + \
-                      fieldColors[goal_rows[i][1][0]][goal_rows[i][1][1]] + \
-                      fieldColors[goal_rows[i][2][0]][goal_rows[i][2][1]]
+                sum = fieldColors[goal_rows[i][0][0]][goal_rows[i][0][1]].data + \
+                      fieldColors[goal_rows[i][1][0]][goal_rows[i][1][1]].data + \
+                      fieldColors[goal_rows[i][2][0]][goal_rows[i][2][1]].data
+
                 if(sum == 3):
                     redPoints.data += 6
                     main.field.goalsColor.append(redInt)
@@ -459,11 +521,10 @@ def main():
                 else:
                     main.field.goalsColor.append(noneInt)
 
-
-#            print(main.field)
-
             main.field.redPoints = redPoints
             main.field.bluePoints = bluePoints
+
+#            print(main.field)
 
             fieldPub.publish(main.field)
             typesPub.publish(main.types)

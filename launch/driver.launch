@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="gazeboSimulation" type="getModels.py" name="get_models" output="screen"/>
+    <node pkg="gazeboSimulation" type="logicModels.py" name="logic_models" output="screen"/>
+    <node pkg="gazeboSimulation" type="displayModels.py" name="display_models" output="screen"/>
+    <node pkg="gazeboSimulation" type="costModels.py" name="cost_models" output="screen"/>
+</launch>
