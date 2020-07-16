@@ -38,13 +38,9 @@
         <remap from="/joint_states" to="/default/joint_states"/>
     </node>
 
-    <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher2">
-        <param name="publish_frequency" type="double" value="100.0" />
-        <remap from="/joint_states" to="/default/joint_states"/>
-        <param name="tf_prefix" type="string" value="GT" />
-    </node>
+    
 
-    <node pkg="tf" type="static_transform_publisher" name="odom_world_broadcaster" args="$(arg x_start) $(arg y_start) $(arg z_start) 0 -0.0 0 world odom 10" />
+    <node pkg="tf" type="static_transform_publisher" name="odom_world_broadcaster" args="$(arg x_start) $(arg y_start) $(arg z_start) 0 0.0 0 world odom 10" />
 
     <rosparam command="load"
               file="$(find gazeboSimulation)/config/joints.yaml"
@@ -55,16 +51,8 @@
 
     <node name="controller_spawner" pkg="controller_manager" type="spawner" args="robot_joint_state_controller robot_diff_drive_controller">
     </node>
+    <include file="$(find joystick_control)/launch/jsc.launch"></include>
 
-    <node pkg="joy" type="joy_node" name="joy_node">
-        <param name="deadzone" value="0.1" />
-    </node>
-
-    <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
-        <param name="scale_linear" value="1.5" />
-        <param name="scale_angular" value="3.0" />
-        <remap from="/cmd_vel" to="/robot_diff_drive_controller/cmd_vel"/>
-    </node>
     
     
 </launch>

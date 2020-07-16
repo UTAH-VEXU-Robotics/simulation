@@ -1,0 +1,278 @@
+<?xml version="1.0"?>
+
+<robot name="FlyWheel" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!--constants-->
+  <xacro:property name="width" value="0.1" />
+  <xacro:property name="leglen" value="0.05" />
+  <xacro:property name="bodylen" value="0.05" />
+  <xacro:property name="baselen" value="0.25" />
+  <xacro:property name="wheeldiam" value="0.082" />
+  <xacro:property name="pi" value="3.1415" />
+
+  <xacro:property name="wheel_radius" value="0.04" />
+  <xacro:property name="wheel_width" value="0.025" />
+
+  <xacro:property name="xyz" value="0 0 0"/>
+  <xacro:property name="rpy" value="0 0 0"/>
+  <xacro:property name="wheel_xyz" value="0 0 0"/>
+  <xacro:property name="wheel_rpy" value="0 0 0"/>
+  <xacro:property name="roller_xyz" value="0 .008 -.0465"/>
+  <xacro:property name="roller_rpy" value="0 ${-pi/12} 0"/>
+
+  <xacro:property name="roller_diameter" value="0.0055" />
+  <xacro:property name="roller_width" value="0.015" />
+
+  <xacro:property name="roller_side_length" value="0.0088"/>
+  <xacro:property name="roller_radius" value=".0475"/>
+
+  <material name="blue">
+      <color rgba="0 0 0.8 1"/>
+  </material>
+
+  <material name="black">
+      <color rgba="0 0 0 1"/>
+  </material>
+
+  <material name="white">
+      <color rgba="1 1 1 1"/>
+  </material>
+
+  <xacro:macro name="chassis_inertial" params="mass">
+    <inertial>
+      <mass value="${mass}" />
+      <inertia ixx="0.5" ixy="0.0" ixz="0.0" iyy="0.3" iyz="0.0" izz="0.5" />
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="roller_inertial" params="mass">
+    <inertial>
+      <mass value="${mass}" />
+      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+    </inertial>
+  </xacro:macro>
+
+
+  <!--wheels-->
+  <xacro:macro name="roller" params="prefix suffix theta side">
+    <link name="${prefix}_${suffix}_roller">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+            <geometry>
+                <cylinder radius="${roller_diameter}" length="${roller_width}"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+            <geometry>
+                <cylinder radius="${roller_diameter}" length="${roller_width}"/>
+            </geometry>
+        </collision>
+        <xacro:roller_inertial mass="0.001"/>
+    </link>
+    <joint name="${prefix}_${suffix}_roller_joint" type="continuous">
+        <axis xyz="1 0 0" />
+        <parent link="${prefix}_wheel"/>
+        <child link="${prefix}_${suffix}_roller"/>
+        <origin xyz="${sin(theta)*roller_radius} ${roller_side_length*side} ${cos(theta)*roller_radius}" rpy="0 ${theta} 0"/>
+        <dynamics damping="0.0001" />
+    </joint>
+    <!-- This block provides the simulator (Gazebo) with information on a few additional
+    physical properties. See http://gazebosim.org/tutorials/?tut=ros_urdf for more-->
+    <gazebo reference="${prefix}_${suffix}_roller">
+        <mu1 value="2000.0"/>
+        <mu2 value="1000.0"/>
+        <kp value="10000000.0" />
+        <kd value="1.0" />
+        <material>Gazebo/Grey</material>
+    </gazebo>
+
+    <!-- This block connects the wheel joint to an actuator (motor), which informs both
+    simulation and visualization of the robot -->
+</xacro:macro>
+
+<xacro:macro name="wheel" params="prefix suffix reflect reflectX">
+    <link name="${prefix}_${suffix}_wheel">
+        <visual>
+            <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+            <geometry>
+                <cylinder radius="${wheeldiam/2}" length="${wheel_width}"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+            <geometry>
+                <cylinder radius="${wheeldiam/2}" length="${wheel_width}"/>
+            </geometry>
+        </collision>
+        <xacro:roller_inertial mass="0.001"/>
+    </link>
+
+    <joint name="${prefix}_${suffix}_wheel_joint" type="continuous">
+        <axis xyz="0 1 0" />
+        <parent link="chassis_link"/>
+        <child link="${prefix}_${suffix}_wheel"/>
+        <origin xyz="${baselen*reflect/3} ${.128*reflectX} 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- This block provides the simulator (Gazebo) with information on a few additional
+    physical properties. See http://gazebosim.org/tutorials/?tut=ros_urdf for more-->
+    <gazebo reference="${prefix}_${suffix}_wheel">
+        <mu1 value="200.0"/>
+        <mu2 value="100.0"/>
+        <kp value="10000000.0" />
+        <kd value="1.0" />
+        <material>Gazebo/Green</material>
+    </gazebo>
+
+    <!-- This block connects the wheel joint to an actuator (motor), which informs both
+    simulation and visualization of the robot -->
+    <transmission name="${prefix}_${suffix}_wheel_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="${prefix}_${suffix}_wheel_motor">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+        <joint name="${prefix}_${suffix}_wheel_joint">
+            <hardwareInterface>VelocityJointInterface</hardwareInterface>
+        </joint>
+    </transmission>
+
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="right_one" theta="${pi * ( 1/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="right_two" theta="${pi * ( 2/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="right_thr" theta="${pi * ( 3/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="right_for" theta="${pi * ( 4/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="right_fve" theta="${pi * ( 5/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="right_six" theta="${pi * ( 6/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="right_svn" theta="${pi * ( 7/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="right_ate" theta="${pi * ( 8/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="right_nne" theta="${pi * ( 9/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="right_ten" theta="${pi * (10/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="right_lvn" theta="${pi * (11/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="right_wlv" theta="${pi * (12/6)}" side="-1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="left_one" theta="${pi * ( 1/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="left_two" theta="${pi * ( 2/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="left_thr" theta="${pi * ( 3/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="left_for" theta="${pi * ( 4/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="left_fve" theta="${pi * ( 5/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="left_six" theta="${pi * ( 6/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="left_svn" theta="${pi * ( 7/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="left_ate" theta="${pi * ( 8/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="left_nne" theta="${pi * ( 9/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="left_ten" theta="${pi * (10/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="left_lvn" theta="${pi * (11/6) + ( pi / 12 )}" side="1"/>
+    <xacro:roller prefix="${prefix}_${suffix}" suffix="left_wlv" theta="${pi * (12/6) + ( pi / 12 )}" side="1"/>-->
+
+</xacro:macro>
+
+
+<!--<xacro:macro name="flap" params="prefix suffix theta side">
+    <link name="${prefix}_${suffix}_intake">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+            <geometry>
+                <cylinder radius="${roller_diameter}" length="${roller_width}"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+            <geometry>
+                <cylinder radius="${roller_diameter}" length="${roller_width}"/>
+            </geometry>
+        </collision>
+        <xacro:roller_inertial mass="0.001"/>
+    </link>
+</xacro:macro>-->
+
+<xacro:macro name="intake" params="prefix suffix reflect reflectX">
+    <link name="${prefix}_${suffix}_intake">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.082 0.082 0.002"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.082 0.082 0.002"/>
+            </geometry>
+        </collision>
+        <xacro:roller_inertial mass="0.001"/>
+    </link>
+
+    <joint name="${prefix}_${suffix}_intake_joint" type="continuous">
+        <axis xyz="0 0 1" />
+        <parent link="chassis_link"/>
+        <child link="${prefix}_${suffix}_intake"/>
+        <origin xyz="${.2*reflect} ${.1*reflectX} 0.025" rpy="0 0 0"/>
+    </joint>
+
+    <!-- This block provides the simulator (Gazebo) with information on a few additional
+    physical properties. See http://gazebosim.org/tutorials/?tut=ros_urdf for more-->
+    <gazebo reference="${prefix}_${suffix}_intake">
+        <mu1 value="200.0"/>
+        <mu2 value="100.0"/>
+        <kp value="10000000.0" />
+        <kd value="1.0" />
+        <material>Gazebo/Green</material>
+    </gazebo>
+
+    <!-- This block connects the wheel joint to an actuator (motor), which informs both
+    simulation and visualization of the robot -->
+    <transmission name="${prefix}_${suffix}_intake_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="${prefix}_${suffix}_intake_motor">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+        <joint name="${prefix}_${suffix}_intake_joint">
+            <hardwareInterface>VelocityJointInterface</hardwareInterface>
+        </joint>
+    </transmission>
+</xacro:macro>
+
+<!--          Well this is the robot          -->
+<link name="chassis_link">
+  <visual>
+    <origin xyz="0 0 0.1177" rpy="0 0 0" />
+    <geometry>
+      <mesh filename="package://gazeboSimulation/models/change_up_cad/FlyWheel/Collision/CFrame.dae"/>
+    </geometry>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0.1177" rpy="0 0 0" />
+    <geometry>
+      <mesh filename="package://gazeboSimulation/models/change_up_cad/FlyWheel/Collision/CFrame.dae"/>
+    </geometry>
+  </collision>
+  <xacro:chassis_inertial mass="5"/>
+</link>
+  
+<xacro:wheel prefix="left" suffix="front"  reflect= "1" reflectX="1"/>
+<xacro:wheel prefix="left" suffix="back"   reflect="-1" reflectX="1"/>
+<xacro:wheel prefix="right" suffix="front" reflect= "1" reflectX= "-1"/>
+<xacro:wheel prefix="right" suffix="back"  reflect="-1" reflectX= "-1"/>
+
+<xacro:intake prefix="right" suffix="front"  reflect="-1" reflectX= "1"/>
+<xacro:intake prefix="left" suffix="front"  reflect="-1" reflectX= "-1"/>
+<!-- Gazebo plugin for ROS Control -->
+<gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>/</robotNamespace>
+    </plugin>
+    <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>50.0</updateRate>
+      <bodyName>chassis_link</bodyName>
+      <topicName>ground_truth/state</topicName>
+      <gaussianNoise>0.01</gaussianNoise>
+      <frameName>world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+</gazebo>
+
+
+</robot>
