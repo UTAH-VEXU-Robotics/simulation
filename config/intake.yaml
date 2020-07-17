@@ -1,0 +1,9 @@
+# Velocity Controllers ---------------------------------------
+  left_intake_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: left_front_intake_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  right_intake_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: right_front_intake_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
