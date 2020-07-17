@@ -51,7 +51,8 @@
     <rosparam command="load"
           file="$(find gazeboSimulation)/config/intake.yaml"/>
 
-    <node name="controller_spawner" pkg="controller_manager" type="spawner" args="robot_joint_state_controller robot_diff_drive_controller left_intake_vel_controller right_intake_vel_controller">
+    <node name="controller_spawner" pkg="controller_manager" type="spawner"
+     args="robot_joint_state_controller robot_diff_drive_controller left_front_intake_vel_controller right_front_intake_vel_controller left_back_intake_vel_controller right_back_intake_vel_controller top_vel_controller bottom_vel_controller">
     </node>
 
     <include file="$(find joystick_control)/launch/jsc.launch"></include>

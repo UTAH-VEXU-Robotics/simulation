@@ -1,9 +1,26 @@
 # Velocity Controllers ---------------------------------------
-  left_intake_vel_controller:
+  left_front_intake_vel_controller:
     type: velocity_controllers/JointVelocityController
     joint: left_front_intake_joint
     pid: {p: 100.0, i: 0.01, d: 10.0}
-  right_intake_vel_controller:
+  right_front_intake_vel_controller:
     type: velocity_controllers/JointVelocityController
     joint: right_front_intake_joint
     pid: {p: 100.0, i: 0.01, d: 10.0}
+  left_back_intake_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: left_back_intake_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  right_back_intake_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: right_back_intake_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  top_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: top_indexer_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  bottom_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: bottom_indexer_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+
