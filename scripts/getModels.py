@@ -3,7 +3,10 @@
 from gazebo_msgs.srv import GetModelState
 from geometry_msgs.msg import Pose
 from std_msgs.msg import String, Bool
-from gazeboSimulation.msg import GazeboModel, GazeboModels
+try:
+    from driver.msg import Model, Models
+except:
+    print("driver not working")
 import rospy
 
 def getPose(ipose):
@@ -24,46 +27,32 @@ def main():
     # set cycles per second
     rate = rospy.Rate(10)
 
-    main.models = GazeboModels()
-    main.fakeGazebo = Bool()
-    main.fakeGazebo.data = False
-
-    def callback(models):
-        main.models = models
-
-    def fakeCallback(fakeGazebo):
-        print("gazebo is fake")
-        main.fakeGazebo = fakeGazebo
-
-    rospy.Subscriber('/field/models', GazeboModels, callback)
-    rospy.Subscriber('/gazebo/fake', Bool, callback)
+    main.models = Models()
 
     # init publisher
-    pub = rospy.Publisher('/gazebo/get_field', GazeboModels, queue_size=3)
+    pub = rospy.Publisher('/gazebo/get_field', Models, queue_size=3)
 
     while not rospy.is_shutdown():
         try:
             # sleep
             rate.sleep()
 
-            if(main.fakeGazebo.data == False and main.models != GazeboModels()):
-                # wait for gazebo
-                rospy.wait_for_service('/gazebo/get_model_state')
-
-                # get updated models
-                updated_models = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-                out = GazeboModels()
-                for model in main.models.models:
-                    imodel = GazeboModel()
-                    imodel.type = model.type
-                    imodel.color = model.color
-                    imodel.zone = model.zone
-                    imodel.name = model.name
-                    imodel.link = model.link
-                    imodel.pose = getPose(updated_models(str(imodel.name), str(imodel.link)))
-                    out.models.append(imodel)
-                if(out != GazeboModels()):
-                    pub.publish(out)
+            # wait for gazebo
+            rospy.wait_for_service('/gazebo/get_model_state')
+            # get updated models
+            updated_models = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
+            out = Models()
+            for model in main.models.models:
+                imodel = Model()
+                imodel.type = model.type
+                imodel.color = model.color
+                imodel.zone = model.zone
+                imodel.name = model.name
+                imodel.link = model.link
+                imodel.pose = getPose(updated_models(str(imodel.name), str(imodel.link)))
+                out.models.append(imodel)
+            if(out != Models()):
+                pub.publish(out)
 
         except rospy.ROSInterruptException:
             print("failed get gazebo models")

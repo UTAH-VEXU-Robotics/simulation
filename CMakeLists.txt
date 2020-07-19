@@ -8,14 +8,15 @@ project(gazeboSimulation)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS 
-  roscpp 
+  roscpp
   rospy 
   std_msgs 
   genmsg 
-  gazebo_msgs 
-  message_generation 
+  gazebo_msgs
+  message_generation
   geometry_msgs
   sensor_msgs
+  driver
 )
 
 ## System dependencies are found with CMake's conventions
@@ -52,25 +53,12 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
- add_message_files(
-   FILES
-#   Robots.msg
-#   ChangeUp.msg
-#   ChangeUpGoals.msg
-   GazeboType.msg
-   GazeboTypes.msg
-   GazeboModel.msg
-   GazeboModels.msg
-   GazeboZone.msg
-   GazeboZones.msg
-   ChangeUpGoal.msg
-   ChangeUpGoals.msg
-   ChangeUpField.msg
-   Action.msg
-   Actions.msg
-   Task.msg
-   Tasks.msg
- )
+# add_message_files(
+#   FILES
+##   Robots.msg
+##   ChangeUp.msg
+##   ChangeUpGoals.msg
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -87,10 +75,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs geometry_msgs
- )
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs geometry_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -124,7 +112,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES
-  CATKIN_DEPENDS message_runtime sensor_msg #add more msgs here
+  CATKIN_DEPENDS message_runtime sensor_msgs #driver #add more msgs here
 #  DEPENDS system_lib
 )
 
@@ -183,10 +171,6 @@ catkin_install_python(PROGRAMS
 #  scripts/gazeboModels.py
   scripts/getModels.py
   scripts/setModels.py
-  scripts/displayModels.py
-  scripts/logicModels.py
-  scripts/fakeGazebo.py
-  scripts/costModels.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

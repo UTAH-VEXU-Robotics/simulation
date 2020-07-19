@@ -5,7 +5,7 @@ from gazebo_msgs.srv import SetModelState
 from gazebo_msgs.msg import ModelState
 from geometry_msgs.msg import Pose
 from std_msgs.msg import String
-from gazeboSimulation.msg import GazeboModel, GazeboModels
+from driver.msg import Model, Models
 import rospy
 
 def main():
@@ -31,7 +31,7 @@ def main():
             print
             "Service call failed: %s" % e
 
-    rospy.Subscriber("/gazebo/set_field", GazeboModel, callback)
+    rospy.Subscriber("/gazebo/set_field", Model, callback)
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 

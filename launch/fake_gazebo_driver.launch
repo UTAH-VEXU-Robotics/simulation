@@ -1,4 +1,0 @@
-<launch>
-    <include file="$(find gazeboSimulation)/launch/driver.launch"/>
-    <node pkg="gazeboSimulation" type="fakeGazebo.py" name="fake_gazebo" output="screen"/>
-</launch>
