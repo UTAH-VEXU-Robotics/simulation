@@ -7,6 +7,14 @@
     type: velocity_controllers/JointVelocityController
     joint: right_front_intake_joint
     pid: {p: 100.0, i: 0.01, d: 10.0}
+  left_middle_intake_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: left_middle_intake_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  right_middle_intake_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: right_middle_intake_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
   left_back_intake_vel_controller:
     type: velocity_controllers/JointVelocityController
     joint: left_back_intake_joint
