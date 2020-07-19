@@ -8,14 +8,15 @@ project(gazeboSimulation)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS 
-  roscpp 
+  roscpp
   rospy 
   std_msgs 
   genmsg 
-  gazebo_msgs 
-  message_generation 
+  gazebo_msgs
+  message_generation
   geometry_msgs
   sensor_msgs
+  driver
 )
 
 ## System dependencies are found with CMake's conventions
@@ -54,14 +55,15 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 # add_message_files(
 #   FILES
-#   Message1.msg
-#   Message2.msg
+##   Robots.msg
+##   ChangeUp.msg
+##   ChangeUpGoals.msg
 # )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
-#   Service1.srv
+#   ChangeUpGoalCalc.srv
 #   Service2.srv
 # )
 
@@ -75,7 +77,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
+#   std_msgs geometry_msgs
 # )
 
 ################################################
@@ -110,7 +112,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES
-  CATKIN_DEPENDS sensor_msg #add more msgs here
+  CATKIN_DEPENDS message_runtime sensor_msgs #driver #add more msgs here
 #  DEPENDS system_lib
 )
 
@@ -165,8 +167,10 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-  scripts/republisher.py
-  scripts/gazeboModels.py
+#  scripts/republisher.py
+#  scripts/gazeboModels.py
+  scripts/getModels.py
+  scripts/setModels.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

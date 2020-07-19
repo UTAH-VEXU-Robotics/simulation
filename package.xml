@@ -7,7 +7,7 @@
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="tabor@todo.todo">tabor</maintainer>
+  <maintainer email="acetousk@gmail.com">tabor</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
@@ -56,8 +56,12 @@
   <build_depend>message_generation</build_depend>
   <build_depend>move_base</build_depend>
   <build_depend>nav_msgs</build_depend>
-  <build_depend>sensor_msg</build_depend>
-  <exec_depend>sensor_msg</exec_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+  <build_depend>driver</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>driver</exec_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

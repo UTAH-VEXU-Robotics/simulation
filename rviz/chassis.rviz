@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /Path2
       Splitter Ratio: 0.5
     Tree Height: 744
   - Class: rviz/Selection
@@ -659,7 +660,7 @@ Visualization Manager:
     - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
-      Color: 25; 255; 0
+      Color: 0; 0; 0
       Enabled: true
       Head Diameter: 0.30000001192092896
       Head Length: 0.20000000298023224
@@ -682,7 +683,7 @@ Visualization Manager:
     - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
-      Color: 25; 255; 0
+      Color: 0; 0; 0
       Enabled: true
       Head Diameter: 0.30000001192092896
       Head Length: 0.20000000298023224
@@ -764,7 +765,7 @@ Visualization Manager:
       Value: false
     - Alpha: 1
       Class: rviz/Polygon
-      Color: 25; 255; 0
+      Color: 0; 0; 0
       Enabled: true
       Name: Polygon
       Topic: /move_base/local_costmap/footprint
@@ -798,7 +799,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.2364625930786133
+      Distance: 2.4127092361450195
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -813,10 +814,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9347970485687256
+      Pitch: 0.7997968792915344
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.4899885654449463
+      Yaw: 3.103635787963867
     Saved:
       - Class: rviz/Orbit
         Distance: 0.9657304286956787
@@ -854,5 +855,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 2308
-  X: 904
-  Y: 129
+  X: 892
+  Y: 64
