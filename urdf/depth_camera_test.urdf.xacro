@@ -3,7 +3,7 @@
 
     <link name="base_link"></link>
 
-    <xacro:include filename="camera.urdf.xacro" ns="camera"/>
+    <xacro:include filename="depth_camera.urdf.xacro" ns="camera"/>
     <joint name="camera_joint" type="fixed">
         <parent link="base_link"/>
         <child link="camera_link"/>

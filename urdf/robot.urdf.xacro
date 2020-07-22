@@ -12,11 +12,12 @@
 
     <xacro:include filename="depth_camera.urdf.xacro"/>
 
-    <!--<xacro:kinect prefix="front" origin_link="base_link" xyz="0.15 0 0.25" rpy="0 0 0"/>
-    <xacro:kinect prefix="back" origin_link="base_link" xyz="-0.15 0 0.25" rpy="0 0 3.14"/>-->
+    <xacro:kinect prefix="front" origin_link="base_link" xyz="0.15 0 0.25" rpy="0 0 0"/>
+    <xacro:kinect prefix="back" origin_link="base_link" xyz="-0.15 0 0.25" rpy="0 0 3.14"/>
 
     <xacro:include filename="wide_camera.urdf.xacro"/>
-    <xacro:wide prefix="left" origin_link="base_link" xyz="0 -0.15 0.1" rpy="0 1.57 1.57"/>
-    <xacro:wide prefix="right" origin_link="base_link" xyz="0 0.15 0.1" rpy="1.57 1.57 0"/>
+    
+    <xacro:wide prefix="left" origin_link="base_link" xyz="0 -0.15 0.1" rpy="0 0 -1.57"/>
+    <xacro:wide prefix="right" origin_link="base_link" xyz="0 0.15 0.1" rpy="0 0 1.57"/>
 
 </robot>
