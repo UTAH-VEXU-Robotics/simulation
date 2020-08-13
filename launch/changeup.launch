@@ -3,70 +3,17 @@
     <arg name="y_start" default="-1.0"/>
     <arg name="z_start" default="0.11"/>
 
-    <arg name="world_name" default="$(find gazeboSimulation)/worlds/games/change_up.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
-    <arg name="model" default="$(find gazeboSimulation)/urdf/robot.urdf.xacro"/>
-    <arg name="rvizconfig" default="$(find gazeboSimulation)/rviz/chassis.rviz" />
+    <arg name="world_name" default="$(find simulation)/worlds/games/change_up.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
+    <arg name="model" default="$(find simulation)/urdf/robot.urdf.xacro"/>
+    <arg name="rvizconfig" default="$(find simulation)/rviz/changeup.rviz" />
 
-    <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
-    <include file="$(find gazeboSimulation)/launch/empty_world.launch">
+    <include file="$(find simulation)/launch/robot.launch">
+        <arg name="x_start" value="$(arg x_start)" />
+        <arg name="y_start" value="$(arg y_start)" />
+        <arg name="z_start" value="$(arg z_start)" />
+
         <arg name="world_name" value="$(arg world_name)" />
+        <arg name="model" value="$(arg model)" />
+        <arg name="rvizconfig" value="$(arg rvizconfig)" />
     </include>
-
-    <!-- convert urdf.xacro to just urdf-->
-    <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
-
-    <!-- push robot_description to factory and spawn robot in gazebo -->
-    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
-          args="-x $(arg x_start) -y $(arg y_start) -z $(arg z_start) -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" />
-
-    <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
-        <param name="publish_frequency" type="double" value="30.0" />
-    </node>
-
-    <node name="ground_truth_to_tf" pkg="message_to_tf" type="message_to_tf" output="screen">
-        <param name="~odometry_topic" value="ground_truth/state" />
-        <param name="~frame_id" value="world" />
-        <param name="~child_frame_id" value="GT/base_link" />
-    </node>
-
-    <node pkg="topic_tools" type="relay"  name="relay"
-          args="joint_states joint_states_copy">
-    </node>
-
-    <rosparam param="source_list">["joint_states_copy"]</rosparam>
-    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="joint_state_publisher">
-        <remap from="/joint_states" to="/default/joint_states"/>
-    </node>
-
-    <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher2">
-        <param name="publish_frequency" type="double" value="100.0" />
-        <remap from="/joint_states" to="/default/joint_states"/>
-        <param name="tf_prefix" type="string" value="GT" />
-    </node>
-
-    <node pkg="tf" type="static_transform_publisher" name="odom_world_broadcaster" args="$(arg x_start) $(arg y_start) $(arg z_start) 0 -0.0 0 world odom 10" />
-
-    <rosparam command="load"
-              file="$(find gazeboSimulation)/config/joints.yaml"
-              ns="robot_joint_state_controller" />
-    <rosparam command="load"
-              file="$(find gazeboSimulation)/config/diffdrive.yaml"
-              ns="robot_diff_drive_controller" />
-
-    <node name="controller_spawner" pkg="controller_manager" type="spawner" args="robot_joint_state_controller robot_diff_drive_controller"></node>
-
-    <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
-        <param name="scale_linear" value="1.5" />
-        <param name="scale_angular" value="3.0" />
-        <remap from="/cmd_vel" to="/robot_diff_drive_controller/cmd_vel"/>
-    </node>
-
-    <node pkg="gazeboSimulation" name="get_models" type="getModels.py" output="screen"/>
-    <node pkg="gazeboSimulation" name="set_models" type="setModels.py" output="screen"/>
-
-    <node pkg="joy" type="joy_node" name="joy_node">
-        <param name="deadzone" value="0.1" />
-    </node>
-
-
 </launch>

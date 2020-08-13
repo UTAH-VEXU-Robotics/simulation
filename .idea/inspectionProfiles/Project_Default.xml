@@ -1,0 +1,10 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="avoid-std-msgs" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="deprecated-type" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="outdated-format" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="redundant-stamping" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="type-not-camelcase" enabled="true" level="WARNING" enabled_by_default="true" />
+  </profile>
+</component>

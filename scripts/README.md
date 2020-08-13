@@ -1,4 +1,6 @@
 # gazeboSimulation/scripts
+**Note: This probably is outdated**
+
 ## Files:
 - getModels.py
     - sub to:

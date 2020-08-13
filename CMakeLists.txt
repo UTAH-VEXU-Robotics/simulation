@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(gazeboSimulation)
+project(simulation)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -11,12 +11,10 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy 
   std_msgs 
-  genmsg 
   gazebo_msgs
-  message_generation
   geometry_msgs
   sensor_msgs
-  driver
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -112,7 +110,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES
-  CATKIN_DEPENDS message_runtime sensor_msgs #driver #add more msgs here
+#  CATKIN_DEPENDS message_runtime sensor_msgs #driver #add more msgs here
 #  DEPENDS system_lib
 )
 
@@ -167,8 +165,6 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-#  scripts/republisher.py
-#  scripts/gazeboModels.py
   scripts/getModels.py
   scripts/setModels.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

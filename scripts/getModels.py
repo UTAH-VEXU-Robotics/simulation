@@ -1,13 +1,11 @@
-#! /usr/bin/env python
-
-from gazebo_msgs.srv import GetModelState
-from geometry_msgs.msg import Pose
-from std_msgs.msg import String, Bool
-try:
-    from driver.msg import Model, Models
-except:
-    print("driver not working")
+#!/usr/bin/env python
 import rospy
+
+import tf
+from tf.transformations import euler_from_quaternion, quaternion_from_euler
+from geometry_msgs.msg import TransformStamped
+from gazebo_msgs.srv import GetModelState, GetWorldProperties, GetModelProperties
+from std_msgs.msg import String, Bool
 
 def getPose(ipose):
     pose = Pose()
@@ -24,13 +22,10 @@ def main():
     # init ros / gazebo
     rospy.init_node('get_models_node', anonymous=True)
 
+    main.tf = TransformStamped
+
     # set cycles per second
     rate = rospy.Rate(10)
-
-    main.models = Models()
-
-    # init publisher
-    pub = rospy.Publisher('/gazebo/get_field', Models, queue_size=3)
 
     while not rospy.is_shutdown():
         try:
@@ -38,21 +33,28 @@ def main():
             rate.sleep()
 
             # wait for gazebo
-            rospy.wait_for_service('/gazebo/get_model_state')
-            # get updated models
-            updated_models = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-            out = Models()
-            for model in main.models.models:
-                imodel = Model()
-                imodel.type = model.type
-                imodel.color = model.color
-                imodel.zone = model.zone
-                imodel.name = model.name
-                imodel.link = model.link
-                imodel.pose = getPose(updated_models(str(imodel.name), str(imodel.link)))
-                out.models.append(imodel)
-            if(out != Models()):
-                pub.publish(out)
+            rospy.wait_for_service('/gazebo/get_world_properties')
+
+            world = rospy.ServiceProxy('/gazebo/get_world_properties', GetWorldProperties)
+            model_names = world().model_names
+
+            br = tf.TransformBroadcaster()
+
+            for model_name in model_names:
+
+                model = rospy.ServiceProxy('/gazebo/get_model_properties', GetModelProperties)
+                body_names = model(model_name).body_names
+
+                for body_name in body_names:
+                    find_state = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
+
+                    state = find_state(model_name, body_name)
+                    br.sendTransform((state.twist.linear.x, state.twist.linear.y, state.twist.linear.z),
+                                     (state.pose.orientation.x, state.pose.orientation.y, state.pose.orientation.z, state.pose.orientation.w),
+                                     rospy.Time.now(),
+                                     body_name,
+                                     model_name)
+
 
         except rospy.ROSInterruptException:
             print("failed get gazebo models")
