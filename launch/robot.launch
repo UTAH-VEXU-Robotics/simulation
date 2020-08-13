@@ -5,6 +5,7 @@
 
     <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
 
+
     <!-- push robot_description to factory and spawn robot in gazebo -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
           args="-z 0.2 -x 1.0 -y -1.0 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" />
@@ -12,29 +13,79 @@
     <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched-->
     <include file="$(find gazeboSimulation)/launch/empty_world.launch"></include>
 
-    <node name="controller" pkg="pid" type="controller" ns="top" output="screen" >
-        <param name="node_name" value="left_wheel_pid" />
-        <param name="Kp" value="0.08" />
-        <param name="Ki" value="0.0" />
-        <param name="Kd" value="0.0" />
-        <param name="upper_limit" value="10" />
-        <param name="lower_limit" value="-10" />
-        <param name="windup_limit" value="10" />
-        <param name="max_loop_frequency" value="100.0" />
-        <param name="min_loop_frequency" value="100.0" />
-        <param name="topic_from_controller" value="command"/>
-        <param name="topic_from_plant" value="velocity"/>
-        <remap from="setpoint" to="/setpoint" />
+    <arg name="Kp" value="0.08" />
+    <arg name="Ki" value="0.0" />
+    <arg name="Kd" value="0.0" />
+    <arg name="upper_limit" value="10" />
+    <arg name="lower_limit" value="-10" />
+    <arg name="windup_limit" value="10" />
+    <arg name="max_loop_frequency" value="100.0" />
+    <arg name="min_loop_frequency" value="100.0" />
+    <arg name="topic_from_controller" value="command"/>
+    <arg name="topic_from_plant" value="velocity"/>
+
+    <node name="controller" pkg="pid" type="controller" ns="right_back_motor" output="screen" >
+        <param name="node_name" value="right_back_motor_pid" />
+        <param name="Kp" value="$(arg Kp)" />
+        <param name="Ki" value="$(arg Ki)" />
+        <param name="Kd" value="$(arg Kd)" />
+        <param name="upper_limit" value="$(arg upper_limit)" />
+        <param name="lower_limit" value="$(arg lower_limit)" />
+        <param name="windup_limit" value="$(arg windup_limit)" />
+        <param name="max_loop_frequency" value="$(arg max_loop_frequency)" />
+        <param name="min_loop_frequency" value="$(arg min_loop_frequency)" />
+        <param name="topic_from_controller" value="$(arg topic_from_controller)"/>
+        <param name="topic_from_plant" value="$(arg topic_from_plant)"/>
+        <remap from="setpoint" to="/right_back_motor/setvel" />
     </node>
 
-    <!-- rqt_plot is a resource hog, so if you're seeing high CPU usage, don't launch rqt_plot  -->
-    <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
-          args="/top/command /top/velocity /setpoint" />
+    <node name="controller" pkg="pid" type="controller" ns="right_front_motor" output="screen" >
+        <param name="node_name" value="right_front_motor_pid" />
+        <param name="Kp" value="$(arg Kp)" />
+        <param name="Ki" value="$(arg Ki)" />
+        <param name="Kd" value="$(arg Kd)" />
+        <param name="upper_limit" value="$(arg upper_limit)" />
+        <param name="lower_limit" value="$(arg lower_limit)" />
+        <param name="windup_limit" value="$(arg windup_limit)" />
+        <param name="max_loop_frequency" value="$(arg max_loop_frequency)" />
+        <param name="min_loop_frequency" value="$(arg min_loop_frequency)" />
+        <param name="topic_from_controller" value="$(arg topic_from_controller)"/>
+        <param name="topic_from_plant" value="$(arg topic_from_plant)"/>
+        <remap from="setpoint" to="/right_front_motor/setvel" />
+    </node>
 
-    <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure"/>
+    <node name="controller" pkg="pid" type="controller" ns="left_back_motor" output="screen" >
+        <param name="node_name" value="left_back_motor_pid" />
+        <param name="Kp" value="$(arg Kp)" />
+        <param name="Ki" value="$(arg Ki)" />
+        <param name="Kd" value="$(arg Kd)" />
+        <param name="upper_limit" value="$(arg upper_limit)" />
+        <param name="lower_limit" value="$(arg lower_limit)" />
+        <param name="windup_limit" value="$(arg windup_limit)" />
+        <param name="max_loop_frequency" value="$(arg max_loop_frequency)" />
+        <param name="min_loop_frequency" value="$(arg min_loop_frequency)" />
+        <param name="topic_from_controller" value="$(arg topic_from_controller)"/>
+        <param name="topic_from_plant" value="$(arg topic_from_plant)"/>
+        <remap from="setpoint" to="/left_back_motor/setvel" />
+    </node>
 
-    <node if="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
-    <node unless="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node name="controller" pkg="pid" type="controller" ns="left_front_motor" output="screen" >
+        <param name="node_name" value="left_front_motor_pid" />
+        <param name="Kp" value="$(arg Kp)" />
+        <param name="Ki" value="$(arg Ki)" />
+        <param name="Kd" value="$(arg Kd)" />
+        <param name="upper_limit" value="$(arg upper_limit)" />
+        <param name="lower_limit" value="$(arg lower_limit)" />
+        <param name="windup_limit" value="$(arg windup_limit)" />
+        <param name="max_loop_frequency" value="$(arg max_loop_frequency)" />
+        <param name="min_loop_frequency" value="$(arg min_loop_frequency)" />
+        <param name="topic_from_controller" value="$(arg topic_from_controller)"/>
+        <param name="topic_from_plant" value="$(arg topic_from_plant)"/>
+        <remap from="setpoint" to="/left_front_motor/setvel" />
+    </node>
+
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
 
