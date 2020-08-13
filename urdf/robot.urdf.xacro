@@ -13,6 +13,6 @@
     <xacro:include filename="camera.urdf.xacro"/>
 
     <xacro:kinect prefix="front" origin_link="base_link" xyz="0.1 0 0.1" rpy="0 0 0"/>
-    <xacro:kinect prefix="back" origin_link="base_link" xyz="-0.1 0 0.1" rpy="0 0 3.14"/>
+<!--    <xacro:kinect prefix="back" origin_link="base_link" xyz="-0.1 0 0.1" rpy="0 0 3.14"/>-->
 
 </robot>
