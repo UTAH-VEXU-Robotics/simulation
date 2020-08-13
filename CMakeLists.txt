@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(gazeboSimulation)
+project(simulation)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -7,17 +7,15 @@ project(gazeboSimulation)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS 
-  roscpp
-  rospy 
-  std_msgs 
-  genmsg 
-  gazebo_msgs
-  message_generation
-  geometry_msgs
-  sensor_msgs
-  driver
-)
+find_package(catkin REQUIRED COMPONENTS
+        roscpp
+        rospy
+        std_msgs
+        gazebo_msgs
+        geometry_msgs
+        sensor_msgs
+        tf
+        )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -110,10 +108,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES
-  CATKIN_DEPENDS message_runtime sensor_msgs #driver #add more msgs here
-#  DEPENDS system_lib
+        #  INCLUDE_DIRS include
+        #  LIBRARIES
+        #  CATKIN_DEPENDS message_runtime sensor_msgs #driver #add more msgs here
+        #  DEPENDS system_lib
 )
 
 ###########
@@ -123,8 +121,8 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-# ${catkin_INCLUDE_DIRS}
+        # include
+        # ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -167,12 +165,10 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-#  scripts/republisher.py
-#  scripts/gazeboModels.py
-  scripts/getModels.py
-  scripts/setModels.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+        scripts/getModels.py
+        scripts/setModels.py
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+        )
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
@@ -214,4 +210,3 @@ catkin_install_python(PROGRAMS
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-
