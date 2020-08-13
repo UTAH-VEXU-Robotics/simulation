@@ -87,13 +87,11 @@
         </inertial>
     </link>
 
-
-  <xacro:include filename="$(find gazebo_ros_motors)/xacro/dc_motor.xacro"/>
-  <xacro:dc_motor motor_name="top" parent_link="chassis_link" child_link="test_link">
-    <xacro:property name="params_yaml" value="$(find gazeboSimulation)/config/v5_motor.yaml"/>
-    <origin xyz="0 0 0.2" rpy="0 0 0"/>
-  </xacro:dc_motor>
-
+    <xacro:include filename="$(find gazebo_ros_motors)/xacro/dc_motor.xacro"/>
+    <xacro:dc_motor motor_name="top" parent_link="chassis_link" child_link="test_link">
+      <xacro:property name="params_yaml" value="$(find gazeboSimulation)/config/v5_motor.yaml"/>
+      <origin xyz="0 0 0.2" rpy="0 0 0"/>
+    </xacro:dc_motor>
 
     <xacro:macro name="roller" params="prefix suffix theta side">
         <link name="${prefix}_${suffix}_roller">

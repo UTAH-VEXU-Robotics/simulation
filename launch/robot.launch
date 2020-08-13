@@ -12,8 +12,28 @@
     <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched-->
     <include file="$(find gazeboSimulation)/launch/empty_world.launch"></include>
 
+    <node name="controller" pkg="pid" type="controller" ns="top" output="screen" >
+        <param name="node_name" value="left_wheel_pid" />
+        <param name="Kp" value="5.0" />
+        <param name="Ki" value="0.0" />
+        <param name="Kd" value="0.1" />
+        <param name="upper_limit" value="10" />
+        <param name="lower_limit" value="-10" />
+        <param name="windup_limit" value="10" />
+        <param name="max_loop_frequency" value="100.0" />
+        <param name="min_loop_frequency" value="100.0" />
+        <param name="topic_from_controller" value="command"/>
+        <param name="topic_from_plant" value="velocity"/>
+        <remap from="setpoint" to="/setpoint" />
+    </node>
+
+    <!-- rqt_plot is a resource hog, so if you're seeing high CPU usage, don't launch rqt_plot  -->
+    <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
+          args="/top/command/data /top/velocity/data /setpoint/data" />
+
     <node if="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
     <node unless="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
 </launch>
