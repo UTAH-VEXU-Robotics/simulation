@@ -19,41 +19,14 @@
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
           args="-x $(arg x_start) -y $(arg y_start) -z $(arg z_start) -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" />
 
-    <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
-        <param name="publish_frequency" type="double" value="30.0" />
-    </node>
+    <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher"/>
+    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="joint_state_publisher"/>
 
-    <node name="ground_truth_to_tf" pkg="message_to_tf" type="message_to_tf" output="screen">
-        <param name="~odometry_topic" value="ground_truth/state" />
-        <param name="~frame_id" value="world" />
-        <param name="~child_frame_id" value="GT/base_link" />
-    </node>
-
-    <node pkg="topic_tools" type="relay"  name="relay"
-          args="joint_states joint_states_copy">
-    </node>
-
-    <rosparam param="source_list">["joint_states_copy"]</rosparam>
-    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="joint_state_publisher">
-        <remap from="/joint_states" to="/default/joint_states"/>
-    </node>
-
-    <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher2">
-        <param name="publish_frequency" type="double" value="100.0" />
-        <remap from="/joint_states" to="/default/joint_states"/>
-        <param name="tf_prefix" type="string" value="GT" />
-    </node>
-
-    <node pkg="tf" type="static_transform_publisher" name="odom_world_broadcaster" args="$(arg x_start) $(arg y_start) $(arg z_start) 0 -0.0 0 world odom 10" />
-
-    <rosparam command="load"
-              file="$(find simulation)/config/joints.yaml"
-              ns="robot_joint_state_controller" />
     <rosparam command="load"
               file="$(find simulation)/config/diffdrive.yaml"
               ns="robot_diff_drive_controller" />
 
-    <node name="controller_spawner" pkg="controller_manager" type="spawner" args="robot_joint_state_controller robot_diff_drive_controller"></node>
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" args="robot_diff_drive_controller"/>
 
     <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
         <param name="scale_linear" value="1.5" />
@@ -63,6 +36,77 @@
 
     <node pkg="joy" type="joy_node" name="joy_node">
         <param name="deadzone" value="0.1" />
+    </node>
+
+    <arg name="Kp" value="0.08" />
+    <arg name="Ki" value="0.0" />
+    <arg name="Kd" value="0.0" />
+    <arg name="upper_limit" value="10" />
+    <arg name="lower_limit" value="-10" />
+    <arg name="windup_limit" value="10" />
+    <arg name="max_loop_frequency" value="100.0" />
+    <arg name="min_loop_frequency" value="100.0" />
+    <arg name="topic_from_controller" value="command"/>
+    <arg name="topic_from_plant" value="velocity"/>
+
+    <node name="controller" pkg="pid" type="controller" ns="right_back_motor" output="screen" >
+        <param name="node_name" value="right_back_motor_pid" />
+        <param name="Kp" value="$(arg Kp)" />
+        <param name="Ki" value="$(arg Ki)" />
+        <param name="Kd" value="$(arg Kd)" />
+        <param name="upper_limit" value="$(arg upper_limit)" />
+        <param name="lower_limit" value="$(arg lower_limit)" />
+        <param name="windup_limit" value="$(arg windup_limit)" />
+        <param name="max_loop_frequency" value="$(arg max_loop_frequency)" />
+        <param name="min_loop_frequency" value="$(arg min_loop_frequency)" />
+        <param name="topic_from_controller" value="$(arg topic_from_controller)"/>
+        <param name="topic_from_plant" value="$(arg topic_from_plant)"/>
+        <remap from="setpoint" to="/right_back_motor/setvel" />
+    </node>
+
+    <node name="controller" pkg="pid" type="controller" ns="right_front_motor" output="screen" >
+        <param name="node_name" value="right_front_motor_pid" />
+        <param name="Kp" value="$(arg Kp)" />
+        <param name="Ki" value="$(arg Ki)" />
+        <param name="Kd" value="$(arg Kd)" />
+        <param name="upper_limit" value="$(arg upper_limit)" />
+        <param name="lower_limit" value="$(arg lower_limit)" />
+        <param name="windup_limit" value="$(arg windup_limit)" />
+        <param name="max_loop_frequency" value="$(arg max_loop_frequency)" />
+        <param name="min_loop_frequency" value="$(arg min_loop_frequency)" />
+        <param name="topic_from_controller" value="$(arg topic_from_controller)"/>
+        <param name="topic_from_plant" value="$(arg topic_from_plant)"/>
+        <remap from="setpoint" to="/right_front_motor/setvel" />
+    </node>
+
+    <node name="controller" pkg="pid" type="controller" ns="left_back_motor" output="screen" >
+        <param name="node_name" value="left_back_motor_pid" />
+        <param name="Kp" value="$(arg Kp)" />
+        <param name="Ki" value="$(arg Ki)" />
+        <param name="Kd" value="$(arg Kd)" />
+        <param name="upper_limit" value="$(arg upper_limit)" />
+        <param name="lower_limit" value="$(arg lower_limit)" />
+        <param name="windup_limit" value="$(arg windup_limit)" />
+        <param name="max_loop_frequency" value="$(arg max_loop_frequency)" />
+        <param name="min_loop_frequency" value="$(arg min_loop_frequency)" />
+        <param name="topic_from_controller" value="$(arg topic_from_controller)"/>
+        <param name="topic_from_plant" value="$(arg topic_from_plant)"/>
+        <remap from="setpoint" to="/left_back_motor/setvel" />
+    </node>
+
+    <node name="controller" pkg="pid" type="controller" ns="left_front_motor" output="screen" >
+        <param name="node_name" value="left_front_motor_pid" />
+        <param name="Kp" value="$(arg Kp)" />
+        <param name="Ki" value="$(arg Ki)" />
+        <param name="Kd" value="$(arg Kd)" />
+        <param name="upper_limit" value="$(arg upper_limit)" />
+        <param name="lower_limit" value="$(arg lower_limit)" />
+        <param name="windup_limit" value="$(arg windup_limit)" />
+        <param name="max_loop_frequency" value="$(arg max_loop_frequency)" />
+        <param name="min_loop_frequency" value="$(arg min_loop_frequency)" />
+        <param name="topic_from_controller" value="$(arg topic_from_controller)"/>
+        <param name="topic_from_plant" value="$(arg topic_from_plant)"/>
+        <remap from="setpoint" to="/left_front_motor/setvel" />
     </node>
 
     <!--
