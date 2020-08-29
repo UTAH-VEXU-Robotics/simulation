@@ -22,11 +22,23 @@
     <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher"/>
     <node pkg="joint_state_publisher" type="joint_state_publisher"  name="joint_state_publisher"/>
 
+    <!--
+    <node name="ground_truth_to_tf" pkg="message_to_tf" type="message_to_tf" output="screen">
+        <param name="~odometry_topic" value="ground_truth/state" />
+        <param name="~frame_id" value="world" />
+        <param name="~child_frame_id" value="GT/base_link" />
+    </node>-->
+
+    <rosparam command="load"
+              file="$(find simulation)/config/joints.yaml"
+              ns="robot_joint_state_controller" />
     <rosparam command="load"
               file="$(find simulation)/config/diffdrive.yaml"
               ns="robot_diff_drive_controller" />
 
-    <node name="controller_spawner" pkg="controller_manager" type="spawner" args="robot_diff_drive_controller"/>
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" args="robot_joint_state_controller robot_diff_drive_controller"></node>
+
+    <node pkg="tf" type="static_transform_publisher" name="odom_world_broadcaster" args="$(arg x_start) $(arg y_start) $(arg z_start) 0 -0.0 0 world base_link 10" />
 
     <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
         <param name="scale_linear" value="1.5" />
@@ -109,10 +121,10 @@
         <remap from="setpoint" to="/left_front_motor/setvel" />
     </node>
 
-    <!---->
+    <!--
     <node pkg="simulation" name="get_models" type="getModels.py" output="screen"/>
     <node pkg="simulation" name="set_models" type="setModels.py" output="screen"/>
-
+    -->
 
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="false" />
 

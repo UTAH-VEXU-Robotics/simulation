@@ -6,7 +6,6 @@ Panels:
       Expanded:
         - /Global Options1
         - /RobotModel1
-        - /RobotModel1/Status1
       Splitter Ratio: 0.5
     Tree Height: 746
   - Class: rviz/Selection
@@ -28,7 +27,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -598,7 +597,7 @@ Visualization Manager:
           Value: true
       Name: RobotModel
       Robot Description: robot_description
-      TF Prefix: GT
+      TF Prefix: ""
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -660,7 +659,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.970325946807861
+      Distance: 7.161896705627441
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -675,10 +674,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.17479757964611053
+      Pitch: 0.409796804189682
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.6868176460266113
+      Yaw: 5.756840229034424
     Saved:
       - Class: rviz/Orbit
         Distance: 0.9657304286956787
@@ -716,5 +715,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1920
-  X: 1920
+  X: 1600
   Y: 32
