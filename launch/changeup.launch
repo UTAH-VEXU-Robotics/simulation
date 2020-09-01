@@ -1,7 +1,7 @@
 <launch>
     <arg name="x_start" default="1.0"/>
     <arg name="y_start" default="-1.0"/>
-    <arg name="z_start" default="0.11"/>
+    <arg name="z_start" default="0.2"/>
 
     <arg name="world_name" default="$(find gazeboSimulation)/worlds/games/change_up.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
     <arg name="model" default="$(find gazeboSimulation)/urdf/robot.urdf.xacro"/>
