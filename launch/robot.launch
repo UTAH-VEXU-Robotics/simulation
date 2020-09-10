@@ -66,9 +66,9 @@
     </node>
 
     <!--
-    <node pkg="simulation" name="get_models" type="getModels.py" output="screen"/>
     <node pkg="simulation" name="set_models" type="setModels.py" output="screen"/>
     -->
+    <node pkg="simulation" name="get_models" type="getModels.py" output="screen"/>
 
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="false" />
 

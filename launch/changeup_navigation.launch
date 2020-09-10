@@ -1,0 +1,19 @@
+<launch>
+    <arg name="x_start" default="1.0"/>
+    <arg name="y_start" default="-1.0"/>
+    <arg name="z_start" default="0.11"/>
+
+    <arg name="world_name" default="$(find simulation)/worlds/games/change_up.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
+    <arg name="model" default="$(find simulation)/urdf/robot.urdf.xacro"/>
+    <arg name="rvizconfig" default="$(find navigation)/rviz/navigation.rviz" />
+
+    <include file="$(find simulation)/launch/robot.launch">
+        <arg name="x_start" value="$(arg x_start)" />
+        <arg name="y_start" value="$(arg y_start)" />
+        <arg name="z_start" value="$(arg z_start)" />
+
+        <arg name="world_name" value="$(arg world_name)" />
+        <arg name="model" value="$(arg model)" />
+        <arg name="rvizconfig" value="$(arg rvizconfig)" />
+    </include>
+</launch>
