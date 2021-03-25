@@ -127,9 +127,17 @@
             </inertial>
         </link>
 
-        <xacro:dc_motor motor_name="${prefix}_${suffix}_motor" parent_link="chassis_link" child_link="${prefix}_${suffix}_wheel">
+        <link name="${prefix}_${suffix}_shaft">
+        </link>
+        <joint name="${prefix}_${suffix}_shaft_joint" type="fixed">
+            <parent link="${prefix}_${suffix}_shaft"/>
+            <child link="${prefix}_${suffix}_wheel"/>
+            <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        </joint>
+
+        <xacro:dc_motor motor_name="${prefix}_${suffix}_motor" parent_link="chassis_link" child_link="${prefix}_${suffix}_shaft">
             <xacro:property name="params_yaml" value="$(find simulation)/config/v5_motor.yaml"/>
-            <origin xyz="${baselen*reflect/3} ${.1*reflectX} -.05" rpy="0 1 0"/>
+            <origin xyz="${baselen*reflect/3} ${.1*reflectX} -.05" rpy="${pi/2} 0 0"/>
         </xacro:dc_motor>
 
         <gazebo reference="${prefix}_${suffix}_wheel">
