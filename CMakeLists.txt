@@ -167,6 +167,8 @@ include_directories(
 catkin_install_python(PROGRAMS
   scripts/getModels.py
   scripts/setModels.py
+  scripts/cmd_vel2motor.py
+  scripts/odometry.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

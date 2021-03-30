@@ -95,10 +95,8 @@
         <!-- This block provides the simulator (Gazebo) with information on a few additional
         physical properties. See http://gazebosim.org/tutorials/?tut=ros_urdf for more-->
         <gazebo reference="${prefix}_${suffix}_roller">
-            <mu1 value="2000.0"/>
-            <mu2 value="1000.0"/>
-            <kp value="10000000.0" />
-            <kd value="1.0" />
+            <mu1 value="20.0"/>
+            <mu2 value="10.0"/>
             <material>Gazebo/Grey</material>
         </gazebo>
 
@@ -137,14 +135,15 @@
 
         <xacro:dc_motor motor_name="${prefix}_${suffix}_motor" parent_link="chassis_link" child_link="${prefix}_${suffix}_shaft">
             <xacro:property name="params_yaml" value="$(find simulation)/config/v5_motor.yaml"/>
-            <origin xyz="${baselen*reflect/3} ${.1*reflectX} -.05" rpy="${pi/2} 0 0"/>
+            <origin xyz="${baselen*reflect/3} ${.1*reflectX} -.05" rpy="${-pi/2} 0 0"/>
         </xacro:dc_motor>
 
         <gazebo reference="${prefix}_${suffix}_wheel">
             <material>Gazebo/Green</material>
         </gazebo>
-
+        
         <xacro:roller prefix="${prefix}_${suffix}" suffix="right_one" theta="${pi * ( 1/6)}" side="-1"/>
+
         <xacro:roller prefix="${prefix}_${suffix}" suffix="right_two" theta="${pi * ( 2/6)}" side="-1"/>
         <xacro:roller prefix="${prefix}_${suffix}" suffix="right_thr" theta="${pi * ( 3/6)}" side="-1"/>
         <xacro:roller prefix="${prefix}_${suffix}" suffix="right_for" theta="${pi * ( 4/6)}" side="-1"/>
@@ -156,6 +155,7 @@
         <xacro:roller prefix="${prefix}_${suffix}" suffix="right_ten" theta="${pi * (10/6)}" side="-1"/>
         <xacro:roller prefix="${prefix}_${suffix}" suffix="right_lvn" theta="${pi * (11/6)}" side="-1"/>
         <xacro:roller prefix="${prefix}_${suffix}" suffix="right_wlv" theta="${pi * (12/6)}" side="-1"/>
+
         <xacro:roller prefix="${prefix}_${suffix}" suffix="left_one" theta="${pi * ( 1/6) + ( pi / 12 )}" side="1"/>
         <xacro:roller prefix="${prefix}_${suffix}" suffix="left_two" theta="${pi * ( 2/6) + ( pi / 12 )}" side="1"/>
         <xacro:roller prefix="${prefix}_${suffix}" suffix="left_thr" theta="${pi * ( 3/6) + ( pi / 12 )}" side="1"/>
@@ -176,80 +176,7 @@
     <xacro:wheel prefix="right" suffix="front" reflect= "1" reflectX= "-1"/>
     <xacro:wheel prefix="right" suffix="back" reflect= "-1" reflectX= "-1"/>
 
-    <!--
-        <xacro:macro name="wheel" params="prefix suffix reflect reflectX">
-            <link name="${prefix}_${suffix}_wheel">
-                <visual>
-                    <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
-                    <geometry>
-                        <cylinder radius="${wheeldiam/2}" length="${wheel_width}"/>
-                    </geometry>
-                    <material name="black"/>
-                </visual>
-                <collision>
-                    <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
-                    <geometry>
-                        <cylinder radius="${wheeldiam/2}" length="${wheel_width}"/>
-                    </geometry>
-                </collision>
-                <xacro:roller_inertial mass="0.001"/>
-            </link>
-
-            <joint name="${prefix}_${suffix}_wheel_joint" type="continuous">
-                <axis xyz="0 1 0" />
-                <parent link="chassis_link"/>
-                <child link="${prefix}_${suffix}_wheel"/>
-                <origin xyz="${baselen*reflect/3} ${.1*reflectX} -.05" rpy="0 0 0"/>
-            </joint>
-
-            <gazebo reference="${prefix}_${suffix}_wheel">
-                <mu1 value="200.0"/>
-                <mu2 value="100.0"/>
-                <kp value="10000000.0" />
-                <kd value="1.0" />
-                <material>Gazebo/Green</material>
-            </gazebo>
-
-            <transmission name="${prefix}_${suffix}_wheel_trans">
-                <type>transmission_interface/SimpleTransmission</type>
-                <actuator name="${prefix}_${suffix}_wheel_motor">
-                    <mechanicalReduction>1</mechanicalReduction>
-                </actuator>
-                <joint name="${prefix}_${suffix}_wheel_joint">
-                    <hardwareInterface>VelocityJointInterface</hardwareInterface>
-                </joint>
-            </transmission>
-
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="right_one" theta="${pi * ( 1/6)}" side="-1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="right_two" theta="${pi * ( 2/6)}" side="-1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="right_thr" theta="${pi * ( 3/6)}" side="-1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="right_for" theta="${pi * ( 4/6)}" side="-1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="right_fve" theta="${pi * ( 5/6)}" side="-1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="right_six" theta="${pi * ( 6/6)}" side="-1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="right_svn" theta="${pi * ( 7/6)}" side="-1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="right_ate" theta="${pi * ( 8/6)}" side="-1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="right_nne" theta="${pi * ( 9/6)}" side="-1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="right_ten" theta="${pi * (10/6)}" side="-1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="right_lvn" theta="${pi * (11/6)}" side="-1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="right_wlv" theta="${pi * (12/6)}" side="-1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="left_one" theta="${pi * ( 1/6) + ( pi / 12 )}" side="1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="left_two" theta="${pi * ( 2/6) + ( pi / 12 )}" side="1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="left_thr" theta="${pi * ( 3/6) + ( pi / 12 )}" side="1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="left_for" theta="${pi * ( 4/6) + ( pi / 12 )}" side="1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="left_fve" theta="${pi * ( 5/6) + ( pi / 12 )}" side="1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="left_six" theta="${pi * ( 6/6) + ( pi / 12 )}" side="1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="left_svn" theta="${pi * ( 7/6) + ( pi / 12 )}" side="1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="left_ate" theta="${pi * ( 8/6) + ( pi / 12 )}" side="1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="left_nne" theta="${pi * ( 9/6) + ( pi / 12 )}" side="1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="left_ten" theta="${pi * (10/6) + ( pi / 12 )}" side="1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="left_lvn" theta="${pi * (11/6) + ( pi / 12 )}" side="1"/>
-            <xacro:roller prefix="${prefix}_${suffix}" suffix="left_wlv" theta="${pi * (12/6) + ( pi / 12 )}" side="1"/>
-        </xacro:macro>
-
     <gazebo>
-        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-            <robotNamespace>/</robotNamespace>
-        </plugin>
         <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
             <alwaysOn>true</alwaysOn>
             <updateRate>50.0</updateRate>
@@ -261,5 +188,5 @@
             <rpyOffsets>0 0 0</rpyOffsets>
         </plugin>
     </gazebo>
-            -->
+        
 </robot>

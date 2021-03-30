@@ -16,4 +16,4 @@ gear_ratio: 18.0
 joint_damping: 0.005
 joint_friction: 0.01
 # shaft encoder
-encoder_ppr: 50
+encoder_ppr: 900 #50*_gear_ratio
