@@ -48,8 +48,8 @@
     <node pkg="joy" type="joy_node" name="joy_node">
         <param name="deadzone" value="0.01" />
     </node>
-    <node pkg="simulation" type="cmd_vel2motor.py" name="cmd_vel2motor">
-    </node>
+
+    <node pkg="simulation" type="cmd_vel2motor.py" name="cmd_vel2motor"/>
     <!--
     <node pkg="simulation" name="get_models" type="getModels.py" output="screen"/>
     <node pkg="simulation" name="set_models" type="setModels.py" output="screen"/>
