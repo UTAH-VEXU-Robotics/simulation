@@ -1,60 +1,94 @@
 <launch>
-    <arg name="x_start" default="0.0"/>
-    <arg name="y_start" default="0.0"/>
+    <arg name="rvizconfig" default="$(find simulation)/rviz/robot.rviz"/>
+
+    <arg name="x_start" default="-1.6"/>
+    <arg name="y_start" default="1"/>
     <arg name="z_start" default="0.11"/>
 
-    <arg name="world_name" default=""/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
     <arg name="model" default="$(find simulation)/urdf/robot.urdf.xacro"/>
-    <arg name="rvizconfig" default="$(find simulation)/rviz/robot.rviz" />
-
-    <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
-    <include file="$(find simulation)/launch/empty_world.launch">
-        <arg name="world_name" value="$(arg world_name)" />
-        <arg name="physics" value="dart" />
-    </include>
 
     <!-- convert urdf.xacro to just urdf-->
-    <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
+    <param name="robot_description" command="$(find xacro)/xacro $(arg model)"/>
 
     <!-- push robot_description to factory and spawn robot in gazebo-->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
-          args="-x $(arg x_start) -y $(arg y_start) -z $(arg z_start) -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" />
+          args="-x $(arg x_start) -y $(arg y_start) -z $(arg z_start) -unpause -urdf -model robot -param robot_description"
+          respawn="false" output="screen"/>
 
-    <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher"/>
-    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="joint_state_publisher"/>
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
+    <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher"/>
 
-    
     <node name="ground_truth_to_tf" pkg="message_to_tf" type="message_to_tf" output="screen">
-        <param name="~odometry_topic" value="ground_truth/state" />
-        <param name="~frame_id" value="world" />
-        <param name="~child_frame_id" value="base_link" />
+        <param name="~odometry_topic" value="ground_truth/state"/>
+        <param name="~frame_id" value="world"/>
+        <param name="~child_frame_id" value="base_link"/>
     </node>
 
     <rosparam command="load"
               file="$(find simulation)/config/joints.yaml"
-              ns="robot_joint_state_controller" />
+              ns="robot_joint_state_controller"/>
     <rosparam command="load"
               file="$(find simulation)/config/diffdrive.yaml"
-              ns="robot_diff_drive_controller" />
+              ns="robot_diff_drive_controller"/>
 
-    <node pkg="tf" type="static_transform_publisher" name="odom_world_broadcaster" args="$(arg x_start) $(arg y_start) $(arg z_start) 0 0 0 world odom 10" />
+    <node pkg="tf" type="static_transform_publisher" name="odom_world_broadcaster"
+          args="$(arg x_start) $(arg y_start) $(arg z_start) 0 0 0 world odom 10"/>
 
     <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
-        <param name="scale_linear" value="0.5" />
-        <param name="scale_angular" value="3.0" />
+        <param name="scale_linear" value="1"/>
+        <param name="scale_angular" value="1"/>
         <remap from="/cmd_vel" to="/cmd_vel"/>
     </node>
 
     <node pkg="joy" type="joy_node" name="joy_node">
-        <param name="deadzone" value="0.01" />
+        <param name="deadzone" value="0.01"/>
     </node>
 
-    <node pkg="simulation" type="cmd_vel2motor.py" name="cmd_vel2motor"/>
-    <!--
-    <node pkg="simulation" name="get_models" type="getModels.py" output="screen"/>
-    <node pkg="simulation" name="set_models" type="setModels.py" output="screen"/>
-    -->
+    <!-- TODO: figure out pid later -->
+    <param name="Kp" value="5.0"/><param name="Ki" value="0.0"/><param name="Kd" value="0.1"/>
+    <param name="upper_limit" value="10"/><param name="lower_limit" value="-10"/>
+    <param name="windup_limit" value="10"/><param name="cutoff_frequency" value="20"/>
+    <param name="max_loop_frequency" value="105.0"/><param name="min_loop_frequency" value="95.0"/>
+    <param name="setpoint_timeout" value="-1.0"/>
+    <node name="left_back_motor_pid" pkg="pid" type="controller" output="screen">
+        <param name="Kp" value="${Kp}"/><param name="Ki" value="${Ki}"/><param name="Kd" value="${Kd}"/>
+        <param name="upper_limit" value="${upper_limit}"/><param name="lower_limit" value="${lower_limit}"/><param name="windup_limit" value="${windup_limit}"/>
+        <param name="cutoff_frequency" value="${cutoff_frequency}"/><param name="max_loop_frequency" value="${max_loop_frequency}"/><param name="min_loop_frequency" value="${min_loop_frequency}"/>
+        <param name="setpoint_timeout" value="-${setpoint_timeout}"/>
+        <remap from="setpoint" to="left_back_motor/set_velocity"/>
+        <remap from="control_effort" to="left_back_motor/command"/>
+        <remap from="state" to="left_back_motor/actual_velocity"/></node>
+    <node name="left_front_motor_pid" pkg="pid" type="controller" output="screen">
+        <param name="Kp" value="${Kp}"/><param name="Ki" value="${Ki}"/><param name="Kd" value="${Kd}"/>
+        <param name="upper_limit" value="${upper_limit}"/><param name="lower_limit" value="${lower_limit}"/><param name="windup_limit" value="${windup_limit}"/>
+        <param name="cutoff_frequency" value="${cutoff_frequency}"/><param name="max_loop_frequency" value="${max_loop_frequency}"/><param name="min_loop_frequency" value="${min_loop_frequency}"/>
+        <param name="setpoint_timeout" value="-${setpoint_timeout}"/>
+        <remap from="setpoint" to="left_front_motor/set_velocity"/>
+        <remap from="control_effort" to="left_front_motor/command"/>
+        <remap from="state" to="left_front_motor/actual_velocity"/></node>
+    <node name="right_back_motor_pid" pkg="pid" type="controller" output="screen">
+        <param name="Kp" value="${Kp}"/><param name="Ki" value="${Ki}"/><param name="Kd" value="${Kd}"/>
+        <param name="upper_limit" value="${upper_limit}"/><param name="lower_limit" value="${lower_limit}"/><param name="windup_limit" value="${windup_limit}"/>
+        <param name="cutoff_frequency" value="${cutoff_frequency}"/><param name="max_loop_frequency" value="${max_loop_frequency}"/><param name="min_loop_frequency" value="${min_loop_frequency}"/>
+        <param name="setpoint_timeout" value="-${setpoint_timeout}"/>
+        <remap from="setpoint" to="right_back_motor/set_velocity"/>
+        <remap from="control_effort" to="right_back_motor/command"/>
+        <remap from="state" to="right_back_motor/actual_velocity"/></node>
+    <node name="right_front_motor_pid" pkg="pid" type="controller" output="screen">
+        <param name="Kp" value="${Kp}"/><param name="Ki" value="${Ki}"/><param name="Kd" value="${Kd}"/>
+        <param name="upper_limit" value="${upper_limit}"/><param name="lower_limit" value="${lower_limit}"/><param name="windup_limit" value="${windup_limit}"/>
+        <param name="cutoff_frequency" value="${cutoff_frequency}"/><param name="max_loop_frequency" value="${max_loop_frequency}"/><param name="min_loop_frequency" value="${min_loop_frequency}"/>
+        <param name="setpoint_timeout" value="-${setpoint_timeout}"/>
+        <remap from="setpoint" to="right_front_motor/set_velocity"/>
+        <remap from="control_effort" to="right_front_motor/command"/>
+        <remap from="state" to="right_front_motor/actual_velocity"/></node>
 
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="false" />
+<!--    <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure"/>-->
+
+    <node pkg="simulation" type="cmd_vel2motor.py" name="cmd_vel2motor"/>
+    <!--    <node pkg="simulation" type="quintic_polynomials_planner.py" name="quintic_polynomials_planner"/>-->
+    <!--    <node pkg="simulation" name="get_models" type="getModels.py" output="screen"/>-->
+    <!--    <node pkg="simulation" name="set_models" type="setModels.py" output="screen"/>-->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="false"/>
 
 </launch>

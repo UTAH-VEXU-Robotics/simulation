@@ -5,14 +5,16 @@ publish_current:  true
 publish_motor_joint_state: true
 update_rate: 100.0
 # motor model
-motor_nominal_voltage: 12.0 # Volts
-moment_of_inertia: 0.01 # kgm^2
+motor_nominal_voltage: 14.0 # Volts
+# moment of inertia calculated by getting 17.5 inch / pounds of torque from a vex forum post and converting it to kgm https://www.vexforum.com/t/v5-motor-torque/80258/2
+moment_of_inertia: 0.4535924 # kgm^2
 armature_damping_ratio: 0.03 # Nm/(rad/s)
 electromotive_force_constant: 0.03 # Nm/A
-electric_resistance: 6.0 # Ohm
+# ohms law 14V max batter 11W max power draw V/(W/V) = Ohms https://www.vexrobotics.com/276-4840.html#additional
+electric_resistance: 17.818182 # Ohm
 electric_inductance: 0.001 # Henry
 # transmission
-gear_ratio: 18.0
+gear_ratio: 36.0
 joint_damping: 0.005
 joint_friction: 0.01
 # shaft encoder

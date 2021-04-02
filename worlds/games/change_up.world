@@ -15,164 +15,68 @@
             <pose> 0 0 0 0 0 0 </pose>
         </include>
 
-        <!-- Center Tower Balls -->
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> 0 .2487 .08001 0 0 0 </pose>
-            <name>red1</name>
-        </include>
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> .2487 0 .08001 0 0 0 </pose>
-            <name>red2</name>
-        </include>
         <include>
             <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallBlue</uri>
-            <pose> 0 -.2487 .08001 0 0 0 </pose>
+            <pose> 0 0 .40005 0 0 0 </pose>
             <name>blue1</name>
         </include>
         <include>
             <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallBlue</uri>
-            <pose> -.2487 0 .08001 0 0 0 </pose>
+            <pose> 0 0 .24003 0 0 0 </pose>
             <name>blue2</name>
         </include>
         <include>
             <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> 0 .81375 .08001 0 0 0 </pose>
-            <name>red3</name>      
-        </include>
-        <include>
-            <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallBlue</uri>
-            <pose> 0 -.81375 .08001 0 0 0 </pose>
+            <pose> 0 0 .08001 0 0 0 </pose>
             <name>blue3</name>
         </include>
 
-        <!-- Middle Towers -->
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> 0 1.6275 .40005 0 0 0 </pose>
-            <name>red4</name>
-        </include>
         <include>
             <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallBlue</uri>
-            <pose> 0 1.6275 .24003 0 0 0 </pose>
+            <pose> 1.6275 0 .08001 0 0 0 </pose>
             <name>blue4</name>
-        </include>
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> 0 1.6275 .08001 0 0 0 </pose>
-            <name>red5</name>
-        </include>
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallBlue</uri>
-            <pose> 0 -1.6275 .40005 0 0 0 </pose>
-            <name>blue5</name>
-        </include>
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> 0 -1.6275 .24003 0 0 0 </pose>
-            <name>red6</name>
         </include>
         <include>
             <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallBlue</uri>
             <pose> 0 -1.6275 .08001 0 0 0 </pose>
+            <name>blue5</name>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://change_up_cad/ChangeUpBallBlue</uri>
+            <pose> 0 1.6275 .08001 0 0 0 </pose>
             <name>blue6</name>
         </include>
-
-        <!-- Left Towers -->
         <include>
             <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallBlue</uri>
-            <pose> -1.6275 -1.6275 .24003 0 0 0 </pose>
+            <pose> -1.6275 0 .08001 0 0 0 </pose>
             <name>blue7</name>
         </include>
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> -1.6275 -1.6275 .08001 0 0 0 </pose>
-            <name>red14</name>
-        </include>
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallBlue</uri>
-            <pose> -1.6275 0 .24003 0 0 0 </pose>
-            <name>blue14</name>
-        </include>
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> -1.6275 0 .08001 0 0 0 </pose>
-            <name>red7</name>
-        </include>
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallBlue</uri>
-            <pose> -1.6275 1.6275 .24003 0 0 0 </pose>
-            <name>blue8</name>
-        </include>
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> -1.6275 1.6275 .08001 0 0 0 </pose>
-            <name>red8</name>
-        </include>
 
-        <!-- Around Left Towers -->
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> -1.4393 -1.4393 .08001 0 0 0 </pose>
-            <name>red9</name>
-        </include>
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> -1.4393 1.4393 .08001 0 0 0 </pose>
-            <name>red10</name>
-        </include>
 
-        <!-- Right Towers -->
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> 1.6275 -1.6275 .24003 0 0 0 </pose>
-            <name>red11</name>
-        </include>
         <include>
             <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallBlue</uri>
             <pose> 1.6275 -1.6275 .08001 0 0 0 </pose>
-            <name>blue9</name>
-        </include>
-        <include>
-            <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> 1.6275 0 .24003 0 0 0 </pose>
-            <name>red12</name>
+            <name>blue8</name>
         </include>
         <include>
             <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallBlue</uri>
-            <pose> 1.6275 0 .08001 0 0 0 </pose>
-            <name>blue10</name>
+            <pose> -1.6275 -1.6275 .08001 0 0 0 </pose>
+            <name>blue9</name>
         </include>
         <include>
             <static>0</static>
-            <uri>model://change_up_cad/ChangeUpBallRed</uri>
-            <pose> 1.6275 1.6275 .24003 0 0 0 </pose>
-            <name>red13</name>
+            <uri>model://change_up_cad/ChangeUpBallBlue</uri>
+            <pose> -1.6275 1.6275 .08001 0 0 0 </pose>
+            <name>blue10</name>
         </include>
         <include>
             <static>0</static>
@@ -180,20 +84,31 @@
             <pose> 1.6275 1.6275 .08001 0 0 0 </pose>
             <name>blue11</name>
         </include>
-
-        <!-- Around Right Towers -->
         <include>
             <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallBlue</uri>
-            <pose> 1.4393 -1.4393 .08001 0 0 0 </pose>
+            <pose> 1.6275 -1.6275 .24003 0 0 0 </pose>
             <name>blue12</name>
         </include>
         <include>
             <static>0</static>
             <uri>model://change_up_cad/ChangeUpBallBlue</uri>
-            <pose> 1.4393 1.4393 .08001 0 0 0 </pose>
+            <pose> -1.6275 -1.6275 .24003 0 0 0 </pose>
             <name>blue13</name>
         </include>
+        <include>
+            <static>0</static>
+            <uri>model://change_up_cad/ChangeUpBallBlue</uri>
+            <pose> -1.6275 1.6275 .24003 0 0 0 </pose>
+            <name>blue14</name>
+        </include>
+        <include>
+            <static>0</static>
+            <uri>model://change_up_cad/ChangeUpBallBlue</uri>
+            <pose> 1.6275 1.6275 .24003 0 0 0 </pose>
+            <name>blue15</name>
+        </include>
+
     <plugin filename="libcollision_map_creator.so" name="collision_map_creator"/>
 
     </world>

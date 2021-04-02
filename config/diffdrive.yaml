@@ -19,12 +19,12 @@ base_frame_id: base_link
 linear:
   x:
     has_velocity_limits    : true
-    max_velocity           : 1.5   # m/s
+    max_velocity           : 100   # m/s
     has_acceleration_limits: true
-    max_acceleration       : 1.5  # m/s^2
+    max_acceleration       : 100  # m/s^2
 angular:
   z:
     has_velocity_limits    : true
-    max_velocity           : 6.28   # rad/s
+    max_velocity           : 100   # rad/s
     has_acceleration_limits: true
-    max_acceleration       : 6.28   # rad/s^2
+    max_acceleration       : 100   # rad/s^2

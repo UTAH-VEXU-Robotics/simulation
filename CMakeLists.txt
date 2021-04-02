@@ -169,6 +169,7 @@ catkin_install_python(PROGRAMS
   scripts/setModels.py
   scripts/cmd_vel2motor.py
   scripts/odometry.py
+  scripts/QuinticPolynomialsPlanner/quintic_polynomials_planner.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
