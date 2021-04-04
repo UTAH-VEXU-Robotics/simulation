@@ -167,6 +167,7 @@ include_directories(
 catkin_install_python(PROGRAMS
   scripts/getModels.py
   scripts/setModels.py
+  scripts/models.py
   scripts/cmd_vel2motor.py
   scripts/odometry.py
   scripts/QuinticPolynomialsPlanner/quintic_polynomials_planner.py

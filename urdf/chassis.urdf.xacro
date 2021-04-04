@@ -133,7 +133,7 @@
             <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
         </joint>
 
-        <xacro:dc_motor motor_name="${prefix}_${suffix}_motor" parent_link="chassis_link" child_link="${prefix}_${suffix}_shaft">
+        <xacro:dc_motor motor_name="motor_${suffix}_${prefix}" parent_link="chassis_link" child_link="${prefix}_${suffix}_shaft">
             <xacro:property name="params_yaml" value="$(find simulation)/config/v5_motor.yaml"/>
             <origin xyz="${baselen*reflect/3} ${.1*reflectX} -.05" rpy="${-pi/2} 0 0"/>
         </xacro:dc_motor>

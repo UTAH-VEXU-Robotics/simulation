@@ -21,8 +21,7 @@
     <node name="ground_truth_to_tf" pkg="message_to_tf" type="message_to_tf" output="screen">
         <param name="~odometry_topic" value="ground_truth/state"/>
         <param name="~frame_id" value="world"/>
-        <param name="~child_frame_id" value="base_link"/>
-    </node>
+        <param name="~child_frame_id" value="base_link"/></node>
 
     <rosparam command="load"
               file="$(find simulation)/config/joints.yaml"
@@ -37,55 +36,38 @@
     <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node">
         <param name="scale_linear" value="1"/>
         <param name="scale_angular" value="1"/>
-        <remap from="/cmd_vel" to="/cmd_vel"/>
-    </node>
+        <remap from="/cmd_vel" to="/cmd_vel"/></node>
 
-    <node pkg="joy" type="joy_node" name="joy_node">
-        <param name="deadzone" value="0.01"/>
-    </node>
+    <node pkg="joy" type="joy_node" name="joy_node"><param name="deadzone" value="0.01"/></node>
 
     <!-- TODO: figure out pid later -->
-    <param name="Kp" value="5.0"/><param name="Ki" value="0.0"/><param name="Kd" value="0.1"/>
+    <param name="Kp" value="1.0"/><param name="Ki" value="0.0"/><param name="Kd" value="0.1"/>
     <param name="upper_limit" value="10"/><param name="lower_limit" value="-10"/>
     <param name="windup_limit" value="10"/><param name="cutoff_frequency" value="20"/>
     <param name="max_loop_frequency" value="105.0"/><param name="min_loop_frequency" value="95.0"/>
     <param name="setpoint_timeout" value="-1.0"/>
-    <node name="left_back_motor_pid" pkg="pid" type="controller" output="screen">
+    <node name="pid_motor_right" pkg="pid" type="controller" output="screen">
         <param name="Kp" value="${Kp}"/><param name="Ki" value="${Ki}"/><param name="Kd" value="${Kd}"/>
         <param name="upper_limit" value="${upper_limit}"/><param name="lower_limit" value="${lower_limit}"/><param name="windup_limit" value="${windup_limit}"/>
         <param name="cutoff_frequency" value="${cutoff_frequency}"/><param name="max_loop_frequency" value="${max_loop_frequency}"/><param name="min_loop_frequency" value="${min_loop_frequency}"/>
         <param name="setpoint_timeout" value="-${setpoint_timeout}"/>
-        <remap from="setpoint" to="left_back_motor/set_velocity"/>
-        <remap from="control_effort" to="left_back_motor/command"/>
-        <remap from="state" to="left_back_motor/actual_velocity"/></node>
-    <node name="left_front_motor_pid" pkg="pid" type="controller" output="screen">
+        <remap from="setpoint" to="pid_motor_right/setpoint"/>
+        <remap from="control_effort" to="pid_motor_right/control_effort"/>
+        <remap from="state" to="pid_motor_right/state"/>
+    </node>
+    <node name="pid_motor_left" pkg="pid" type="controller" output="screen">
         <param name="Kp" value="${Kp}"/><param name="Ki" value="${Ki}"/><param name="Kd" value="${Kd}"/>
         <param name="upper_limit" value="${upper_limit}"/><param name="lower_limit" value="${lower_limit}"/><param name="windup_limit" value="${windup_limit}"/>
         <param name="cutoff_frequency" value="${cutoff_frequency}"/><param name="max_loop_frequency" value="${max_loop_frequency}"/><param name="min_loop_frequency" value="${min_loop_frequency}"/>
         <param name="setpoint_timeout" value="-${setpoint_timeout}"/>
-        <remap from="setpoint" to="left_front_motor/set_velocity"/>
-        <remap from="control_effort" to="left_front_motor/command"/>
-        <remap from="state" to="left_front_motor/actual_velocity"/></node>
-    <node name="right_back_motor_pid" pkg="pid" type="controller" output="screen">
-        <param name="Kp" value="${Kp}"/><param name="Ki" value="${Ki}"/><param name="Kd" value="${Kd}"/>
-        <param name="upper_limit" value="${upper_limit}"/><param name="lower_limit" value="${lower_limit}"/><param name="windup_limit" value="${windup_limit}"/>
-        <param name="cutoff_frequency" value="${cutoff_frequency}"/><param name="max_loop_frequency" value="${max_loop_frequency}"/><param name="min_loop_frequency" value="${min_loop_frequency}"/>
-        <param name="setpoint_timeout" value="-${setpoint_timeout}"/>
-        <remap from="setpoint" to="right_back_motor/set_velocity"/>
-        <remap from="control_effort" to="right_back_motor/command"/>
-        <remap from="state" to="right_back_motor/actual_velocity"/></node>
-    <node name="right_front_motor_pid" pkg="pid" type="controller" output="screen">
-        <param name="Kp" value="${Kp}"/><param name="Ki" value="${Ki}"/><param name="Kd" value="${Kd}"/>
-        <param name="upper_limit" value="${upper_limit}"/><param name="lower_limit" value="${lower_limit}"/><param name="windup_limit" value="${windup_limit}"/>
-        <param name="cutoff_frequency" value="${cutoff_frequency}"/><param name="max_loop_frequency" value="${max_loop_frequency}"/><param name="min_loop_frequency" value="${min_loop_frequency}"/>
-        <param name="setpoint_timeout" value="-${setpoint_timeout}"/>
-        <remap from="setpoint" to="right_front_motor/set_velocity"/>
-        <remap from="control_effort" to="right_front_motor/command"/>
-        <remap from="state" to="right_front_motor/actual_velocity"/></node>
+        <remap from="setpoint" to="pid_motor_left/setpoint"/>
+        <remap from="control_effort" to="pid_motor_left/control_effort"/>
+        <remap from="state" to="pid_motor_left/state"/>
+    </node>
 
 <!--    <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure"/>-->
 
-    <node pkg="simulation" type="cmd_vel2motor.py" name="cmd_vel2motor"/>
+<!--    <node pkg="simulation" type="cmd_vel2motor.py" name="cmd_vel2motor"/>-->
     <!--    <node pkg="simulation" type="quintic_polynomials_planner.py" name="quintic_polynomials_planner"/>-->
     <!--    <node pkg="simulation" name="get_models" type="getModels.py" output="screen"/>-->
     <!--    <node pkg="simulation" name="set_models" type="setModels.py" output="screen"/>-->
